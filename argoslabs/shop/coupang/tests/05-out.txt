@@ -1,0 +1,9 @@
+display_category_codes=['81351', '79013', '81351']
+displayItemCategoryCode,name,status,child
+81351,헤드커버,ACTIVE,[]
+
+displayItemCategoryCode,name,status,child
+79013,오토바이,ACTIVE,[]
+
+displayItemCategoryCode,name,status,child
+81351,헤드커버,ACTIVE,[]

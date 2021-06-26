@@ -1,0 +1,24 @@
+vendor_item_ids=['72393678885', '72393678892', '72393678897', '72393678902', '72393678913', '72393678928', '4966734015', '4063708260']
+sellerItemId,amountInStock,salePrice,onSale
+72393678885,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+72393678892,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+72393678897,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+72393678902,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+72393678913,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+72393678928,0,5000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+4966734015,50,2750000,True
+
+sellerItemId,amountInStock,salePrice,onSale
+4063708260,0,5000,True

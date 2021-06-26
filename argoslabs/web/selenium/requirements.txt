@@ -1,0 +1,7 @@
+# pip dependent packages
+
+# default for alabs
+alabs.common
+
+# for selenium
+alabs.selenium>=3.601.900

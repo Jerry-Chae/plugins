@@ -1,0 +1,36 @@
+setup:
+  author: Jerry Chae
+  author_email: mcchae@argos-labs.com
+  classifiers:
+  - 'Operating System :: MacOS :: MacOS X'
+  - 'Operating System :: Microsoft :: Windows :: Windows 10'
+  - 'Operating System :: POSIX :: Linux'
+  - 'License :: Other/Proprietary License'
+  - 'Natural Language :: English'
+  - 'Programming Language :: Python :: 3.7'
+  - 'Topic :: Data :: RDB'
+  - 'Topic :: Data :: RDB :: MySQL'
+  - 'Topic :: Data :: RDB :: MSSQL'
+  - 'Topic :: Data :: RDB :: Oracle'
+  - 'Topic :: Change :: Log :: Add for Oracle dependent dlls'
+  description: ARGOS-LABS RPA plugin module for RDB operation
+  keywords:
+  - data
+  - relational
+  - database
+  - rdb
+  - sql
+  - mysql
+  - oracle
+  - mssql
+  license: ARGOS-LABS Proprietary License
+  platforms:
+  - Mac
+  - Windows
+  - Linux
+  package_data:
+    # for Oracle, cx_Oracle in Windows: set pre-compiled for pymssql
+    argoslabs.data.rdb: ['icon.*', '*.dll', '*.whl']
+  url: https://www.argos-labs.com
+#  version: 2.228.1800
+  version: 2.228.3300

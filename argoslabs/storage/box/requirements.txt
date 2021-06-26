@@ -1,0 +1,8 @@
+# pip dependent packages
+
+# default for alabs
+alabs.common
+
+# web scraping
+boxsdk
+alabs.selenium>=3.601.900

@@ -1,0 +1,2 @@
+host,port,status
+redis.argos-labs.com,6379,alive
