@@ -7,6 +7,7 @@ products
 about
 us
 media
+careers
 contact
  invest
 .mainheader
@@ -16,7 +17,7 @@ background-color:
 rgba(0,
 0,
 0,
-0.68);
+0.25);
 }
 we
 create
@@ -26,6 +27,39 @@ robotic
 products
 for
 restaurants
+🆕
+automated
+beverage
+dispenser
+miso
+automated
+beverage
+dispenser
+makes
+dispensing
+beverages
+faster
+and
+safer
+for
+customers
+by
+connecting
+to
+the
+pos
+and
+automatically
+pouring
+drinks,
+sealing
+and
+labeling
+them.
+see
+it
+in
+action
 jquery(document).ready(function
 ($)
 {
@@ -177,13 +211,11 @@ street,pasadena,
 ca
 91101
 navigation
+products
 about
 us
-products
 media
- work
-at
-miso
+careers
  contact
  invest
 accessibility

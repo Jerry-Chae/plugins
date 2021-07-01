@@ -16,13 +16,20 @@ driver.get('https://imgur.com/upload')
 # Select File Click
 driver.find_elements_by_xpath('//*[@id="root"]/div/div[2]/div/div/div/div/div[1]/div[2]/label')[0].click()
 
+import locale
+os_encoding = locale.getpreferredencoding()
+if os_encoding == 'cp949':
+    open_label = '열기'  # for Korean
+elif os_encoding == 'cp932':
+    open_label = '開く'  # for Japanese
+
 # pywinauto
-findWindow = lambda: pywinauto.findwindows.find_windows(title='開く')[0]
-dialog     = pywinauto.timings.wait_until_passes(5, 1, findWindow)
-pwa_app    = pywinauto.Application()
+findWindow = lambda: pywinauto.findwindows.find_windows(title=open_label)[0]
+dialog = pywinauto.timings.wait_until_passes(2, 4, findWindow)
+pwa_app = pywinauto.Application()
 pwa_app.connect(handle=dialog)
-window     = pwa_app['開く']
-window.wait('ready')
+window = pwa_app[open_label]
+window.wait('ready', timeout=10)
 
 # Input File Name
 pywinauto.keyboard.send_keys("%N")
@@ -31,10 +38,10 @@ edit.set_focus()
 edit.set_text(file_path)
 
 # Open Click
-button = window['開く(&O):']
+button = window[f'{open_label}(&O):']
 button.click()
 
-time.sleep(10)
+time.sleep(3)
 
 driver.close()
-exit()
+# exit()

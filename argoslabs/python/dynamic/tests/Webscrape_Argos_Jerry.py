@@ -160,8 +160,10 @@ def scrapy_main(input_csv, output_folder, searchs):
             settings['DOWNLOAD_DELAY'] = 3
             process = CrawlerProcess(settings)
             process.crawl(MySpider)
-            process.start()
+            process.start()  # stop_after_crawl=False)
         print(os.path.abspath(csv_f), end='')
+    except Exception as err:
+        raise err
     finally:
         stderr.close()
         sys.stderr = o_stderr
@@ -169,12 +171,13 @@ def scrapy_main(input_csv, output_folder, searchs):
 
 
 ################################################################################
-# _searches = "{searches}"
-# _input = r"{input}"
-# _output_folder = r"{output_folder}"
-# scrapy_main(_input, _output_folder, _searches)
-
-_searches = "['machine learning', 'brain', 'food', 'robot']"
-_input = r"W:\crpa_src\Bots\DynamicPythonScrapyMike\companies-10.csv"
-_output_folder = r"C:\Temp\output"
-scrapy_main(_input, _output_folder, _searches)
+if __name__ != '__main__':
+    _searches = "{searches}"
+    _input = r"{input}"
+    _output_folder = r"{output_folder}"
+    scrapy_main(_input, _output_folder, _searches)
+else:  # called by dynamic python
+    _searches = "['machine learning', 'brain', 'food', 'robot']"
+    _input = r"W:\ARGOS-LABS\Bots\DynamicPythonScrapyMike\companies-10.csv"
+    _output_folder = r"C:\Temp\output"
+    scrapy_main(_input, _output_folder, _searches)

@@ -153,7 +153,13 @@ def scrapy_main(input_csv, output_folder, searchs):
 
 
 ################################################################################
-_searches = '{searches}'
-_input = '{input}'
-_output_folder = r'{output_folder}'
-scrapy_main(_input, _output_folder, _searches)
+if __name__ != '__main__':
+    _searches = '{searches}'
+    _input = '{input}'
+    _output_folder = r'{output_folder}'
+    scrapy_main(_input, _output_folder, _searches)
+else:
+    _searches = '["machine learning", "brain", "food", "robot"]'
+    _input = 'companies-10.csv'
+    _output_folder = 'output'
+    scrapy_main(_input, _output_folder, _searches)

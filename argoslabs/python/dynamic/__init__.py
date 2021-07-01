@@ -17,6 +17,8 @@ ARGOS LABS plugin module for running python script with requirements.txt
 # Change Log
 # --------
 #
+#  * [2021/07/01]
+#     - ASJ의 pywinauto 모듈이 안되는 문제 때문에 exec(py_script, locals(), locals()) 로 수정
 #  * [2021/03/30]
 #     - starting
 
@@ -24,6 +26,7 @@ ARGOS LABS plugin module for running python script with requirements.txt
 import os
 import sys
 # import pip
+import types
 import tempfile
 import traceback
 import subprocess
@@ -106,7 +109,8 @@ def do_dynamic_script(mcxt, argspec):
         if params:
             py_script = py_script.format(**params)
         try:
-            exec(py_script, globals(), locals())
+            # exec(py_script, globals(), locals())
+            exec(py_script, locals(), locals())
             globals().update(locals())
         except NameError:
             return exec_script(py_script)

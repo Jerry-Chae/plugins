@@ -2041,7 +2041,7 @@ description
 var
 elementorprofrontendconfig
 =
-{"ajaxurl":"https:\/\/dexterity.ai\/wp-admin\/admin-ajax.php","nonce":"aefccf749e","i18n":{"toc_no_headings_found":"no
+{"ajaxurl":"https:\/\/dexterity.ai\/wp-admin\/admin-ajax.php","nonce":"b0fcc4325f","i18n":{"toc_no_headings_found":"no
 headings
 were
 found

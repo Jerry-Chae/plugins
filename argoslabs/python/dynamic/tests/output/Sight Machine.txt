@@ -10,9 +10,7 @@ use
 casesresourcesresourceswhite
 papersvideoswebinarsnews
 &
-presswebinars
-&
-eventsfaqsdocumentationtool
+presseventsfaqsdocumentationtool
 kitproductivity
 calculator
 (oee)building
@@ -223,10 +221,10 @@ jquery(document).ready(function
 {
 if(
 typeof
-jquery('.ult-carousel-2768076103607f875a597c7').slick
+jquery('.ult-carousel-193667263860dd6292162e6').slick
 ==
 "function"){
-$('.ult-carousel-2768076103607f875a597c7').slick({dots:
+$('.ult-carousel-193667263860dd6292162e6').slick({dots:
 false,autoplayspeed:
 5000,speed:
 300,infinite:
@@ -440,6 +438,17 @@ translate(0%,0%);opacity:1}.layout_13185
 1.5rem!important}
 
 
+use
+data
+foundation
+to
+unlock
+your
+productivity
+
+
+
+
 presentation:
 common
 data
@@ -468,17 +477,6 @@ machine’s
 oee
 productivity
 calculator
-
-
-
-
-sight
-machine:
-the
-data
-foundation
-for
-manufacturing
 
 
 
@@ -773,9 +771,23 @@ group
 
 
 
+industry
+keynotes
+hannover
+messe
+keynote
+2021
+ 
+read
+post
 
-
-real
+.g-cols.gap-0px{margin:0
+calc(-1.5rem
+-
+0px)}.gap-0px
+>
+.vc_column_container
+{padding:0px}real
 outcomes
 in
 weeks
@@ -3871,7 +3883,7 @@ cli_cookiebar_settings='{"animate_speed_hide":"500","animate_speed_show":"500","
 var
 pt_cv_public
 =
-{"_prefix":"pt-cv-","page_to_show":"5","_nonce":"5f48ffd16d","is_admin":"","is_mobile":"","ajaxurl":"https:\/\/sightmachine.com\/wp-admin\/admin-ajax.php","lang":"","loading_image_src":"data:image\/gif;base64,r0lgodlhdwapalmpamrkygwmdjotkz09pzwvla+vr3p6eutk5m7ozuxl5tmzmwaaajmzmwzmzszmzp\/\/\/yh\/c05fvfndqvbfmi4waweaaaah+qqfcgapacwaaaaadwapaaaeqvdjazazoicv8iqk8vrx4ityoawz4icyoajz4rxejhvnot+mrgp4cyf4pp0n98sbgibmemootl6yz3s61bmbkm4magah+qqfcgapacwaaaaadqanaaaenpdjsrszea418itn8qik8bilitvsfiybbioyqnoewad4xpw9iy4xlgysjkqr4uaud45dlwiaifkebqoadwasaaaaaa8acqaabc\/wyvlamti3nsdgwfndhejgtjonyob9isyoqmdjizpcj7eycaecf1gedo4dz2eiaaah+qqfcgapacwcaaaadqanaaaem\/djbxiyelkdx3ijzt1fu0iig2rnkx3okzvnz98tord4myidnkah6bknc0mvsaj0kmphbaah+qqfcgapacwgaaaacqapaaaemdc59kpfdll73hkaa2wvy5kgik5b0rroi6muzg6eqqcdmlsgheehuagqguuafrysigah+qqfcgapacwcaaiadqanaaaem\/djkznlnd\/kkkahc3xk+qamydksiaqmzcxgvjsffcxb1vwy2oogidxuucxamtajfajnbaah+qqfcgapacwaaayadwajaaaemnas86q1yawwwv2ig0juzx3oya4xorafwadxoawfo1+cijyfrueho60asnylopxeaaah+qqfcgapacwaaaiadqanaaaenpa9s4y8+iuvcqawj4qeqozsoazoiyhck2nfu2sjk0hnnyeohkr2azaaj4pj4ge4w0bkjqiaow==","is_mobile_tablet":"","sf_no_post_found":"no
+{"_prefix":"pt-cv-","page_to_show":"5","_nonce":"7b9d3044b1","is_admin":"","is_mobile":"","ajaxurl":"https:\/\/sightmachine.com\/wp-admin\/admin-ajax.php","lang":"","loading_image_src":"data:image\/gif;base64,r0lgodlhdwapalmpamrkygwmdjotkz09pzwvla+vr3p6eutk5m7ozuxl5tmzmwaaajmzmwzmzszmzp\/\/\/yh\/c05fvfndqvbfmi4waweaaaah+qqfcgapacwaaaaadwapaaaeqvdjazazoicv8iqk8vrx4ityoawz4icyoajz4rxejhvnot+mrgp4cyf4pp0n98sbgibmemootl6yz3s61bmbkm4magah+qqfcgapacwaaaaadqanaaaenpdjsrszea418itn8qik8bilitvsfiybbioyqnoewad4xpw9iy4xlgysjkqr4uaud45dlwiaifkebqoadwasaaaaaa8acqaabc\/wyvlamti3nsdgwfndhejgtjonyob9isyoqmdjizpcj7eycaecf1gedo4dz2eiaaah+qqfcgapacwcaaaadqanaaaem\/djbxiyelkdx3ijzt1fu0iig2rnkx3okzvnz98tord4myidnkah6bknc0mvsaj0kmphbaah+qqfcgapacwgaaaacqapaaaemdc59kpfdll73hkaa2wvy5kgik5b0rroi6muzg6eqqcdmlsgheehuagqguuafrysigah+qqfcgapacwcaaiadqanaaaem\/djkznlnd\/kkkahc3xk+qamydksiaqmzcxgvjsffcxb1vwy2oogidxuucxamtajfajnbaah+qqfcgapacwaaayadwajaaaemnas86q1yawwwv2ig0juzx3oya4xorafwadxoawfo1+cijyfrueho60asnylopxeaaah+qqfcgapacwaaaiadqanaaaenpa9s4y8+iuvcqawj4qeqozsoazoiyhck2nfu2sjk0hnnyeohkr2azaaj4pj4ge4w0bkjqiaow==","is_mobile_tablet":"","sf_no_post_found":"no
 posts
 found.","lf__separator":","};
 var
@@ -4003,7 +4015,7 @@ jquery(document).ready(function($){
 //$(window).on("load",
 function()
 {
-$("#bne-logos-group-123.logos-slider").slick({
+$("#bne-logos-group-150.logos-slider").slick({
 rows:
 1,
 infinite:
@@ -4056,6 +4068,22 @@ slidestoscroll:
 });
 //});
 });
+/*
+<![cdata[
+*/if
+(
+!!window.jquery
+)
+{(function($){$(document).ready(function(){if
+(
+!!window.slb
+)
+{
+{$.extend(slb,
+{"context":["public","user_guest"]});}
+}})})(jquery);}/*
+]]>
+*/
 
 (function($){$(function(){
 /*
