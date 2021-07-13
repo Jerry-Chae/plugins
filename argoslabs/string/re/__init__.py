@@ -19,6 +19,8 @@ ARGOS LABS plugin module for string regular-expression operation
 # Change Log
 # --------
 #
+#  * [2021/07/05]
+#     - "String to handle" 패러미터에 input_method='base64' 지정 및 디코딩
 #  * [2021/06/15]
 #     - 패턴 패러미터에 input_method='base64' 지정 및 디코딩
 #  * [2021/04/09]
@@ -62,6 +64,8 @@ def do_re(mcxt, argspec):
     try:
         mcxt.logger.info('>>>starting...')
         argspec.pattern = base64.b64decode(argspec.pattern).decode('utf-8')
+        if argspec.string:
+            argspec.string = base64.b64decode(argspec.string).decode('utf-8')
         limit = argspec.limit
         re_flag = 0
         if argspec.ignore_case:
@@ -204,6 +208,7 @@ def _main(*args):
                           help='Pattern for Regular Expression')
         mcxt.add_argument('string', nargs='?',
                           display_name='String to handle',
+                          input_method='base64',
                           help='String to handle')
         argspec = mcxt.parse_args(args)
         return do_re(mcxt, argspec)
