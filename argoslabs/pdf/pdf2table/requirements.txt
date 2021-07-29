@@ -4,4 +4,4 @@
 alabs.common
 
 # ...
-PyPDF2
+pdfplumber

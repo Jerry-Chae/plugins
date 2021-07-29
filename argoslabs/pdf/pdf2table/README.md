@@ -1,3 +1,3 @@
-# argoslabs.data.pdf2doc
+# argoslabs.pdf.pdf2table
 
-This argos plugin module converts pdf file to doc format of file.
+This argos plugin module converts pdf file to text format of file.

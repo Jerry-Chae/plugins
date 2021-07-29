@@ -1,19 +1,19 @@
 """
 ====================================
- :mod:`argoslabs.data.pdf2txt`
+ :mod:`argoslabs.pdf.pdf2table`
 ====================================
-.. moduleauthor:: Irene Cho <irenee@argos-labs.com>
+.. moduleauthor:: Kyobong An <akb0930@argos-labs.com>
 .. note:: ARGOS-LABS License
 
 Description
 ===========
-ARGOS LABS PDF Conversion(pdf -> txt) plugin
+ARGOS LABS PDF Conversion(pdf -> table,txt) plugin
 """
 
 ################################################################################
 import sys
 from alabs.common.util.vvargs import ArgsError, ArgsExit
-from argoslabs.data.pdf2txt import main
+from argoslabs.pdf.pdf2table import main
 
 
 ################################################################################

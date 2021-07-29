@@ -2,9 +2,9 @@
 # coding=utf8
 """
 ====================================
- :mod:`argoslabs.data.pdf2txt`
+ :mod:`argoslabs.pdf.pdf2table`
 ====================================
-.. moduleauthor:: Irene Cho <irene@argos-labs.com>
+.. moduleauthor:: Kyobong An <akb0930@argos-labs.com>
 .. note:: ARGOS-LABS License
 
 Description
@@ -16,7 +16,7 @@ ARGOS LABS plugin module : unittest
 import os
 import sys
 from unittest import TestCase
-from argoslabs.data.pdf2txt import _main as main
+from argoslabs.pdf.pdf2table import _main as main
 from alabs.common.util.vvargs import ArgsError
 
 
@@ -38,19 +38,39 @@ class TU(TestCase):
             self.assertTrue(True)
 
     # ==========================================================================
-    def test0100_success(self):
+    def test0110_table(self):
         try:
-            r = main('test.pdf')
+            r = main('--table', 'June 2021 Invoice.pdf', '--output', 'June 2021 Invoice_table.txt')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0110_success(self):
+    def test0120_text(self):
         try:
-            r = main('claimtech.pdf', '--output', 'claimtech-pdf2txt.txt')
+            r = main('--text', 'June 2021 Invoice.pdf', '--output', 'June 2021 Invoice_text.txt')
             self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0120_None_table(self):
+        try:
+            r = main('--table', 'Inv_11390_from_KOTRA_Silico_new.pdf',
+                     '--output', 'inv.txt')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0130_PDF_not_table(self):
+        try:
+            r = main('--table', '18.PDF',
+                     '--output', 'inv.txt')
+            self.assertTrue(r == 1)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
