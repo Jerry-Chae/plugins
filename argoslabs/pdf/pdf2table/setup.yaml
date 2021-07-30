@@ -26,4 +26,4 @@ setup:
     argoslabs.pdf.pdf2table: ['icon.*']
   url: https://www.argos-labs.com
   # do not start '0'
-  version: 3.729.1620
+  version: 3.730.1117

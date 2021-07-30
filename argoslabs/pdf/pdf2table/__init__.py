@@ -24,8 +24,9 @@ ARGOS LABS PDF Conversion(pdf -> txt) plugin
 ################################################################################
 import os
 import sys
+import csv
 import pdfplumber
-# import pandas
+
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
 
@@ -44,32 +45,70 @@ def pdf2doc(mcxt, argspec):
     else:
         pdffile = argspec.text
     try:
-        text = str()
-        with pdfplumber.open(pdffile) as pdf, open(argspec.output, 'w') as txt:
-            pages = pdf.pages
-            if argspec.text:
-                for page in pages:
-                    text += page.extract_text()
-
-                txt.write(text)
+        out_extension = os.path.splitext(argspec.output)[1]
+        with pdfplumber.open(pdffile) as pdf, open(argspec.output, 'w',
+                                                   encoding=argspec.encoding,
+                                                   newline="") as out:
+            if out_extension == '.csv':
+                r_csv = csv.reader(out)
+                t_csv = csv.writer(out)
             else:
-                count = 0
-                for page in pages:
-                    tables = page.extract_tables(table_settings=
-                                                 {"vertical_strategy": argspec.vertical,
-                                                  "horizontal_strategy": argspec.horizontal,
-                                                  })
-                    for table in tables:
-                        for r_table in table:
-                            txt.write(',\t'.join(i if i else '' for i in r_table) + '\n')
+                text = str()
+            pages = pdf.pages
+            if argspec.text:    # text로 pdf 파일을 열었으면 이부분이 끝
+                if argspec.page:    # page 선택할 수 있는 기능 추가
+                    text = pages[argspec.page-1].extract_text()
+                else:
+                    for i, page in enumerate(pages):
+                        text += page.extract_text()
+
+                out.write(text)
+            else:
+                count = 0   # pdf파일에 table값이 있는지 없는지 체크하는 함수
+
+                if argspec.page:    # page 지정할경우 table index 값도 지정해야함
+                    tables = pages[argspec.page-1].extract_tables(table_settings=
+                                                                  {"vertical_strategy": argspec.vertical,
+                                                                   "horizontal_strategy": argspec.horizontal,
+                                                                   })
+                    if tables:
+                        count += 1
+                    if argspec.table_index == 0:    # table_index값이 0인경우 테이블 모두를 가져옴(default)
+                        for table in tables:
+                            if out_extension == '.csv':
+                                t_csv.writerows(table)
+                            else:
+                                for r_table in table:
+                                    out.write(','.join(i if i else '' for i in r_table) + '\n')
+                    else:
+                        if out_extension == '.csv':
+                            t_csv.writerows(tables[argspec.table_index-1])
                             count += 1
-                            # print(','.join(r_table))
-                        txt.write('\n'*4)
+                        else:
+                            for r_table in tables[argspec.table_index-1]:
+                                out.write(','.join(i if i else '' for i in r_table) + '\n')
+
+                else:
+                    for page in pages:
+                        tables = page.extract_tables(table_settings=
+                                                     {"vertical_strategy": argspec.vertical,
+                                                      "horizontal_strategy": argspec.horizontal,
+                                                      })
+                        for table in tables:
+                            if out_extension == '.csv':
+                                t_csv.writerows(table)
+                                # t_csv.writerow('\n'*2)
+                                count += 1
+                            else:
+                                for r_table in table:
+                                    out.write(','.join(i if i else '' for i in r_table) + '\n')
+                                    count += 1
+                                # out.write('\n'*4)
                 if count == 0:
                     msg = ('The table is not included in "%s"' % os.path.basename(argspec.table))
                     raise TableError(msg)
             pdf.close()
-            txt.close()
+            out.close()
 
         print(os.path.abspath(argspec.output), end='')
         return 0
@@ -84,6 +123,8 @@ def pdf2doc(mcxt, argspec):
         sys.stderr.write('%s%s' % (msg, os.linesep))
         return 9
     finally:
+        pdf.close()
+        out.close()
         sys.stdout.flush()
         mcxt.logger.info('>>>end...')
 
@@ -115,6 +156,16 @@ def _main(*args):
         mcxt.add_argument('--output', display_name='Output Filepath', show_default=True,
                           input_method='filewrite',
                           help='Specify an absolute file path to save the output')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--page',
+                          display_name='Page', type=int,
+                          input_group='Table and Text option',
+                          help='PDF page')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--table-index',
+                          display_name='Table index', type=int, default=0,
+                          input_group='Table option',
+                          help='table index')
         mcxt.add_argument('--vertical',
                           display_name='Vertical strategy', default="lines",
                           choices=["lines", "lines_strict", "text", "explicit"],
@@ -125,6 +176,10 @@ def _main(*args):
                           choices=["lines", "lines_strict", "text", "explicit"],
                           input_group='Table option',
                           help='for more information refer to the help page')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--encoding',
+                          display_name='Encoding', default='utf-8',
+                          help='Encoding for OutPut file')
         argspec = mcxt.parse_args(args)
         return pdf2doc(mcxt, argspec)
         # ##################################### for app dependent parameters

@@ -40,7 +40,8 @@ class TU(TestCase):
     # ==========================================================================
     def test0110_table(self):
         try:
-            r = main('--table', 'June 2021 Invoice.pdf', '--output', 'June 2021 Invoice_table.txt')
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice_table.txt')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
@@ -74,4 +75,129 @@ class TU(TestCase):
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
+
+    # ==========================================================================
+    def test0140_PDF_Text_page(self):
+        try:
+            r = main('--text', 'April tech radar_0904-BV.pdf',
+                     '--output', 'April tech radar_0904-BV.txt',
+                     '--page', '4')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0200_table_csv(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.csv')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0210_table_csv_page(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.csv',
+                     '--page', '1')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0220_none_table_csv_page_(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.csv',
+                     '--page', '2')
+            self.assertTrue(r == 1)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0230_table_csv_page_table_index(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.csv',
+                     '--page', '1',
+                     '--table-index', '1')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0230_None_table_csv_page_table_index(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.csv',
+                     '--page', '1',
+                     '--table-index', '2')
+            self.assertTrue(r == 9)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0300_table_text(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0310_table_txt_page(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '1')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0320_none_table_txt_page(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '2')
+            self.assertTrue(r == 1)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0330_table_txt_page_table_index(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '1',
+                     '--table-index', '1')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0330_None_table_txt_page_table_index(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '1',
+                     '--table-index', '2')
+            self.assertTrue(r == 9)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+
 
