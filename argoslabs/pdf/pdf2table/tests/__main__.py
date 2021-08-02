@@ -1,6 +1,6 @@
 
 import sys
-from argoslabs.data.pdf2doc.tests.test_me import TU
+from argoslabs.pdf.pdf2table.tests.test_me import TU
 from unittest import TestLoader, TextTestRunner
 
 

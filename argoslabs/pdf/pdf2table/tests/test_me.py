@@ -188,7 +188,7 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0330_None_table_txt_page_table_index(self):
+    def test0340_None_table_txt_page_table_index(self):
         try:
             r = main('--table', 'June 2021 Invoice.pdf',
                      '--output', 'June 2021 Invoice.txt',
@@ -199,5 +199,38 @@ class TU(TestCase):
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
+    # ==========================================================================
+    def test0350_table_txt_sep(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--separator', '****')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
 
+    # ==========================================================================
+    def test0360_table_txt_page_sep(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '1',
+                     '--separator', '$$$')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
 
+    # ==========================================================================
+    def test0370_table_txt_page_table_index_sep(self):
+        try:
+            r = main('--table', 'June 2021 Invoice.pdf',
+                     '--output', 'June 2021 Invoice.txt',
+                     '--page', '1',
+                     '--table-index', '1',
+                     '--separator', '%%')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
