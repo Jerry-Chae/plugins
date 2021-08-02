@@ -1,5 +1,5 @@
 setup:
-  author: Irene Cho
+  author: Irene Cho, Kyobong An
   author_email: irene@argos-labs.com
   classifiers:
   - 'Operating System :: MacOS :: MacOS X'
@@ -25,4 +25,4 @@ setup:
     argoslabs.data.pdf2txt: ['icon.*']
   url: https://www.argos-labs.com
   # do not start '0'
-  version: 3.623.1530
+  version: 3.727.1100

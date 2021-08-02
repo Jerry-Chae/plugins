@@ -38,18 +38,36 @@ class TU(TestCase):
             self.assertTrue(True)
 
     # ==========================================================================
+    # def test0100_success(self):
+    #     try:
+    #         r = main('test.pdf')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+
+    # ==========================================================================
     def test0100_success(self):
         try:
-            r = main('test.pdf')
+            r = main('pdffiles/April tech radar_0904-BV (1).pdf')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+    # ==========================================================================
+    def test0150_success(self):
+        try:
+            r = main('pdffiles/Inv_11390_from_KOTRA_Silico.pdf','--output',
+                     'output/Inv_11390_from_KOTRA_Silico.txt','--coordinates')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0110_success(self):
+    def test0200_success(self):
         try:
-            r = main('claimtech.pdf', '--output', 'claimtech-pdf2txt.txt')
+            r = main('pdffiles/Stevens Law Group 23126.pdf')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
