@@ -26,4 +26,4 @@ setup:
   package_data:
     argoslabs.web.bsoup_table: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.329.3300
+  version: 3.329.3500
