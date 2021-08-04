@@ -54,6 +54,7 @@ from argoslabs.string.re import _main as main
 from contextlib import contextmanager
 from io import StringIO
 from tempfile import gettempdir
+from alabs.common.util.vvargs import vv_base64_encode
 
 
 ################################################################################
@@ -75,11 +76,6 @@ class TU(TestCase):
     """
     # ==========================================================================
     file = os.path.join(gettempdir(), 'argoslabs.string.re.file.txt')
-
-    @staticmethod
-    def enc_b64(s):
-        s_base64 = base64.b64encode(s.encode('utf-8'))
-        return s_base64.decode('ascii')
 
     # ==========================================================================
     def setUp(self) -> None:
@@ -111,8 +107,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'\w+'),
-                         self.enc_b64('hello tom and jerry'))
+                         vv_base64_encode(r'\w+'),
+                         vv_base64_encode('hello tom and jerry'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -133,8 +129,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'\w+'),
-                         self.enc_b64('hello tom and jerry'),
+                         vv_base64_encode(r'\w+'),
+                         vv_base64_encode('hello tom and jerry'),
                          '--length')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -151,8 +147,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'\w+'),
-                         self.enc_b64('hello tom and jerry'),
+                         vv_base64_encode(r'\w+'),
+                         vv_base64_encode('hello tom and jerry'),
                          '--limit', '3')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -174,8 +170,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'(tom|jerry)'),
-                         self.enc_b64('hello Tom tom and jerry Jerry'))
+                         vv_base64_encode(r'(tom|jerry)'),
+                         vv_base64_encode('hello Tom tom and jerry Jerry'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -196,8 +192,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'(tom|jerry)'),
-                         self.enc_b64('hello Tom tom and jerry Jerry'),
+                         vv_base64_encode(r'(tom|jerry)'),
+                         vv_base64_encode('hello Tom tom and jerry Jerry'),
                          '--ignore-case')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -219,8 +215,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('split',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'))
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -241,8 +237,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('split',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'),
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
                          '--length')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -259,8 +255,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('split',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'),
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
                          '--limit', '3')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -282,8 +278,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'),
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
                          '--replace', ',')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -305,8 +301,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'),
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
                          '--replace', ',', '--limit', '4')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -328,8 +324,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[\s,|]+'),
-                         self.enc_b64('hello,|Tom , tom|and    jerry\tJerry'),
+                         vv_base64_encode(r'[\s,|]+'),
+                         vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
                          '--limit', '4')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -351,8 +347,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r','),
-                         self.enc_b64('a@b.c.d,b@c.d.e'),
+                         vv_base64_encode(r','),
+                         vv_base64_encode('a@b.c.d,b@c.d.e'),
                          '--replace', ', ')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -374,7 +370,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'\w+'),
+                         vv_base64_encode(r'\w+'),
                          '--file', TU.file)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -396,7 +392,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64(r'\w+'),
+                         vv_base64_encode(r'\w+'),
                          '--file', TU.file,
                          '--limit', 10)
             self.assertTrue(r == 0)
@@ -419,7 +415,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'tom'),
+                         vv_base64_encode(r'tom'),
                          '--file', TU.file,
                          '--replace', 'foo',
                          '--ignore-case')
@@ -443,7 +439,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'tom'),
+                         vv_base64_encode(r'tom'),
                          '--file', TU.file,
                          '--replace', 'foo',
                          '--ignore-case', '--limit', 4)
@@ -467,7 +463,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('split',
-                         self.enc_b64(r'[\s,|]+'),
+                         vv_base64_encode(r'[\s,|]+'),
                          '--file', TU.file)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -489,7 +485,7 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('split',
-                         self.enc_b64(r'[\s,|]+'),
+                         vv_base64_encode(r'[\s,|]+'),
                          '--file', TU.file,
                          '--limit', 13)
             self.assertTrue(r == 0)
@@ -512,8 +508,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64('hel'),
-                         self.enc_b64('hello, Hello world hello Hello Hel'),)
+                         vv_base64_encode('hel'),
+                         vv_base64_encode('hello, Hello world hello Hello Hel'),)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             print('%s' % '='*80)
@@ -526,8 +522,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('find',
-                         self.enc_b64('hel'),
-                         self.enc_b64('hello, Hello world hello Hello Hel'),
+                         vv_base64_encode('hel'),
+                         vv_base64_encode('hello, Hello world hello Hello Hel'),
                          '--ignore-case')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -551,8 +547,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('tolower',
-                         self.enc_b64(''),
-                         self.enc_b64('Hi Hello World?'),)
+                         vv_base64_encode(''),
+                         vv_base64_encode('Hi Hello World?'),)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -561,8 +557,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('toupper',
-                         self.enc_b64(''),
-                         self.enc_b64('Hi Hello World?'),)
+                         vv_base64_encode(''),
+                         vv_base64_encode('Hi Hello World?'),)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -571,8 +567,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('toupper',
-                         self.enc_b64(''),
-                         self.enc_b64('jerry'),
+                         vv_base64_encode(''),
+                         vv_base64_encode('jerry'),
                          '--apply-first')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -582,8 +578,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('tolower',
-                         self.enc_b64(''),
-                         self.enc_b64('JERRY'),
+                         vv_base64_encode(''),
+                         vv_base64_encode('JERRY'),
                          '--apply-first')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -597,13 +593,45 @@ hello,|Tom , tom|and    jerry\tJerry
             self.assertTrue(False)
 
     # ==========================================================================
+    def test0275_tolower_toupper_file(self):
+        case_f = 'case_f.txt'
+        stderr = None
+        try:
+            with open(case_f, 'w') as ofp:
+                ofp.write('Hi Hello World?')
+            with captured_output() as (out, err):
+                r = main('tolower',
+                         vv_base64_encode(''),
+                         '--file', case_f)
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            if stdout:
+                print(stdout)
+            self.assertTrue(stdout == 'hi hello world?')
+
+            with captured_output() as (out, err):
+                r = main('toupper',
+                         vv_base64_encode(''),
+                         '--file', case_f)
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            if stdout:
+                print(stdout)
+            self.assertTrue(stdout == 'HI HELLO WORLD?')
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            if stderr:
+                sys.stderr.write(stderr)
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test0280_substring(self):
         stderr = None
         try:
             with captured_output() as (out, err):
                 r = main('substring',
-                         self.enc_b64('Hello'),
-                         self.enc_b64('Hi Hello World?'),)
+                         vv_base64_encode('Hello'),
+                         vv_base64_encode('Hi Hello World?'),)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -612,8 +640,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('substring',
-                         self.enc_b64('hello'),
-                         self.enc_b64('Hi Hello World?'),)
+                         vv_base64_encode('hello'),
+                         vv_base64_encode('Hi Hello World?'),)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -622,8 +650,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('substring',
-                         self.enc_b64('hello'),
-                         self.enc_b64('Hi Hello World?'),
+                         vv_base64_encode('hello'),
+                         vv_base64_encode('Hi Hello World?'),
                          '--ignore-case')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -643,8 +671,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[\s]'),
-                         self.enc_b64(mbstr),
+                         vv_base64_encode(r'[\s]'),
+                         vv_base64_encode(mbstr),
                          '--replace', ' ')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -657,8 +685,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'　'),
-                         self.enc_b64(mbstr),
+                         vv_base64_encode(r'　'),
+                         vv_base64_encode(mbstr),
                          '--replace', ' ')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -670,8 +698,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[ ]'),
-                         self.enc_b64(sbstr),
+                         vv_base64_encode(r'[ ]'),
+                         vv_base64_encode(sbstr),
                          '--replace', '　')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -693,8 +721,8 @@ hello,|Tom , tom|and    jerry\tJerry
         try:
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'。'),
-                         self.enc_b64(mbstr),
+                         vv_base64_encode(r'。'),
+                         vv_base64_encode(mbstr),
                          '--replace', '.')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -707,8 +735,8 @@ hello,|Tom , tom|and    jerry\tJerry
 
             with captured_output() as (out, err):
                 r = main('replace',
-                         self.enc_b64(r'[.]'),
-                         self.enc_b64(sbstr),
+                         vv_base64_encode(r'[.]'),
+                         vv_base64_encode(sbstr),
                          '--replace', '。')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -729,7 +757,7 @@ hello,|Tom , tom|and    jerry\tJerry
         stdout = 'stdout.txt'
         try:
             r = main('replace',
-                     self.enc_b64(r',__LINECHANGE__,'),
+                     vv_base64_encode(r',__LINECHANGE__,'),
                      '--file', 'name.txt',
                      '--replace', '\n',
                      '--outfile', stdout)
@@ -751,7 +779,7 @@ hello,|Tom , tom|and    jerry\tJerry
         stdout = 'stdout.txt'
         try:
             r = main('replace',
-                     self.enc_b64(r'[\n\r]+'),
+                     vv_base64_encode(r'[\n\r]+'),
                      '--file', 'stringsample.txt',
                      '--replace', ' ',
                      '--outfile', stdout)
@@ -780,7 +808,7 @@ August 5, 2020
 July 20, 2020''')
         try:
             r = main('replace',
-                     self.enc_b64(r'^(.*)$'),
+                     vv_base64_encode(r'^(.*)$'),
                      '--file', ss_txt,
                      '--replace', r'"\1"',
                      '--multiline',
@@ -803,7 +831,7 @@ July 20, 2020''')
         ss_txt = 'String.txt'
         try:
             r = main('replace',
-                     self.enc_b64(r'\"?\\r\\n\s+\"?'),
+                     vv_base64_encode(r'\"?\\r\\n\s+\"?'),
                      '--file', ss_txt,
                      '--replace', r'',
                      '--multiline',
@@ -826,8 +854,8 @@ July 20, 2020''')
         ss_txt = 'String.txt'
         try:
             r = main('find',
-                     self.enc_b64('^.+\\\\'),
-                     self.enc_b64(r'C:\Users\satto3\Desktop\Temp\Plugin Test\foo.txt'),
+                     vv_base64_encode('^.+\\\\'),
+                     vv_base64_encode(r'C:\Users\satto3\Desktop\Temp\Plugin Test\foo.txt'),
                      '--outfile', stdout)
             self.assertTrue(r == 0)
             with open(stdout, encoding='utf-8') as ifp:
@@ -847,7 +875,7 @@ July 20, 2020''')
         ss_txt = 'TESTDashboard-EE-Inventory-Combined.svg'
         try:
             r = main('replace',
-                     self.enc_b64('<(path)\s'),
+                     vv_base64_encode('<(path)\s'),
                      '--file', ss_txt,
                      '--replace', r'<my_\1 ',
                      '--multiline',
@@ -873,7 +901,7 @@ July 20, 2020''')
                      #r'<table class=\".+\">',
                      #r'<table class=".+">',
                      #r'<table class=\"[^"]+\">',
-                     self.enc_b64(r'<table class="[^"]+">'),
+                     vv_base64_encode(r'<table class="[^"]+">'),
                      '--file', ss_txt,
                      '--multiline',
                      '--outfile', stdout)
@@ -895,8 +923,8 @@ July 20, 2020''')
         stdout = 'stdout.out'
         try:
             r = main('find',
-                     self.enc_b64(r'\"[A-Z][a-z][a-z][a-z][a-z][a-z]-[a-z][a-z][0-9][a-z][a-z]\"'),
-                     self.enc_b64('"90 min video tutorial "Rocket-st1rt""'),
+                     vv_base64_encode(r'\"[A-Z][a-z][a-z][a-z][a-z][a-z]-[a-z][a-z][0-9][a-z][a-z]\"'),
+                     vv_base64_encode('"90 min video tutorial "Rocket-st1rt""'),
                      # '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
@@ -918,8 +946,8 @@ July 20, 2020''')
             r = main('find',
                      # r'users\\',
                      # r'C:\users\argos\\',
-                     self.enc_b64(r'c'),
-                     self.enc_b64(r'c\\'),
+                     vv_base64_encode(r'c'),
+                     vv_base64_encode(r'c\\'),
                      # '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
@@ -927,6 +955,83 @@ July 20, 2020''')
                 out_s = ifp.read()
                 # print(out_s)
                 self.assertTrue(out_s == 'c')
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            if stderr:
+                sys.stderr.write(stderr)
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0400_debug_shige_find_group(self):
+        stderr = None
+        stdout = 'stdout.out'
+        try:
+            r = main('find',
+                     vv_base64_encode(r'https://www\.linkedin\.com/in/[-a-z0-9]+\?miniProfileUrn&#61'),
+                     '--file', 'find-group-shige-20210716.txt',
+                     '--outfile', stdout)
+            self.assertTrue(r == 0)
+            with open(stdout, encoding='utf-8') as ifp:
+                out_s = ifp.read()
+                print(out_s)
+                self.assertTrue(out_s.find('marioharik') >= 0)
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            if stderr:
+                sys.stderr.write(stderr)
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0410_find_without_base64_encode_ok(self):
+        # 알파벳,숫자,+,/,=(마지막) 로만 이루어지지 않으면 일반 문자열로 간주
+        stderr = None
+        try:
+            with captured_output() as (out, err):
+                r = main('find',
+                         r'\w+',
+                         'hello tom and jerry')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            if stdout:
+                print(stdout)
+            stderr = err.getvalue().strip()
+            if stderr:
+                sys.stderr.write('%s%s' % (stderr, os.linesep))
+            self.assertTrue(len(stdout.split('\n')) == 4)
+
+            with captured_output() as (out, err):
+                r = main('split',
+                         r'[\s,|]+',
+                         'hello,|Tom , tom|and    jerry\tJerry',
+                         '--length')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            self.assertTrue(stdout == '6')
+
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            if stderr:
+                sys.stderr.write(stderr)
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0420_debug_shige_replace_newline(self):
+        stderr = None
+        stdout = 'stdout.out'
+        try:
+            r = main('replace',
+                     # vv_base64_encode(r'\n'),
+                     # vv_base64_encode('\n'),
+                     r'\n',
+                     '--file', 'shige-test03.txt',
+                     '--replace', ' ',
+                     # '--multiline',
+                     '--outfile', stdout)
+            self.assertTrue(r == 0)
+            with open(stdout, encoding='utf-8') as ifp:
+                out_s = ifp.read()
+                print(out_s)
+                self.assertTrue(out_s == 'Summary of Services Date Attorney Services Matter Amount 06/28/21 Andy Han Prepare claims for divisional application SEUR-00304CN $1,200')
         except Exception as e:
             sys.stderr.write('%s\n' % str(e))
             if stderr:

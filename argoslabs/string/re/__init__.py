@@ -19,6 +19,8 @@ ARGOS LABS plugin module for string regular-expression operation
 # Change Log
 # --------
 #
+#  * [2021/08/04]
+#     - tolower, toupper from file
 #  * [2021/07/05]
 #     - "String to handle" 패러미터에 input_method='base64' 지정 및 디코딩
 #  * [2021/06/15]
@@ -47,25 +49,28 @@ ARGOS LABS plugin module for string regular-expression operation
 import re
 import os
 import sys
-import base64
 from alabs.common.util.vvargs import ModuleContext, func_log, \
-    ArgsError, ArgsExit, get_icon_path
+    ArgsError, ArgsExit, get_icon_path, vv_base64_decode
 
 
 ################################################################################
 @func_log
 def do_re(mcxt, argspec):
-    """
-    plugin job function
-    :param mcxt: module context
-    :param argspec: argument spec
-    :return: 0 for success
-    """
     try:
         mcxt.logger.info('>>>starting...')
-        argspec.pattern = base64.b64decode(argspec.pattern).decode('utf-8')
+        argspec.pattern = vv_base64_decode(argspec.pattern)
         if argspec.string:
-            argspec.string = base64.b64decode(argspec.string).decode('utf-8')
+            argspec.string = vv_base64_decode(argspec.string)
+        re_str = argspec.string
+        if argspec.file:
+            if not os.path.exists(argspec.file):
+                raise RuntimeError('Cannot find file "%s" to handle string'
+                                   % argspec.file)
+            with open(argspec.file, encoding=argspec.file_encoding) as ifp:
+                re_str = ifp.read()
+        if not re_str:
+            raise RuntimeError('Invalid string to operate')
+
         limit = argspec.limit
         re_flag = 0
         if argspec.ignore_case:
@@ -75,7 +80,7 @@ def do_re(mcxt, argspec):
         # if argspec.dot_all:
         #     re_flag |= re.DOTALL
         if argspec.operation in ('tolower', 'toupper'):
-            r = argspec.string.strip()
+            r = re_str.strip()
             if argspec.operation == 'tolower':
                 if argspec.apply_first:
                     r = f'{r[0].lower()}{r[1:]}'
@@ -91,24 +96,15 @@ def do_re(mcxt, argspec):
             return 0
         if argspec.operation == 'substring':
             if argspec.ignore_case:
-                argspec.string = argspec.string.lower()
+                re_str = re_str.lower()
                 argspec.pattern = argspec.pattern.lower()
-            fndx = argspec.string.find(argspec.pattern)
+            fndx = re_str.find(argspec.pattern)
             sys.stdout.write('%s' % fndx)
             sys.stdout.flush()
             return 0
 
-        re_compile = re.compile(argspec.pattern, re_flag)
-        re_str = argspec.string
         r_list = list()
-        if argspec.file:
-            if not os.path.exists(argspec.file):
-                raise RuntimeError('Cannot find file "%s" to handle string'
-                                   % argspec.file)
-            with open(argspec.file, encoding=argspec.file_encoding) as ifp:
-                re_str = ifp.read()
-        if not re_str:
-            raise RuntimeError('Invalid string to operate')
+        re_compile = re.compile(argspec.pattern, re_flag)
         if argspec.operation == 'find':
             r_list = re_compile.findall(re_str)
         elif argspec.operation == 'split':
@@ -196,6 +192,9 @@ def _main(*args):
                           display_name='Apply 1st Char',
                           help='If this flag is set only first character is '
                                'applied for toupper, tolower operations.')
+        # mcxt.add_argument('--find-group',
+        #                   display_name='Find Group',
+        #                   help='Group find with parenthesis, first matching group is "\\1"')
         # ##################################### for app dependent parameters
         mcxt.add_argument('operation',
                           display_name='String operation type',
