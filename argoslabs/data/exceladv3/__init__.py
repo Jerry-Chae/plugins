@@ -32,6 +32,7 @@ import os
 import re
 import csv
 import sys
+import base64
 import datetime
 import openpyxl
 import xlwings as xw
@@ -41,7 +42,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 from alabs.common.util.vvencoding import get_file_encoding
 from alabs.common.util.vvargs import func_log, get_icon_path, ModuleContext, \
-    ArgsError, ArgsExit
+    ArgsError, ArgsExit, vv_base64_decode
 
 
 ################################################################################
@@ -211,6 +212,7 @@ class Excel3API(object):
                 self.close()
             else:
                 self.wb.save(self.filename)
+
             return os.path.abspath(self.filename)
         else:
             if self.extension == '.csv':
@@ -230,9 +232,8 @@ class Excel3API(object):
 
     # ==========================================================================
     def close(self):
-        # if self.tempfile and os.path.exists(self.tempfile):
-        #     os.remove(self.tempfile)
-        pass
+        if self.tempfile and os.path.exists(self.tempfile):
+            os.remove(self.tempfile)
 
     # ==========================================================================
     def calc_range(self, rng):
@@ -378,10 +379,10 @@ class Excel3API(object):
 
     # ==========================================================================
     def fillfunc(self, range_, newvalue):
-        cell = re.findall("[a-zA-Z]+\d", newvalue[0])
-        m = re.sub("[a-zA-Z]+\d", '%s', newvalue[0])
-        ln = self.ws[range_[0]]
-        t0 = self.calc_range(range_[0])
+        cell = re.findall("[a-zA-Z]+\d", newvalue)
+        m = re.sub("[a-zA-Z]+\d", '%s', newvalue)
+        ln = self.ws[range_]
+        t0 = self.calc_range(range_)
         if t0 == 'same_col':
             lst = cell
             for i in ln:
@@ -402,7 +403,7 @@ class Excel3API(object):
                     lst.append(''.join(t))
                 cell = re.findall("[a-zA-Z]+\d+", m % tuple(lst))
         else:
-            self.ws[range_[0]] = newvalue[0]
+            self.ws[range_] = newvalue
         print(self.save(), end='')
 
     # ==========================================================================
@@ -489,7 +490,14 @@ class Excel3API(object):
             self.sumfunc(self.argspec.range, self.argspec.newvalue)
             self.xlwingsfunc()
         elif op == self.OP_TYPE[8]:
-            self.fillfunc(self.argspec.range, self.argspec.newvalue)
+            r, n = self.argspec.range, self.argspec.newvalue
+            if len(r)!=len(n):
+                raise RuntimeError('The length of Cell/Range and New value are different.')
+            else:
+                for i in range(len(r)):
+                    # v = base64.b64decode(n[i]).decode('utf-8')
+                    v = vv_base64_decode(n[i])
+                    self.fillfunc(r[i], v)
         elif op == self.OP_TYPE[9]:
             self.unmerge()
 
@@ -554,7 +562,7 @@ def _main(*args):
                           help='Oldvalue to replace')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--newvalue', display_name='New value',
-                          action='append',
+                          action='append', input_method='base64',
                           help='New value to replace')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--range', display_name='Cell/Range', action='append',

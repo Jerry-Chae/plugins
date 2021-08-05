@@ -18,7 +18,7 @@ ARGOS LABS plugin module for Excel Advance III : UnitTest
 # Change Log
 # --------
 #
-#  * [2020/07/02]
+#  * [2020/07/02]pywin32
 #     - unittest
 #  * [2020/07/02]
 #     - starting
@@ -27,6 +27,7 @@ ARGOS LABS plugin module for Excel Advance III : UnitTest
 ################################################################################
 import os
 import sys
+import base64
 from alabs.common.util.vvargs import ArgsError
 from unittest import TestCase
 from argoslabs.data.exceladv3 import _main as main
@@ -114,25 +115,25 @@ class TU(TestCase):
     #         self.assertTrue(True)
     #
     # # ==========================================================================
-    # def test0160_vlookup(self):
-    #     outfile = 'std.txt'
-    #     try:
-    #         r = main(self.xlf, 'VLOOKUP', '--sheetname', 'Sheet1',
-    #                  '--newcell', 'F5', '--targetcell', 'F4', '--range',
-    #                  'B3:C7',
-    #                  '--index', 2, '--bool', True, '--outfile', 'std.txt')
-    #         self.assertTrue(r == 0)
-    #         with open(outfile, encoding='utf-8') as ifp:
-    #             rs = ifp.read()
-    #             print(rs)
-    #             self.assertTrue(rs.find('C') >= 0)
-    #     except ArgsError as e:
-    #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
-    #     finally:
-    #         if os.path.exists(outfile):
-    #             os.remove(outfile)
-    #
+    def test0160_vlookup(self):
+        outfile = 'std.txt'
+        try:
+            r = main(self.xlf, 'VLOOKUP', '--sheetname', 'Sheet1',
+                     '--newcell', 'F5', '--targetcell', 'F4', '--range',
+                     'B3:C7',
+                     '--index', 2, '--bool', True, '--outfile', 'std.txt')
+            self.assertTrue(r == 0)
+            with open(outfile, encoding='utf-8') as ifp:
+                rs = ifp.read()
+                print(rs)
+                self.assertTrue(rs.find('C') >= 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+        finally:
+            if os.path.exists(outfile):
+                os.remove(outfile)
+
     # # ==========================================================================
     # def test0170_count(self):
     #     try:
@@ -141,7 +142,7 @@ class TU(TestCase):
     #                  'A3', '--newvalue', '1.3', '--newvalue', 'str',
     #                  '--newcell', 'A10')
     #         self.assertTrue(r == 0)
-    #     except ArgsError as e:
+    #     except ArgsError as a
     #         sys.stderr.write('\n%s\n' % str(e))
     #         self.assertTrue(False)
     #
@@ -245,83 +246,101 @@ class TU(TestCase):
     #         self.assertTrue(True)
     #
     # # ==========================================================================
-    def test0270_countif(self):
-        try:
-            r = main(self.xlf, 'COUNTIF', '--newcell', 'A5',
-                     '--range', 'A1:B2', '--condition', '66', '--sheetname',
-                     'Sheet2')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
+    # def test0270_countif(self):
+    #     try:
+    #         r = main(self.xlf, 'COUNTIF', '--newcell', 'A5',
+    #                  '--range', 'A1:B2', '--condition', '66', '--sheetname',
+    #                  'Sheet2')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
     #
-    # ==========================================================================
-    def test0280_full(self):
-        try:
-            r = main(self.clf, 'Fill formula', '--sheetname', 'Sheet',
-                     '--newvalue', '=C1+d2', '--range', 'A1:b1')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
+    # #
+    # # ==========================================================================
+    # def test0280_full(self):
+    #     try:
+    #         r = main(self.clf, 'Fill formula', '--sheetname', 'Sheet',
+    #                  '--newvalue', '=C1+d2', '--range', 'A1:b1')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
     # ==========================================================================
     def test0300_sum(self):
         try:
-            r = main('sample.csv', 'SUM',
-                     '--newcell', "e4", '--range', 'a:a')
+            r = main('sample.xlsx', 'SUM', '--sheetname', 'Sheet',
+                     '--newcell', "e4", '--range', 'a1:a2',
+                     '--newvalue', "10",  '--newfilename',
+                     'output.xlsx')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
-    # ==========================================================================
-    def test0310_encoding_error(self):
-        try:
-            r = main('ftr_result.csv', 'SUM', '--encoding', 'cp1252',
-                     '--newcell', "e3", '--range', 'c:c', '--newfilename',
-                     'new.xlsx')
-            self.assertTrue(r != 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
-    def test0320_unmerge(self):
-        try:
-            r = main(self.xlf, 'Unmerge Cells', '--sheetname', 'Sheet3',
-                     '--range', 'b1:b5','--range', 'a1:a9',
-                     '--newfilename', 'new.xlsx')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
-    def test0330_unmerge(self):
-        try:
-            r = main(self.xlf, 'Unmerge Cells', '--sheetname', 'Sheet3','--newfilename', 'new.xlsx')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-    # ==========================================================================
-    def test0340_vlookup(self):
-        try:
-            r = main('customer_list.csv', 'VLOOKUP',
-                     '--newcell', 'c1', '--targetcell', '"Foghorn Leghorn"', '--range',
-                     'a:b', '--index', 2)
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
+    # # ==========================================================================
+    # def test0310_encoding_error(self):
+    #     try:
+    #         r = main('ftr_result.csv', 'SUM', '--encoding', 'cp1252',
+    #                  '--newcell', "e3", '--range', 'c:c', '--newfilename',
+    #                  'new.xlsx')
+    #         self.assertTrue(r != 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
+    # def test0320_unmerge(self):
+    #     try:
+    #         r = main(self.xlf, 'Unmerge Cells', '--sheetname', 'Sheet3',
+    #                  '--range', 'b1:b5','--range', 'a1:a9',
+    #                  '--newfilename', 'new.xlsx')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
+    # def test0330_unmerge(self):
+    #     try:
+    #         r = main(self.xlf, 'Unmerge Cells', '--sheetname', 'Sheet3','--newfilename', 'new.xlsx')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    # # ==========================================================================
+    # def test0340_vlookup(self):
+    #     try:
+    #         r = main('customer_list.csv', 'VLOOKUP',
+    #                  '--newcell', 'c1', '--targetcell', '"Foghorn Leghorn"', '--range',
+    #                  'a:b', '--index', 2)
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
     def test0350_replace(self):
         try:
-            r = main('sample1.xlsx', 'Replace value/formula',
-                        '--oldvalue','=100+100', '--range', 'a1:j30')
+            r = main('sample.xlsx', 'Replace value/formula',
+                        '--oldvalue','=100+100', '--range', 'a1:j30',
+                     '--newvalue', 'string',
+                     '--newfilename','new.xlsx','--sheetname','Sheet4')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0400_full(self):
+        try:
+            fml = '=sum(1,2)'
+            v = base64.b64encode(fml.encode('utf-8'))
+            v = v.decode('ascii')
+            r = main('sample.xlsx', 'Fill formula',
+                     '--newvalue',v ,'--sheetname','Sheet4',
+                     '--range', 'F10')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
