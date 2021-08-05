@@ -1,6 +1,6 @@
 setup:
-  author: Irene Cho, Kyobong An
-  author_email: irene@argos-labs.com
+  author: Taiki Shimasaki
+  author_email: shimasaki@argos-service.com
   classifiers:
   - 'Operating System :: MacOS :: MacOS X'
   - 'Operating System :: Microsoft :: Windows :: Windows 10'
@@ -8,21 +8,22 @@ setup:
   - 'License :: Other/Proprietary License'
   - 'Natural Language :: English'
   - 'Programming Language :: Python :: 3.7'
-  - 'Topic :: Demo :: HelloWorld'
+  - 'Topic :: ArgosServiceJP :: WindowOp'
   - 'Topic :: Change :: Log :: Unittest for Mac'
   - 'Topic :: Change :: Log :: Unittest for Linux'
   - 'Topic :: Change :: Log :: Unittest for Windows'
-  description: ARGOS-LABS Converting pdf file to txt file
+  description: Plugin for manipulating windows
   keywords:
-  - pdf
-  - txt
+  - rpa
+  - robot
+  - module
+  - argos_service_jp
+  - window
   license: ARGOS-LABS Proprietary License
   platforms:
-  - Mac
   - Windows
-  - Linux
   package_data:
-    argoslabs.data.pdf2txt: ['icon.*']
+    argoslabs.argos_service_jp.window_op: ['icon.*']
   url: https://www.argos-labs.com
   # do not start '0'
-  version: 3.727.1100
+  version: 3.408.1500

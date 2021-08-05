@@ -1,23 +1,36 @@
-#!/usr/bin/env python
-# coding=utf8
 """
 ====================================
- :mod:`argoslabs.data.pdf2txt`
+ :mod:`argoslabs.data.excelstyle`
 ====================================
 .. moduleauthor:: Irene Cho <irene@argos-labs.com>
 .. note:: ARGOS-LABS License
 
 Description
 ===========
-ARGOS LABS plugin module : unittest
+ARGOS LABS plugin module for Excel Style: unittest
 """
+#
+# Authors
+# ===========
+#
+# * Irene Cho
+#
+# Change Log
+# --------
+#
+#  * [2021/07/13]
+#     - unittest
+#  * [2021/07/13]
+#     - starting
+#
+
 
 ################################################################################
 import os
 import sys
-from unittest import TestCase
-from argoslabs.data.pdf2txt import _main as main
 from alabs.common.util.vvargs import ArgsError
+from unittest import TestCase
+from argoslabs.data.excelstyle import _main as main
 
 
 ################################################################################
@@ -29,45 +42,41 @@ class TU(TestCase):
         os.chdir(os.path.dirname(__file__))
 
     # ==========================================================================
-    def test0050_failure(self):
+    def test50_missing(self):
         try:
-            _ = main('invalid')
+            _ = main()
             self.assertTrue(False)
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(True)
 
     # ==========================================================================
-    # def test0100_success(self):
-    #     try:
-    #         r = main('test.pdf')
-    #         self.assertTrue(r == 0)
-    #     except ArgsError as e:
-    #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
-
-    # ==========================================================================
-    def test0100_success(self):
+    def test100_samecol(self):
         try:
-            r = main('pdffiles/April tech radar_0904-BV (1).pdf')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-    # ==========================================================================
-    def test0150_success(self):
-        try:
-            r = main('pdffiles/Inv_11390_from_KOTRA_Silico.pdf','--output',
-                     'output/Inv_11390_from_KOTRA_Silico.txt','--coordinates')
+            r = main('new.xlsx', 'd1:d10', '--newfilename', 'new0.xlsx',
+                     '--bold', '--italic', '--sheetname', 'Sheet1')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0200_success(self):
+    def test150_diffcol(self):
         try:
-            r = main('pdffiles/Stevens Law Group 23126.pdf')
+            r = main('new.xlsx', 'a1:b10', '--newfilename', 'new0.xlsx',
+                     '--bold', '--italic', '--underline', 'single',
+                     '--sheetname', 'Sheet1')
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test200_cell(self):
+        try:
+            r = main('new.xlsx', 'a1:h30', '--newfilename', 'new0.xlsx',
+                     '--bold', '--italic', '--underline', 'double','--sheetname', 'Sheet1',
+                     '--fillcolor','EE1111', '--operator', "!=",'--value','5')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))

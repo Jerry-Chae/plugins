@@ -4,4 +4,4 @@
 alabs.common
 
 # ...
-pdfminer
+pdfplumber

@@ -99,7 +99,7 @@ def do_screenshot(mcxt, argspec):
 def _main(*args):
     with ModuleContext(
             owner='ARGOS-LABS',
-            group='9',
+            group='7',
             version='1.0',
             platform=['windows'],  # , 'darwin', 'linux'],
             output_type='text',

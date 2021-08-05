@@ -1,6 +1,6 @@
 setup:
-  author: Irene Cho, Kyobong An
-  author_email: irene@argos-labs.com
+  author: Kyobong An
+  author_email: akb0930@argos-labs.com
   classifiers:
   - 'Operating System :: MacOS :: MacOS X'
   - 'Operating System :: Microsoft :: Windows :: Windows 10'
@@ -8,21 +8,22 @@ setup:
   - 'License :: Other/Proprietary License'
   - 'Natural Language :: English'
   - 'Programming Language :: Python :: 3.7'
-  - 'Topic :: Demo :: HelloWorld'
-  - 'Topic :: Change :: Log :: Unittest for Mac'
-  - 'Topic :: Change :: Log :: Unittest for Linux'
-  - 'Topic :: Change :: Log :: Unittest for Windows'
-  description: ARGOS-LABS Converting pdf file to txt file
+  - 'Topic :: Data :: RDB'
+  - 'Topic :: Data :: RDB :: SQLite'
   keywords:
-  - pdf
-  - txt
+  - data
+  - relational
+  - database
+  - rdb
+  - sql
+  - sqlite
   license: ARGOS-LABS Proprietary License
   platforms:
   - Mac
   - Windows
   - Linux
   package_data:
-    argoslabs.data.pdf2txt: ['icon.*']
+#    argoslabs.data.sqlite: ['icon.*', 'tests/*.*']
+    argoslabs.data.sqlite: ['icon.*']
   url: https://www.argos-labs.com
-  # do not start '0'
-  version: 3.727.1100
+  version: 3.713.1749

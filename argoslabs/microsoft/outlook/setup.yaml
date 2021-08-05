@@ -1,5 +1,5 @@
 setup:
-  author: Irene Cho, Kyobong An
+  author: Irene Cho
   author_email: irene@argos-labs.com
   classifiers:
   - 'Operating System :: MacOS :: MacOS X'
@@ -12,17 +12,22 @@ setup:
   - 'Topic :: Change :: Log :: Unittest for Mac'
   - 'Topic :: Change :: Log :: Unittest for Linux'
   - 'Topic :: Change :: Log :: Unittest for Windows'
-  description: ARGOS-LABS Converting pdf file to txt file
+  description: ARGOS-LABS RPA plugin for getting data of outlook
   keywords:
-  - pdf
-  - txt
+    - mails
+    - outlook
+    - microsoft
   license: ARGOS-LABS Proprietary License
   platforms:
   - Mac
   - Windows
   - Linux
   package_data:
-    argoslabs.data.pdf2txt: ['icon.*']
+    argoslabs.microsoft.outlook: ['icon.*']
   url: https://www.argos-labs.com
-  # do not start '0'
-  version: 3.727.1100
+  version: 3.730.1330
+
+
+
+
+
