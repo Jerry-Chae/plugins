@@ -51,32 +51,33 @@ class TU(TestCase):
             self.assertTrue(True)
 
     # ==========================================================================
-    def test100_maillists(self):
-        stdout = 'output.txt'
-        try:
-            r = main('Mail Lists',
-                     '--foldertype', '6'
-                     ,'--outfile', stdout
-                     )
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # def test100_maillists(self):
+    #     # stdout = 'output.txt'
+    #     try:
+    #         r = main('Mail Lists',
+    #                  '--findstr', '보낸 날짜:	7/28/2021 2:42 PM'
+    #                  # '--foldertype', '6'
+    #                  # ,'--outfile', stdout
+    #                  )
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
     # ==========================================================================
-    def test150_diffcol(self):
-        try:
-            r = main('Get Contents',  '--subfolder', 'subfolder',
-                     '--mailsubject', 'Updates to our terms of use',
-                     '--sender', 'msa@communication.microsoft.com',
-                     '--received', ">= '2020-12'",
-                     '--output', 'output',
-
-                     )
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # def test150_diffcol(self):
+    #     try:
+    #         r = main('Get Contents',  '--subfolder', 'subfolder',
+    #                  '--mailsubject', 'Updates to our terms of use',
+    #                  '--sender', 'msa@communication.microsoft.com',
+    #                  '--received', ">= '2020-12'",
+    #                  '--output', 'output',
+    #
+    #                  )
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
     # ==========================================================================
     # def test200_get(self):
@@ -110,8 +111,8 @@ class TU(TestCase):
     def test300_move_folder(self):
         try:
             r = main('Move Emails',
-                     '--received', ">= '2020-12'",
-                     '--msubfolder', 'newfolder'
+                     '--received', ">= '2001-12'",
+                     '--subfolder', 'newfolder'
                      )
             self.assertTrue(r == 0)
         except ArgsError as e:

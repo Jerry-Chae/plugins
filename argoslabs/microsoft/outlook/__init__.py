@@ -56,6 +56,16 @@ def do_outlook(mcxt, argspec):
             m = m.restrict(f"[SenderEmailAddress]='{argspec.sender}'")
         if argspec.received:
             m = m.restrict(f"[ReceivedTime]{argspec.received}")
+        if argspec.findstr:
+            m = list(m)
+            new = []
+            s = argspec.findstr.lower()
+            for fn in m:
+                body = fn.body.lower()
+                if s in body:
+                    new.append(fn)
+            m = new
+
         if argspec.op == 'Mail Lists':
             s = csv.writer(sys.stdout, lineterminator='\n')
             s.writerow(['time', 'from', 'subject'])
@@ -186,6 +196,9 @@ def _main(*args):
         # ----------------------------------------------------------------------
         mcxt.add_argument('--received', display_name='Received Time',
                           help='specify the received time')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--findstr', display_name='Find String',
+                          help='specify a string to find ')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--conditions', display_name='Mail Conditions',
                           action='append',
