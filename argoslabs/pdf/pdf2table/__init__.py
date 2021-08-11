@@ -18,6 +18,8 @@ ARGOS LABS PDF Conversion(pdf -> txt) plugin
 #
 # --------
 #
+#  * [2021/08/11]
+#   TEXT를 사용할때 None타입 에러가 발생해서 try Except 사용해서 에러해결
 #  * [2021/07/28]
 #   기능추가 separator, code 수정
 #  * [2021/07/28]
@@ -68,7 +70,11 @@ class Pdf2table(object):
             self.output = self.pages[self.page - 1].extract_text()
         else:
             for page in self.pages:
-                self.output += page.extract_text()
+                # self.output += page.extract_text()
+                try:
+                    self.output += page.extract_text()
+                except:
+                    ...
         self.outfile.write(self.output)
         self.count = 1
 
