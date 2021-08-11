@@ -256,7 +256,11 @@ class Excel2API(object):
         else:
             filename = self.filename
         wb = wn.Workbooks.Open(filename)
-        wb.ActiveSheet.ExportAsFixedFormat(0, path_to_pdf)
+        if self.argspec.sheetname:
+            wb.Worksheets(self.argspec.sheetname).Activate()
+            wb.ActiveSheet.ExportAsFixedFormat(0, path_to_pdf)
+        else:
+            wb.ActiveSheet.ExportAsFixedFormat(0, path_to_pdf)
         wb.Close(True)
         print(os.path.abspath(path_to_pdf), end='')
 
@@ -401,7 +405,7 @@ def _main(*args):
                           help='newsheet')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--filenamepath', display_name='PDF filename',
-                          help='filenamepath')
+                          help='filenamepath', input_method='filewrite')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--col-name', display_name='Colname',
                           help='insert column name')

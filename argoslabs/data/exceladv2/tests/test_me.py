@@ -88,30 +88,30 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
-    # def test0140_xlsxtopdf(self):
-    #     try:
-    #         try:
-    #             win32com.client.Dispatch('Excel.Application')
-    #             r = main(self.xlf, 'Print PDF', '--filenamepath', 'sample.pdf')
-    #             self.assertTrue(r == 0)
-    #         except Exception:
-    #             ...
-    #     except ArgsError as e:
-    #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
-    #
+    def test0140_xlsxtopdf(self):
+        try:
+            output = os.path.abspath('sample.pdf')
+
+            r = main(self.xlf, 'Print PDF', '--filenamepath', output,
+                     '--sheetname', 'Sheet1'
+                     )
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
     # # ==========================================================================
-    # def test0150_cvstopdf(self):
-    #     try:
-    #         try:
-    #             win32com.client.Dispatch('Excel.Application')
-    #             r = main(self.csvf, 'Print PDF', '--filenamepath', 'bar.pdf')
-    #             self.assertTrue(r == 0)
-    #         except Exception:
-    #             ...
-    #     except ArgsError as e:
-    #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
+    def test0150_xlsxtopdf(self):
+        try:
+            output = os.path.abspath('sample.pdf')
+            r = main(self.csvf, 'Print PDF', '--filenamepath', output,
+                     # '--sheetname', 'Sheet1'
+                     )
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
 
     # ==========================================================================
     def test0160_blankcol(self):
@@ -135,7 +135,7 @@ class TU(TestCase):
     # # ==========================================================================
     def test0180_col_row_manipulating(self):
         try:
-            r = main('foo.xlsx','Insert delete row col','--newfilename','new.xlsx',
+            r = main(self.xlf,'Insert delete row col','--newfilename','new.xlsx',
                      '--del-row-num', '7-230')
             self.assertTrue(r == 0)
         except ArgsError as e:
@@ -181,15 +181,6 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0230_foo(self):
-        try:
-            r = main('foo.xlsx', 'Find first blank row','--col-name', 'A')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
     def test0240_eng(self):
         try:
             r = main(self.xlf, 'Find first blank col', '--row-num', '1')
@@ -228,22 +219,3 @@ class TU(TestCase):
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
-    # ==========================================================================
-    def test0280_eng(self):
-        try:
-            r = main('foo.xlsx', 'Find first blank row', '--col-name', 'aa',
-                     '--sheetname','Sheet2','--nonecsvrv')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-
-    # ==========================================================================
-    def test0290_error(self):
-        try:
-            r = main('foo.xlsx', 'Find first blank row')
-            self.assertTrue(r == 9)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
