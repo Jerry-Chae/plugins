@@ -17,6 +17,8 @@ ARGOS LABS plugin module to use Selenium
 # Change Log
 # --------
 #
+#  * [2021/07/30]
+#     - Change group to 8 : "Storage Solution"
 #  * [2021/04/01]
 #     - 그룹에 "4-Data Science" 넣음
 #  * [2021/02/15]
@@ -251,7 +253,7 @@ def do_mongo(mcxt, argspec):
 def _main(*args):
     with ModuleContext(
         owner='ARGOS-LABS',
-        group='4',  # Data Science
+        group='8',  # Storage Solution
         version='1.0',
         platform=['windows', 'darwin', 'linux'],
         output_type='text',

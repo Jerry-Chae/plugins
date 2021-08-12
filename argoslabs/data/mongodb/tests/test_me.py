@@ -37,8 +37,8 @@ from argoslabs.data.mongodb import _main as main
 
 ################################################################################
 class TU(TestCase):
-    host = '192.168.35.244'
-    port = '22300'  # '27017'
+    host = '192.168.35.241'
+    port = '27017'
     user = ''       # 'devroot'
     passwd = ''     # 'devroot'
 
