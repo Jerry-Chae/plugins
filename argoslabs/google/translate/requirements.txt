@@ -7,4 +7,7 @@ alabs.common
 # googletrans>=2.4.0
 
 # Google API changed and chagned for dependent module
-google_trans_new
+# Not supported from 2021.07.05
+# google_trans_new
+
+googletrans==4.0.0-rc1

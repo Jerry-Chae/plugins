@@ -19,6 +19,9 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/07/05]
+#     - 안된다고 보고됨 by Young
+#     - googletrans==3.1.0a0 이용하여 해결
 #  * [2021/04/07]
 #     - 그룹에 "1-AI Solutions" 넣음
 #  * [2020/12/04]
@@ -93,8 +96,8 @@ class TU(TestCase):
             with open(out_f) as ifp:
                 out = ifp.read()
                 print(out)
-                # self.assertTrue(out == 'lang, confidence\nja, 1.0\n')
-                self.assertTrue(out == 'lang, confidence\nja, N/A\n')
+                self.assertTrue(out.endswith('ja, None'))
+                # self.assertTrue(out == 'lang, confidence\nja, N/A\n')
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
@@ -112,8 +115,8 @@ class TU(TestCase):
             with open(out_f, encoding='utf8') as ifp:
                 out = ifp.read()
                 # print(out)
-                self.assertTrue(out in ('Hello World? Am i TTS? ',
-                                        'Hello World? Is it TTS? '))
+                self.assertTrue(out in ('Hello World? Am i TTS?',
+                                        'Hello World?Is it TTS?'))
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
@@ -131,7 +134,7 @@ class TU(TestCase):
             with open(out_f, encoding='utf8') as ifp:
                 out = ifp.read()
                 # print(out)
-                self.assertTrue(out == '안녕하세요 세계 ? 나는 TTS 입니다 ? ')
+                self.assertTrue(out == '안녕하세요세계?나는TTS입니다?')
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
@@ -149,8 +152,8 @@ class TU(TestCase):
             with open(out_f, encoding='utf8') as ifp:
                 out = ifp.read()
                 # print(out)
-                self.assertTrue(out in ('你好，世界？ 我是TTS吗？ ',
-                                        '你好世界？ 是tts吗？ '))
+                self.assertTrue(out in ('你好，世界？我是 TTS 吗？',
+                                        '你好，世界？是tts吗？'))
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
@@ -171,8 +174,9 @@ class TU(TestCase):
             with open(out_f, encoding='utf8') as ifp:
                 out = ifp.read()
                 # print(out)
-                self.assertTrue(out in ('你好，世界？ 我是TTS吗？ ',
-                                        '你好世界？  是tts吗？ '))
+                self.assertTrue(out in ('你好，世界？\n我是 TTS 吗？',
+                                        '你好，世界？\n是tts吗？',
+                                        ))
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)

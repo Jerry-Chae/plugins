@@ -19,6 +19,9 @@ ARGOS LABS plugin module ai translate
 # Change Log
 # --------
 #
+#  * [2021/07/05]
+#     - 안된다고 보고됨 by Young
+#     - googletrans==3.1.0a0 이용하여 해결
 #  * [2021/04/07]
 #     - 그룹에 "1-AI Solutions" 넣음
 #  * [2020/12/04]
@@ -42,8 +45,8 @@ import sys
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
 # noinspection PyPackageRequirements
-# from googletrans import Translator
-from google_trans_new import google_translator
+from googletrans import Translator
+# from google_trans_new import google_translator
 
 
 ################################################################################
@@ -122,12 +125,6 @@ def get_lang_code(lang):
 ################################################################################
 @func_log
 def do_translate(mcxt, argspec):
-    """
-    plugin job function
-    :param mcxt: module context
-    :param argspec: argument spec
-    :return: True
-    """
     mcxt.logger.info('>>>starting...')
     try:
         if argspec.file:
@@ -137,19 +134,22 @@ def do_translate(mcxt, argspec):
                 argspec.msg = ifp.read()
         if not argspec.msg:
             raise ValueError('Invalid or empty message or text file')
-        # tr = Translator()
-        tr = google_translator()
+        tr = Translator()
+        # tr = google_translator(timeout=5)
         if argspec.detect:
             dl = tr.detect(argspec.msg)
-            # print('%s, %s' % (dl.lang, dl.confidence))
-            # New google_trans_new does not get the confidence
             print('lang, confidence')
-            print('%s, %s' % (dl[0], 'N/A'))
+            print('%s, %s' % (dl.lang, dl.confidence), end='')
+            # New google_trans_new does not get the confidence
+            # print('%s, %s' % (dl[0], 'N/A'))
         else:
             dest = get_lang_code(argspec.dest)
             src = get_lang_code(argspec.src)
-            r_tr = tr.translate(argspec.msg, lang_tgt=dest, lang_src=src)
-            print(r_tr, end='', flush=True)
+            # r_tr = tr.translate(argspec.msg,
+            #                     lang_tgt=dest, lang_src=src)
+            r_tr = tr.translate(argspec.msg,
+                                dest=dest, src=src)
+            print(r_tr.text, end='', flush=True)
         return 0
     except Exception as e:
         msg = 'Translation error: %s' % str(e)
