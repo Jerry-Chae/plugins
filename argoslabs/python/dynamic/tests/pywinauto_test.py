@@ -22,6 +22,8 @@ if os_encoding == 'cp949':
     open_label = '열기'  # for Korean
 elif os_encoding == 'cp932':
     open_label = '開く'  # for Japanese
+else:
+    open_label = 'Open'  # for Others
 
 # pywinauto
 findWindow = lambda: pywinauto.findwindows.find_windows(title=open_label)[0]
