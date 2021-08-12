@@ -17,6 +17,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/08/10]
+#     - upload functionality test
 #  * [2021/03/26]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/12/15]
@@ -385,62 +387,62 @@ class TU(TestCase):
             if os.path.exists(of):
                 os.remove(of)
 
-    # ==========================================================================
-    def test0410_ibm_watson_api_01(self):
-        """
-        https://console.bluemix.net/docs/services/visual-recognition/getting-started.html#-
-        """
-        of = 'foo.txt'
-        try:
-            ibm_key = "QEhZ-LvhDkhNrVrXa-hNtFQz_8QK4fsCrsojIF8vpKbt"
-            r = main(
-                '--form',
-                '--auth', 'apikey:%s' % ibm_key,
-                '--req-item', "images_file@%s" % os.path.join('httpie-tests', 'fruitbowl.jpg'),
-                'POST', "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2016-05-20",
-                '--outfile', of
-            )
-            self.assertTrue(r == 0)
-            with open(of) as ifp:
-                print(ifp.read())
-                ifp.seek(0, 0)
-                js = json.load(ifp)
-            self.assertTrue(js['images'][0]["classifiers"][0]["classes"][1]['score'] == 0.788)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-        finally:
-            if os.path.exists(of):
-                os.remove(of)
-
-    # ==========================================================================
-    def test0420_ibm_watson_api_01_with_file(self):
-        """
-        https://console.bluemix.net/docs/services/visual-recognition/getting-started.html#-
-        """
-        of = 'foo.txt'
-        try:
-            ibm_key = "QEhZ-LvhDkhNrVrXa-hNtFQz_8QK4fsCrsojIF8vpKbt"
-            r = main(
-                '--form',
-                '--auth', 'apikey:%s' % ibm_key,
-                '--file', os.path.join('httpie-tests', 'fruitbowl.jpg'),
-                '--req-item', "images_file@@1",
-                'POST', "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2016-05-20",
-                '--outfile', of
-            )
-            self.assertTrue(r == 0)
-            with open(of) as ifp:
-                print(ifp.read())
-                ifp.seek(0, 0)
-                js = json.load(ifp)
-            self.assertTrue(js['images'][0]["classifiers"][0]["classes"][1]['score'] == 0.788)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-        finally:
-            if os.path.exists(of):
-                os.remove(of)
+    # # ==========================================================================
+    # def test0410_ibm_watson_api_01(self):
+    #     """
+    #     https://console.bluemix.net/docs/services/visual-recognition/getting-started.html#-
+    #     """
+    #     of = 'foo.txt'
+    #     try:
+    #         ibm_key = "QEhZ-LvhDkhNrVrXa-hNtFQz_8QK4fsCrsojIF8vpKbt"
+    #         r = main(
+    #             '--form',
+    #             '--auth', 'apikey:%s' % ibm_key,
+    #             '--req-item', "images_file@%s" % os.path.join('httpie-tests', 'fruitbowl.jpg'),
+    #             'POST', "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2016-05-20",
+    #             '--outfile', of
+    #         )
+    #         self.assertTrue(r == 0)
+    #         with open(of) as ifp:
+    #             print(ifp.read())
+    #             ifp.seek(0, 0)
+    #             js = json.load(ifp)
+    #         self.assertTrue(js['images'][0]["classifiers"][0]["classes"][1]['score'] == 0.788)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #     finally:
+    #         if os.path.exists(of):
+    #             os.remove(of)
+    #
+    # # ==========================================================================
+    # def test0420_ibm_watson_api_01_with_file(self):
+    #     """
+    #     https://console.bluemix.net/docs/services/visual-recognition/getting-started.html#-
+    #     """
+    #     of = 'foo.txt'
+    #     try:
+    #         ibm_key = "QEhZ-LvhDkhNrVrXa-hNtFQz_8QK4fsCrsojIF8vpKbt"
+    #         r = main(
+    #             '--form',
+    #             '--auth', 'apikey:%s' % ibm_key,
+    #             '--file', os.path.join('httpie-tests', 'fruitbowl.jpg'),
+    #             '--req-item', "images_file@@1",
+    #             'POST', "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2016-05-20",
+    #             '--outfile', of
+    #         )
+    #         self.assertTrue(r == 0)
+    #         with open(of) as ifp:
+    #             print(ifp.read())
+    #             ifp.seek(0, 0)
+    #             js = json.load(ifp)
+    #         self.assertTrue(js['images'][0]["classifiers"][0]["classes"][1]['score'] == 0.788)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #     finally:
+    #         if os.path.exists(of):
+    #             os.remove(of)
 
     # ==========================================================================
     def test0430_ibm_watson_api_02_with_file(self):
@@ -683,6 +685,34 @@ class TU(TestCase):
 #                 os.remove(of)
 #             if os.path.exists(stderr_file):
 #                 os.remove(stderr_file)
+
+    # ==========================================================================
+    def test0480_upload(self):
+        of = 'foo.txt'
+        stderr_file = 'stderr.txt'
+        try:
+            url = 'http://127.0.0.1:8000/upload'
+            r = main(
+                'post', url,
+                '--form',
+                '--req-item', r'files@C:\Temp\output\Arevo.txt',
+                '--outfile', of,
+                '--errfile', stderr_file,
+            )
+            self.assertTrue(r == 0)
+            encoding = get_file_encoding(of)
+            with open(of, encoding=encoding) as ifp:
+                rs = ifp.read()
+                # print(rs)
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(os.path.exists(stderr_file) and
+                            os.path.getsize(stderr_file) > 0)
+        finally:
+            if os.path.exists(of):
+                os.remove(of)
+            if os.path.exists(stderr_file):
+                os.remove(stderr_file)
 
     # ==========================================================================
     def test9999_quit(self):

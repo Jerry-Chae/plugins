@@ -17,6 +17,10 @@ ARGOS LABS plugin module sample
 # Change Log
 # --------
 #
+#  * [2021/08/10]
+#     - upload functionality test
+#  * [2021/07/07]
+#     - get http executable
 #  * [2021/03/26]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/12/23]
@@ -113,8 +117,15 @@ def conv_from_unicode(s, target_enc='utf-8'):
 #     level = kwargs.get('level', 'error')
 #     #assert level in ['error', 'warning']
 #     sys.stderr.write('\nhttp: %s: %s\n' % (level, msg))
-#
-#
+
+
+################################################################################
+def get_http_exec():
+    # if sys.platform == 'win32':
+    dir_name = os.path.dirname(sys.executable)
+    return os.path.join(dir_name, 'http')
+
+
 ################################################################################
 # noinspection PyProtectedMember
 @func_log
@@ -219,7 +230,7 @@ def http_do(mcxt, argspec):
         args.append('--output')
         args.append(hpof)
 
-        cmds = ['http']
+        cmds = [get_http_exec()]
         cmds.extend(args)
         stdout = None
         if isinstance(mcxt._stdout, TextIOWrapper):
@@ -241,7 +252,8 @@ def http_do(mcxt, argspec):
             jsstr = ifp.read()
         if stdout is None:
             stdout = sys.stdout
-        stdout.write(conv_from_unicode(jsstr))
+        if jsstr:
+            stdout.write(conv_from_unicode(jsstr))
         mcxt.logger.info('>>>end...')
         r = 0 if rc // 10 == 20 else 1
         return r
