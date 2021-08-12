@@ -17,6 +17,8 @@ ARGOS LABS plugin module to use Selenium
 # Change Log
 # --------
 #
+#  * [2021/07/31]
+#     - Change group "9: Utility Tools" => "10: Web Scraping"
 #  * [2021/05/31]
 #     - headless 옵션 추가
 #  * [2021/04/21]
@@ -88,7 +90,7 @@ def do_pyselenium(mcxt, argspec):
 def _main(*args):
     with ModuleContext(
         owner='ARGOS-LABS',
-        group='9',  # Utility Tools
+        group='10',  # Web Scraping
         version='1.0',
         platform=['windows', 'darwin', 'linux'],
         output_type='text',
