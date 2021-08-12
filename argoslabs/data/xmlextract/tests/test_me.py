@@ -19,6 +19,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/07/31]
+#     - Change group "9: Utility Tools" => "10: Web Scraping"
 #  * [2021/04/01]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/05/07]
