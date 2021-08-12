@@ -1,11 +1,9 @@
 id,name,age
 1,nobody me,100
 2,홍길동,200
-3,Jerry Chae,51
-4,Alfread Kim,18
-5,Amy Hwang,33
-6,"홍,낄똥",99
-7,Jerry Chae,51
-8,Alfread Kim,18
-9,Amy Hwang,33
-10,"홍,낄똥",99
+3,Hanna Hwang,53
+4,Alfred Chae,21
+5,Amy Chae,19
+6,Hanna Hwang,53
+7,Alfred Chae,21
+8,Amy Chae,19

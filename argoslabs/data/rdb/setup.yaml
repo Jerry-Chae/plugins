@@ -11,8 +11,7 @@ setup:
   - 'Topic :: Data :: RDB'
   - 'Topic :: Data :: RDB :: MySQL'
   - 'Topic :: Data :: RDB :: MSSQL'
-  - 'Topic :: Data :: RDB :: Oracle'
-  - 'Topic :: Change :: Log :: Add for Oracle dependent dlls'
+#  - 'Topic :: Change :: Log :: Add for Oracle dependent dlls'
   description: ARGOS-LABS RPA plugin module for RDB operation
   keywords:
   - data
@@ -21,7 +20,6 @@ setup:
   - rdb
   - sql
   - mysql
-  - oracle
   - mssql
   license: ARGOS-LABS Proprietary License
   platforms:
@@ -30,7 +28,7 @@ setup:
   - Linux
   package_data:
     # for Oracle, cx_Oracle in Windows: set pre-compiled for pymssql
-    argoslabs.data.rdb: ['icon.*', '*.dll', '*.whl']
+#    argoslabs.data.rdb: ['icon.*', '*.dll', '*.whl']
+    argoslabs.data.rdb: ['icon.*',]
   url: https://www.argos-labs.com
-#  version: 2.228.1800
-  version: 2.228.3300
+  version: 3.727.1200
