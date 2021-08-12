@@ -19,6 +19,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/08/06]
+#     - Character detection from string
 #  * [2021/04/06]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/03/26]
@@ -122,6 +124,65 @@ class TU(TestCase):
         finally:
             if os.path.exists(stdout):
                 os.remove(stdout)
+
+    # ==========================================================================
+    def test0140_chardet_invalid(self):
+        stdout = 'stdout.txt'
+        try:
+            r = main('', '--outfile', stdout)
+            self.assertTrue(r == 9)
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+        finally:
+            if os.path.exists(stdout):
+                os.remove(stdout)
+
+    # # ==========================================================================
+    # def test0150_chardet_str(self):
+    #     stdout = 'stdout.txt'
+    #     try:
+    #         r = main('--str', '가나다', '--outfile', stdout)
+    #         self.assertTrue(r == 0)
+    #         with open(stdout) as ifp:
+    #             print(ifp.read())
+    #         rr = []
+    #         with open(stdout, 'r') as ifp:
+    #             cr = csv.reader(ifp)
+    #             for row in cr:
+    #                 self.assertTrue(len(row) in (3,))
+    #                 rr.append(row)
+    #         self.assertTrue(len(rr) == 2 and rr[1][1] == 'utf-8')
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #     finally:
+    #         if os.path.exists(stdout):
+    #             os.remove(stdout)
+
+    # # ==========================================================================
+    # def test0160_chardet_str(self):
+    #     stdout = 'stdout.txt'
+    #     try:
+    #         with open('jpn-01.out.csv', encoding='SHIFT_JIS') as ifp:
+    #             pstr = ifp.read()
+    #         r = main('--str', pstr, '--outfile', stdout)
+    #         self.assertTrue(r == 0)
+    #         with open(stdout) as ifp:
+    #             print(ifp.read())
+    #         rr = []
+    #         with open(stdout, 'r') as ifp:
+    #             cr = csv.reader(ifp)
+    #             for row in cr:
+    #                 self.assertTrue(len(row) in (3,))
+    #                 rr.append(row)
+    #         self.assertTrue(len(rr) == 2 and rr[1][1] == 'EUC-KR')
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #     finally:
+    #         if os.path.exists(stdout):
+    #             os.remove(stdout)
 
     # ==========================================================================
     def test9999_quit(self):
