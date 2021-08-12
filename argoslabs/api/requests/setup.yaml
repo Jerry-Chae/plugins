@@ -24,4 +24,4 @@ setup:
     argoslabs.api.requests: ['icon.*']
   url: https://www.argos-labs.com
 #  version: 2.1231.1439
-  version: 2.1231.3300
+  version: 3.729.915

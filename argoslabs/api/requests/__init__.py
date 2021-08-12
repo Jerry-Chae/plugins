@@ -105,7 +105,7 @@ def http_do(mcxt, argspec):
             json_data = json.loads(argspec.json_data)
         if json_data:
             kwargs['json'] = json_data
-        rp = method_f(url, **kwargs)
+        rp = method_f(url, **kwargs, timeout=argspec.timeout)
         if rp.status_code // 10 != 20:
             print(conv_from_unicode(rp.text), end='')
             rp.raise_for_status()
@@ -173,6 +173,10 @@ def _main(*args):
         mcxt.add_argument('--encoding',
                           display_name='Encoding',
                           help='Encoding for JSON Data file, Default is [[utf-8]]')
+        mcxt.add_argument('--timeout',
+                          display_name='Timeout',
+                          type=int, default=10,
+                          help='Timeout seconds, default is [[10]]')
         argspec = mcxt.parse_args(args)
         return http_do(mcxt, argspec)
 
