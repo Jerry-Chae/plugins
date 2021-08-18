@@ -18,6 +18,8 @@ ARGOS LABS data analysis using PANDAS basic
 # --------
 #
 #  * [2021/04/06]
+#     - --in-encodings에 default 삭제(오류로 인해서), eval()사용시 문자열의 에러가 있어 수정
+#  * [2021/04/06]
 #     - 그룹에 "4-Data Science" 넣음
 #  * [2020/09/15]
 #     - --in-csv-seps, --in-encodings
@@ -52,7 +54,8 @@ def pandas_safe_eval(es, default=None):
         r = eval(es)
         return r
     except Exception:
-        return default
+        # return default
+        return es if es else default
 
 
 ################################################################################
@@ -63,7 +66,8 @@ def pandas_safe_eval_from_list(ndx, el, default=None):
             return default
         if len(el) <= ndx:
             return default
-        r = eval(el[ndx])
+        # r = eval(el[ndx])
+        r = pandas_safe_eval(el[ndx], default)
         return r
     except Exception:
         return default
@@ -212,7 +216,6 @@ def _main(*args):
                           help='CSV separators for input files, default is [[,]]')
         mcxt.add_argument('--in-encodings', action='append',
                           display_name='In Encodings',
-                          default="utf-8",
                           help='Character encoding for input files, default is [[utf-8]]')
         mcxt.add_argument('--out-header',
                           display_name='Out Header',
