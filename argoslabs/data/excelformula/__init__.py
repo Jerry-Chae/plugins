@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel Formula
 # Change Log
 # --------
 #
+#  * [2021/08/23]
+#     - sheetname이 open할때 빠져있었음
 #  * [2020/08/10]
 #     - build a plugin
 #  * [2020/08/10]
@@ -102,7 +104,10 @@ class Excelformula(object):
                                              read_only=read_only,
                                              data_only=False,
                                              keep_vba=keep_vba)
-            self.ws = self.wb.active
+            if self.argspec.sheetname:
+                self.ws = self.wb[self.argspec.sheetname]
+            else:
+                self.ws = self.wb.active
             self.ws[self.newcell] = self.argspec.formula
             self.wb.save(self.tempfile)
             self.wb.close()
