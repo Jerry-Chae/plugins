@@ -72,7 +72,7 @@ def do_outlook(mcxt, argspec):
             m = list(m)
             for i, ent in enumerate(m):
                 try:
-                    date = ent.ReceivedTime.strftime('%m-%d-%Y %H:%M')
+                    date = ent.ReceivedTime.strftime('%m-%d-%Y %H:%M:%S')
                     sender = ent.SenderEmailAddress
                     s.writerow([date, sender, ent.subject])
                 except Exception:
@@ -85,10 +85,10 @@ def do_outlook(mcxt, argspec):
                 for fn in m:
                     fsubject = fn.Subject
                     try:
-                        date = fn.ReceivedTime.strftime('%m%d%Y%H%M')
+                        date = fn.ReceivedTime.strftime('%m%d%Y%H%M%S')
                     except Exception:
                         now = datetime.now()
-                        date = now.strftime('%m%d%Y%H%M')
+                        date = now.strftime('%m%d%Y%H%M%S')
                     if argspec.htmloutput:
                         if ':' in fsubject:
                             out = date + fsubject.split(':')[1] + '.html'
@@ -108,7 +108,7 @@ def do_outlook(mcxt, argspec):
                             f.write(fn.body)
                         f.close()
                     try:
-                        time = fn.ReceivedTime.strftime('%m-%d-%Y %H:%M')
+                        time = fn.ReceivedTime.strftime('%m-%d-%Y %H:%M:%S')
                         sender = fn.SenderEmailAddress
                         s.writerow([time, sender, fn, out])
                     except Exception:
