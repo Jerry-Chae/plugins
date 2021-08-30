@@ -19,6 +19,10 @@ ARGOS LABS PDF Conversion(pdf -> txt) plugin
 # --------
 #
 #  * [2021/08/11]
+#   기능 대량 추가 {explicit_vertical_lines, explicit_horizontal_lines, snap_tolerance, join_tolerance, edge_min_length
+#                 min_words_vertical, min_words_horizontal, keep_blank_chars, text_tolerance, text_x_tolerance,
+#                 text_y_tolerance, intersection_tolerance, intersection_x_tolerance, intersection_y_tolerance}
+#  * [2021/08/11]
 #   TEXT를 사용할때 None타입 에러가 발생해서 try Except 사용해서 에러해결
 #  * [2021/07/28]
 #   기능추가 separator, code 수정
@@ -42,6 +46,7 @@ class TableError(Exception):
 
 class Pdf2table(object):
     def __init__(self, argspec, pdffile):
+        self.argspec = argspec
         self.pdffile = pdffile
         self.pdf = pdfplumber.open(self.pdffile)
         self.page = argspec.page
@@ -55,7 +60,10 @@ class Pdf2table(object):
             self.output = csv.writer(self.outfile)  # csv형태로 내보낼때 사용
         else:
             self.output = str()     # Txet open 할때
-        self.pages = self.pdf.pages
+        if self.page:
+            self.pages = self.pdf.pages[self.page - 1]
+        else:
+            self.pages = self.pdf.pages
         self.tables = None
         self.sep = argspec.separator
         self.count = 0  # 페이지의 테이블이 있는지 없는지 체크하는 함수
@@ -67,7 +75,7 @@ class Pdf2table(object):
 
     def get_text(self):
         if self.page:  # page 선택할 수 있는 기능 추가
-            self.output = self.pages[self.page - 1].extract_text()
+            self.output = self.pages.extract_text()
         else:
             for page in self.pages:
                 # self.output += page.extract_text()
@@ -78,19 +86,75 @@ class Pdf2table(object):
         self.outfile.write(self.output)
         self.count = 1
 
+    @staticmethod
+    def explicit(page, explicit):
+        if explicit == "curves":
+            a = page.curves
+        elif explicit == "lines":
+            a = page.lines
+        elif explicit == "rects":
+            a = page.rects
+        else:  # default 값
+            a = []
+        return a
+
     def get_table(self, page=None):
         if self.page:
-            self.tables = self.pages[self.page - 1].extract_tables(table_settings={"vertical_strategy": self.vertical,
-                                                                                   "horizontal_strategy": self.horizontal,
-                                                                                   })
+            exp_v = self.explicit(self.pages, self.argspec.explicit_v)
+            exp_h = self.explicit(self.pages, self.argspec.explicit_h)
+            self.tables = self.pages.extract_tables(
+                                table_settings={
+                                 "vertical_strategy": self.vertical,
+                                 "horizontal_strategy": self.horizontal,
+                                 "explicit_vertical_lines": exp_v,
+                                 # used for extract table from page[0]
+                                 "explicit_horizontal_lines": exp_h,
+                                 # used for extract table from page[0]
+                                 "snap_tolerance": self.argspec.snap_tolerance,
+                                 "join_tolerance": self.argspec.join_tolerance,
+                                 "edge_min_length": self.argspec.edge_min_length,
+                                 "min_words_vertical": self.argspec.min_words_vertical,
+                                 "min_words_horizontal": self.argspec.min_words_horizontal,
+                                 "keep_blank_chars": self.argspec.keep_blank_chars,
+                                 "text_tolerance": self.argspec.text_tolerance,
+                                 "text_x_tolerance": self.argspec.text_x_tolerance,
+                                 "text_y_tolerance": self.argspec.text_y_tolerance,
+                                 "intersection_tolerance": self.argspec.intersection_tolerance,
+                                 "intersection_x_tolerance": self.argspec.intersection_x_tolerance,
+                                 "intersection_y_tolerance": self.argspec.intersection_y_tolerance,
+                                 })
             if self.tables:
                 self.count += 1
+            self.get_outfile()
         else:   # 페이지가 없는 경우 각각의 페이지에서 테이블을 가져오기위해서 page를 매개변수로 가져와 사용함
-            self.tables = page.extract_tables(table_settings={"vertical_strategy": self.vertical,
-                                                              "horizontal_strategy": self.horizontal,
-                                                              })
-            if self.tables:
-                self.count += 1
+            for page in self.pages:
+                exp_v = self.explicit(page, self.argspec.explicit_v)
+                exp_h = self.explicit(page, self.argspec.explicit_h)
+                self.tables = page.extract_tables(
+                                table_settings={
+                                 "vertical_strategy": self.vertical,
+                                 "horizontal_strategy": self.horizontal,
+                                 "explicit_vertical_lines": exp_v,
+                                 # used for extract table from page[0]
+                                 "explicit_horizontal_lines": exp_h,
+                                 # used for extract table from page[0]
+                                 "snap_tolerance": self.argspec.snap_tolerance,
+                                 "join_tolerance": self.argspec.join_tolerance,
+                                 "edge_min_length": self.argspec.edge_min_length,
+                                 "min_words_vertical": self.argspec.min_words_vertical,
+                                 "min_words_horizontal": self.argspec.min_words_horizontal,
+                                 "keep_blank_chars": self.argspec.keep_blank_chars,
+                                 "text_tolerance": self.argspec.text_tolerance,
+                                 "text_x_tolerance": self.argspec.text_x_tolerance,
+                                 "text_y_tolerance": self.argspec.text_y_tolerance,
+                                 "intersection_tolerance": self.argspec.intersection_tolerance,
+                                 "intersection_x_tolerance": self.argspec.intersection_x_tolerance,
+                                 "intersection_y_tolerance": self.argspec.intersection_y_tolerance,
+                                 })
+                self.get_outfile()
+
+                if self.tables:
+                    self.count += 1
 
     def get_outfile(self):
         if self.out_extension == '.csv':
@@ -129,13 +193,8 @@ def pdf2doc(mcxt, argspec):
         if argspec.text:    # text로 PDF파일을 열었을때
             p2t.get_text()
         else:   # Table을 찾을때
-            if p2t.page:
-                p2t.get_table()     # 페이지가 있을 때는 매개변수를 사용안함
-                p2t.get_outfile()
-            else:
-                for page in p2t.pages:
-                    p2t.get_table(page)     # 각각의 페이지에서 테이블을 담아와야함.
-                    p2t.get_outfile()
+            p2t.get_table()     # 페이지가 있을 때는 매개변수를 사용안함
+
         if p2t.count == 0:  # 페이지의 함수가 없는 경우 초기에 지정했던 0이 나옴
             msg = ('The table is not included in "%s"' % os.path.basename(pdffile))
             raise TableError(msg)
@@ -202,12 +261,70 @@ def _main(*args):
                           help='please enter a separator which will be inserted between words in exported .txt file')
         mcxt.add_argument('--vertical',
                           display_name='Vertical strategy', default="lines",
-                          choices=["lines", "lines_strict", "text"],
+                          choices=["lines", "lines_strict", "text", "explicit"],
                           input_group='Table option',
                           help='for more information refer to the help page')
         mcxt.add_argument('--horizontal',
                           display_name='Horizontal strategy', default="lines",
-                          choices=["lines", "lines_strict", "text"],
+                          choices=["lines", "lines_strict", "text", "explicit"],
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--explicit-v',
+                          display_name='Explicit_vertical_lines', default=None,
+                          choices=["lines", "recets", "curves"],
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--explicit-h',
+                          display_name='Explicit_horizontal_lines', default=None,
+                          choices=["lines", "recets", "curves"],
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--snap-tolerance',
+                          display_name='Snap_tolerance', default=3, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--join-tolerance',
+                          display_name='Join_tolerance', default=3, type=int,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--edge-min-length',
+                          display_name='Edge_min_length', default=3, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--min-words-vertical',
+                          display_name='Min_words_vertical', default=3, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--min-words-horizontal',
+                          display_name='Min_words_horizontal', default=1, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--keep-blank-chars',
+                          display_name='Keep_blank_chars', action='store_true',
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--text-tolerance',
+                          display_name='Text_tolerance', default=1, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--text_x_tolerance',
+                          display_name='Text_x_tolerance', default=1.5, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--text_y_tolerance',
+                          display_name='Text_y_tolerance', default=1.5, type=float,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--intersection_tolerance',
+                          display_name='Text_y_tolerance', default=3, type=int,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--intersection-x-tolerance',
+                          display_name='Intersection_x_tolerance', default=None, type=int,
+                          input_group='Table option',
+                          help='for more information refer to the help page')
+        mcxt.add_argument('--intersection-y-tolerance',
+                          display_name='Intersection_y_tolerance', default=None, type=int,
                           input_group='Table option',
                           help='for more information refer to the help page')
         # ----------------------------------------------------------------------
