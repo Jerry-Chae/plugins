@@ -20,6 +20,9 @@ ARGOS LABS plugin module for Excel Formula
 # Change Log
 # --------
 #
+#  * [2021/08/24]
+#     - '--show-formula'에 type = bool -> action='store_true' 로 변경
+#     - 백그라운드에서 excel이 닫히지 않는 현상 수정
 #  * [2021/08/23]
 #     - sheetname이 open할때 빠져있었음
 #  * [2020/08/10]
@@ -115,7 +118,10 @@ class Excelformula(object):
                                          read_only=read_only,
                                          data_only=data_only,
                                          keep_vba=keep_vba)
-        self.ws = self.wb.active
+        if self.argspec.sheetname:
+            self.ws = self.wb[self.argspec.sheetname]
+        else:
+            self.ws = self.wb.active
         self.ws[self.newcell] = self.argspec.formula
         self.wb.save(self.tempfile)
         return self.save()
@@ -146,9 +152,14 @@ class Excelformula(object):
         wbxl.close()
 
     # ==========================================================================
-    def close(self):
+    def A_close(self):
         if self.tempfile and os.path.exists(self.tempfile):
             os.remove(self.tempfile)
+        self.wb.close()
+        self.filename = None
+        self.tempfile = None
+        self.wb = None
+        self.ws = None
 
     # ==========================================================================
     def xls2csv(self):
@@ -184,7 +195,6 @@ class Excelformula(object):
                     self.wb.save(self.newfile)
             t = os.path.abspath(self.newfile)
             return t
-        self.wb.close()
         self.close()
 
 
@@ -206,6 +216,7 @@ def do_excek2(mcxt, argspec):
             exl.xlwingsfunc()
         else:
             print(o, end='')
+        exl.A_close()
         return 0
     except Exception as err:
         msg = str(err)
@@ -236,8 +247,8 @@ def _main(*args):
         mcxt.add_argument('--newfilename', display_name='Save As',
                           help='newfilename')
         # ----------------------------------------------------------------------
-        mcxt.add_argument('--show_formula', display_name='Formula Value',
-                          type = bool, help='excel formula')
+        mcxt.add_argument('--show-formula', display_name='Formula Value',
+                          action='store_true', help='excel formula')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--encoding', default='utf-8',
                           display_name='Encoding',
