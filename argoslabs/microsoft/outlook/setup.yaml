@@ -25,7 +25,7 @@ setup:
   package_data:
     argoslabs.microsoft.outlook: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.824.1623
+  version: 3.906.1629
 
 
 

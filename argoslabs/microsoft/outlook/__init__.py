@@ -35,17 +35,28 @@ from alabs.common.util.vvargs import func_log, get_icon_path, ModuleContext, \
 
 
 ################################################################################
+def _get_safe_filename(fn):
+    return "".join([c for c in fn if c.isalpha() or c.isdigit() or
+                    c in (' ', '.', '-', '@')]).rstrip()
+
+
+################################################################################
 @func_log
 def do_outlook(mcxt, argspec):
     mcxt.logger.info('>>>starting...')
     try:
         outlook = win32com.client.Dispatch('outlook.application')
         mapi = outlook.GetNamespace("MAPI")
-        inbox = mapi.GetDefaultFolder(argspec.foldertype)
+        if argspec.account:
+            inbox = mapi.Folders(argspec.account).Folders(argspec.emailfolder)
+        else:
+            inbox = mapi.GetDefaultFolder(argspec.foldertype)
+
         if argspec.subfolder:
-            inbox = mapi.GetDefaultFolder(argspec.foldertype).Folders[
+            inbox = mapi.GetDefaultFolder(argspec.foldertype).Parent.Folders[
                 argspec.subfolder]
         m = inbox.Items
+        m.Sort("[ReceivedTime]", True)
         if argspec.conditions:
             m = m.restrict(argspec.conditions[0])
             for ent in argspec.conditions:
@@ -78,6 +89,8 @@ def do_outlook(mcxt, argspec):
                 except Exception:
                     s.writerow(['', '', ent.subject])
         elif argspec.op == 'Get Contents':
+            if not os.path.exists(argspec.output):
+                os.makedirs(argspec.output)
             s = csv.writer(sys.stdout, lineterminator='\n')
             s.writerow(['time', 'from', 'subject', 'body_file'])
             m = list(m)
@@ -91,19 +104,19 @@ def do_outlook(mcxt, argspec):
                         date = now.strftime('%m%d%Y%H%M%S')
                     if argspec.htmloutput:
                         if ':' in fsubject:
-                            out = date + fsubject.split(':')[1] + '.html'
+                            out = date + '-' + fsubject.split(':')[1] + '.html'
                         else:
-                            out = date + fsubject + '.html'
-                        out = os.path.join(argspec.output, out)
+                            out = date + '-' + fsubject + '.html'
+                        out = os.path.join(argspec.output, _get_safe_filename(out))
                         with open(out, 'w', encoding='utf-8') as f:
                             f.write(fn.htmlbody)
                         f.close()
                     else:
                         if ':' in fsubject:
-                            out = date + fsubject.split(':')[1] + '.txt'
+                            out = date + '-' + fsubject.split(':')[1] + '.txt'
                         else:
-                            out = date + fsubject + '.txt'
-                        out = os.path.join(argspec.output, out)
+                            out = date + '-' + fsubject + '.txt'
+                        out = os.path.join(argspec.output, _get_safe_filename(out))
                         with open(out, 'w', encoding='utf-8') as f:
                             f.write(fn.body)
                         f.close()
@@ -126,13 +139,18 @@ def do_outlook(mcxt, argspec):
                     print("error when saving the attachment:" + str(e))
             print(output, end='')
         elif argspec.op == 'Move Emails':
-            move = mapi.GetDefaultFolder(argspec.mfoldertype)
-            if argspec.msubfolder:
-                move = mapi.GetDefaultFolder(argspec.mfoldertype).Folders[
+            if argspec.msubfolder and argspec.maccount:
+                move = mapi.Folders(argspec.maccount).Folders(argspec.msubfolder)
+            elif argspec.msubfolder:
+                move = mapi.GetDefaultFolder(argspec.mfoldertype).Parent.Folders[
                     argspec.msubfolder]
+            else:
+                move = mapi.GetDefaultFolder(argspec.mfoldertype)
             cnt = 0
             while len(m) > 0:
                 m = list(m)
+                # m = m.item[cnt]
+                # m[0].UnRead = False
                 m[0].Move(move)
                 m = m[1:]
                 cnt += 1
@@ -185,6 +203,12 @@ def _main(*args):
                                '(https://docs.microsoft.com/en-us/office/vba'
                                '/api/outlook.oldefaultfolders)')
         # ----------------------------------------------------------------------
+        mcxt.add_argument('--account', display_name='Account',
+                          help='input your account')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--emailfolder', display_name='E-mail folder',
+                          help='enter your E-mail folder')
+        # ----------------------------------------------------------------------
         mcxt.add_argument('--subfolder', display_name='Subfolder',
                           help='specify a subfolder')
         # ----------------------------------------------------------------------
@@ -218,6 +242,9 @@ def _main(*args):
                                'folder. Default is 6 which is inbox. '
                                '(https://docs.microsoft.com/en-us/office/vba'
                                '/api/outlook.oldefaultfolders)')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--maccount', display_name='Move account',
+                          help='Account with folder to move')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--msubfolder', display_name='Move Subfolder',
                           help='specify a subfolder')
