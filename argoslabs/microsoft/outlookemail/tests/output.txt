@@ -1,0 +1,37 @@
+time,from,subject
+09-01-2021 12:00:20,minakoro@vivans.net,[회의 일정] 홈페이지 개편 일정 조율 및 생명공학연구소 디자인 리뷰 회의 안내
+09-01-2021 15:29:59,dukim@hanatour.com,Re: 항공 예약 시나리오 관련
+09-01-2021 16:16:47,minakoro@vivans.net,Re: [회의록 공유] 홈페이지 개편 일정 조율 및 생명공학연구소 디자인 리뷰 회의
+09-02-2021 08:23:12,black@vivans.net,[FYI] RPA Brillio POV 영상
+09-02-2021 10:20:06,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 10:01:34,fedora@vivans.net,RE: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 11:19:01,youngkim@vivans.net,(APM) 한국투자증권
+09-02-2021 11:18:54,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 12:40:07,fedora@vivans.net,RE: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 13:42:59,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 15:12:51,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 15:09:29,fedora@vivans.net,RE: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 16:11:27,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-02-2021 17:32:42,kingnik@vivans.net,RE: 표준협회 수료증 발송 실패 확인요청
+09-02-2021 20:08:27,noreply@kakaocorp.com,[Kakao Developers][중요] 긴급공지: 카카오 Open API 플랫폼 SSL 인증서 변경
+09-03-2021 11:33:40,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-03-2021 13:28:17,fedora@vivans.net,RE: ncsoft RPA 서비스 보안 점검 일정 공유
+09-06-2021 16:59:16,black@vivans.net,9월 6일 RPA Sprint 회의 내용
+09-06-2021 17:44:10,black@vivans.net,RE: [피드백 요청] 홈페이지 개편 메인 디자인 레이아웃 공유합니다.
+09-06-2021 16:56:15,minakoro@vivans.net,[피드백 요청] 홈페이지 개편 메인 디자인 레이아웃 공유합니다.
+09-07-2021 10:40:28,minakoro@vivans.net,RE: [피드백 요청] 홈페이지 개편 메인 디자인 레이아웃 공유합니다.
+09-07-2021 12:02:31,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-07-2021 13:36:44,hairu10@ncsoft.com,[엔씨소프트] 응답시간 리포트 확인 불가건 문의
+09-07-2021 16:12:32,fedora@vivans.net,RE: [엔씨소프트] 응답시간 리포트 확인 불가건 문의
+09-07-2021 17:19:44,youngkim@vivans.net,RE: [피드백 요청] 홈페이지 개편 메인 디자인 레이아웃 공유합니다.
+09-08-2021 10:43:09,black@vivans.net,RE: (APM) 한국투자증권
+09-09-2021 17:27:33,fedora@vivans.net,사내 웹 서버 SSL 인증서 갱신
+09-10-2021 10:51:06,shc@vivans.net,RE: [검토요청]아르고스 브라우저 호환성 검토 요청(IE->Edge)
+09-10-2021 11:55:15,dukim@hanatour.com,Re: 항공 예약 시나리오 관련
+09-10-2021 14:57:43,stereoheart@vivans.net,RE: [검토요청]아르고스 브라우저 호환성 검토 요청(IE->Edge)
+09-10-2021 16:03:18,stereoheart@vivans.net,RE: 항공 예약 시나리오 관련
+09-11-2021 09:04:14,dukim@hanatour.com,Re: 항공 예약 시나리오 관련
+09-13-2021 16:45:54,black@vivans.net,[추가 요청] 복수로 선택한 PAM 의 작업 종류 추가 필요
+09-13-2021 17:00:40,black@vivans.net,9월 13일 RPA Sprint 회의 요약
+09-13-2021 16:59:23,fedora@vivans.net,추석 연휴 비상 연락망
+09-14-2021 09:39:26,kimusinee@yes24.com,[요청] YES24필터링 요청
