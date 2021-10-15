@@ -140,6 +140,7 @@ class TU(TestCase):
     #                  '--cc', 'akb0930@argos-labs.com',
     #                  '--bcc', 'akb0930@naver.com',
     #                  '--send-body', 'test boby!!!',
+    #                  '--send-body', 'test boby!!!',
     #                  '--attachment', 'output.txt'
     #                  )
     #         self.assertTrue(r == 0)

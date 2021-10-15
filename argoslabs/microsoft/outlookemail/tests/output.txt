@@ -35,3 +35,5 @@ time,from,subject
 09-13-2021 17:00:40,black@vivans.net,9월 13일 RPA Sprint 회의 요약
 09-13-2021 16:59:23,fedora@vivans.net,추석 연휴 비상 연락망
 09-14-2021 09:39:26,kimusinee@yes24.com,[요청] YES24필터링 요청
+09-14-2021 11:45:55,black@vivans.net,[9/14] RPA Conference Call - Ideas for 3 new operations
+09-14-2021 11:08:01,stereoheart@vivans.net,RE: [요청] YES24필터링 요청

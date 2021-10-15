@@ -209,8 +209,9 @@ class OutLook(object):
     def sendmail(self):
         mail = self.outlook.CreateItem(0)
         mail.To = ';'.join(self.argspec.to)+';'
-        if self.argspec.send_body:
-            mail.Body = self.argspec.send_body
+        if self.argspec.send_body:      # 본문 부분이 한줄로만 작성이 되어서 리스트형식으로 받아서 조인시킴
+            mail.Body = "\n".join(self.argspec.send_body)
+            # mail.Body = self.argspec.send_body
         if self.argspec.htmlbody:
             mail.HTMLBody = self.argspec.htmlbody
         if self.argspec.send_subjact:
@@ -279,10 +280,10 @@ def _main(*args):
                           help='specify a string to find')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--since', display_name='Search Since',
-                          help='Set filter for email address SINCE, example is [[09/01/2021 15:00:00]]')
+                          help='Set filter for email address SINCE, example is [[09/01/2021 15:00]]')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--before', display_name='Search Before',
-                          help='Set filter for email address BEFORE, example is [[09/07/2021 15:00:00]]')
+                          help='Set filter for email address BEFORE, example is [[09/07/2021 15:00]]')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--conditions', display_name='Mail Conditions',
                           action='append',
@@ -327,7 +328,8 @@ def _main(*args):
                           input_group='Send Mails Conditions',
                           help='mail subjact to send')
         # ----------------------------------------------------------------------
-        mcxt.add_argument('--send-body', display_name='Mail Body',
+        mcxt.add_argument('--send-body', action='append',
+                          display_name='Mail Body',
                           input_group='Send Mails Conditions',
                           help='mail bodies to send')
         # ----------------------------------------------------------------------
