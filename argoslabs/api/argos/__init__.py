@@ -137,7 +137,7 @@ def func(mcxt, argspec):
 def _main(*args):
     with ModuleContext(
             owner='ARGOS-LABS',
-            group='4',
+            group='9',
             version='1.0',
             platform=['windows', 'darwin', 'linux'],
             output_type='csv',

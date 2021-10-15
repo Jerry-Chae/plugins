@@ -118,49 +118,49 @@ class TU(TestCase):
     #         sys.stderr.write('\n%s\n' % str(e))
     #         self.assertTrue(False)
 
-    # ==========================================================================
-    def test0220_sendOndemand_vaeiable_testVM(self):
-        try:
-            r = main('sendOndemand', '2c4e34ba47674e5fd295',
-                     '--userid', 'akb0930@vivans.net',
-                     '--scenarioid', '004987801c6a4d0c8071',
-                     '--pamid', 'c1e8a7d977f5d9ace632',
-                     '--valuename', 'my.a',
-                     '--valuename', 'my.b',
-                     '--valuename', 'AAAAA.aaab',
-                     '--valuename', 'param.searchText',
-                     '--value', 'hello, world',
-                     '--value', 'hello, world2',
-                     '--value', '["1", "2", "3", "A", "B", "C"]',
-                     '--value', 'hello world',
-                     )
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
-    def test0230_sendOndemand_endpoint(self):   # endpoint https://webhook.site/
-        try:
-            r = main('sendOndemand', '2c4e34ba47674e5fd295',
-                     '--userid', 'akb0930@vivans.net',
-                     '--scenarioid', '004987801c6a4d0c8071',
-                     '--pamid', 'c1e8a7d977f5d9ace632',
-                     '--endpoint', 'https://webhook.site/74b6e49d-f1b5-4adc-9354-73c9b48b1a66',
-                     '--workid', 'testhook',
-                     '--valuename', 'my.a',
-                     '--valuename', 'my.b',
-                     '--valuename', 'AAAAA.aaab',
-                     '--valuename', 'param.searchText',
-                     '--value', 'hello, world',
-                     '--value', 'hello, world2',
-                     '--value', '["1", "2", "3", "A", "B", "C"]',
-                     '--value', 'hello world',
-                     )
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # # ==========================================================================
+    # def test0220_sendOndemand_vaeiable_testVM(self):
+    #     try:
+    #         r = main('sendOndemand', '2c4e34ba47674e5fd295',
+    #                  '--userid', 'akb0930@vivans.net',
+    #                  '--scenarioid', '004987801c6a4d0c8071',
+    #                  '--pamid', 'c1e8a7d977f5d9ace632',
+    #                  '--valuename', 'my.a',
+    #                  '--valuename', 'my.b',
+    #                  '--valuename', 'AAAAA.aaab',
+    #                  '--valuename', 'param.searchText',
+    #                  '--value', 'hello, world',
+    #                  '--value', 'hello, world2',
+    #                  '--value', '["1", "2", "3", "A", "B", "C"]',
+    #                  '--value', 'hello world',
+    #                  )
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
+    # def test0230_sendOndemand_endpoint(self):   # endpoint https://webhook.site/
+    #     try:
+    #         r = main('sendOndemand', '2c4e34ba47674e5fd295',
+    #                  '--userid', 'akb0930@vivans.net',
+    #                  '--scenarioid', '004987801c6a4d0c8071',
+    #                  '--pamid', 'c1e8a7d977f5d9ace632',
+    #                  '--endpoint', 'https://webhook.site/74b6e49d-f1b5-4adc-9354-73c9b48b1a66',
+    #                  '--workid', 'testhook',
+    #                  '--valuename', 'my.a',
+    #                  '--valuename', 'my.b',
+    #                  '--valuename', 'AAAAA.aaab',
+    #                  '--valuename', 'param.searchText',
+    #                  '--value', 'hello, world',
+    #                  '--value', 'hello, world2',
+    #                  '--value', '["1", "2", "3", "A", "B", "C"]',
+    #                  '--value', 'hello world',
+    #                  )
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
     # ==========================================================================
     def test9999_quit(self):
