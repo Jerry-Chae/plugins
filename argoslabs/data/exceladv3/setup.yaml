@@ -27,7 +27,7 @@ setup:
   package_data:
     argoslabs.data.exceladv3: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.805.1400
+  version: 3.1008.1544
 
 
 

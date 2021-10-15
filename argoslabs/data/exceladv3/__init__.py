@@ -19,6 +19,8 @@ ARGOS LABS plugin module for Excel Formula
 #
 # Change Log
 # --------
+# * [2021/10/08]
+#     - newvalue base64 변환하는 부분이 에러가 발생해서 __init__ 부분에서 변환하도록 수정
 # * [2021/03/26]
 #     - update replace function
 #  * [2020/08/10]
@@ -32,7 +34,6 @@ import os
 import re
 import csv
 import sys
-import base64
 import datetime
 import openpyxl
 import xlwings as xw
@@ -55,6 +56,10 @@ class Excel3API(object):
     # ==========================================================================
     def __init__(self, argspec):
         self.argspec = argspec
+        self.newvalue = []
+        if argspec.newvalue:
+            for i in argspec.newvalue:
+                self.newvalue.append(vv_base64_decode(i))
         self.filename = argspec.filename
         if not os.path.exists(self.filename):
             raise IOError('Cannot read excel filename "%s"' % self.filename)
@@ -277,10 +282,10 @@ class Excel3API(object):
     def replace(self, range_=None):
         if not self.argspec.oldvalue:
             self.argspec.oldvalue = None
-        if not self.argspec.newvalue:
-            self.argspec.newvalue = ['']
+        if not self.newvalue:
+            self.newvalue = ['']
         try:
-            self.argspec.newvalue[0] = float(self.argspec.newvalue[0])
+            self.newvalue[0] = float(self.newvalue[0])
         except Exception:
             pass
         try:
@@ -294,20 +299,20 @@ class Excel3API(object):
                 if k == 'same_col':
                     for i in t:
                         if i.value == self.argspec.oldvalue:
-                            i.value = self.argspec.newvalue[0]
+                            i.value = self.newvalue[0]
                 elif k == 'diff_col':
                     for i in t:
                         for x in i:
                             if x.value == self.argspec.oldvalue:
-                                x.value = self.argspec.newvalue[0]
+                                x.value = self.newvalue[0]
                 else:
                     if self.ws[j].value == self.argspec.oldvalue:
-                        self.ws[j].value = self.argspec.newvalue[0]
+                        self.ws[j].value = self.newvalue[0]
         else:
             for i in self.ws.iter_rows():
                 for x in i:
                     if x.value == self.argspec.oldvalue:
-                        x.value = self.argspec.newvalue[0]
+                        x.value = self.newvalue[0]
                         # print(x.value)
         print(self.save(), end='')
 
@@ -467,7 +472,7 @@ class Excel3API(object):
         if not self.argspec.range:
             self.argspec.range = list()
         if op == self.OP_TYPE[0]:
-            self.paste(self.argspec.newvalue, self.argspec.range,
+            self.paste(self.newvalue, self.argspec.range,
                        self.argspec.newcell)
         elif op == self.OP_TYPE[1]:
             self.replace(self.argspec.range)
@@ -478,7 +483,7 @@ class Excel3API(object):
                          self.argspec.index, self.argspec.bool)
             self.xlwingsfunc()
         elif op == self.OP_TYPE[4]:
-            self.count(self.argspec.range, self.argspec.newvalue)
+            self.count(self.argspec.range, self.newvalue)
             self.xlwingsfunc()
         elif op == self.OP_TYPE[5]:
             self.counta(self.argspec.range)
@@ -487,10 +492,10 @@ class Excel3API(object):
             self.countif(self.argspec.range, self.argspec.condition)
             self.xlwingsfunc()
         elif op == self.OP_TYPE[7]:
-            self.sumfunc(self.argspec.range, self.argspec.newvalue)
+            self.sumfunc(self.argspec.range, self.newvalue)
             self.xlwingsfunc()
         elif op == self.OP_TYPE[8]:
-            r, n = self.argspec.range, self.argspec.newvalue
+            r, n = self.argspec.range, self.newvalue
             if len(r)!=len(n):
                 raise RuntimeError('The length of Cell/Range and New value are different.')
             else:
