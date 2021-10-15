@@ -22,4 +22,4 @@ setup:
     argoslabs.office.emailsend: ['icon.*', 'tests/*.*']
   url: https://www.argos-labs.com
 #  version: 2.1021.1500
-  version: 3.618.1438
+  version: 3.1007.1700

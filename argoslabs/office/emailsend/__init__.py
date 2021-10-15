@@ -17,6 +17,8 @@ ARGOS LABS plugin module for sending email
 # Change Log
 # --------
 #
+#  * [2021/10/07] Kyobong An
+#     - msg_body가 두개 있어서 하나 삭제함. if문으로 bady체크
 #  * [2021/06/18]
 #   password에 공백으로 입력시 패스워드없이 메일 보낼 수 있도록 수정 (패스워드가 없는 메일 발송 가능하기위함)
 #  * [2021/04/09]
@@ -163,17 +165,16 @@ class EMailSend(object):
         msg_body = MIMEMultipart('alternative')
         body_type = 'html' if self.body_type == 'html' else 'plain'
         body = self.body_text
-        if body:
-            msg_body.attach(MIMEText(body, body_type))
         if self.body_file:
             if not os.path.exists(self.body_file):
                 raise RuntimeError('Cannot find --body-file "%s"' % self.body_file)
             encoding = get_file_encoding(self.body_file)
             with open(self.body_file, encoding=encoding) as ifp:
                 body = ifp.read()
+        if body:
+            msg_body.attach(MIMEText(body, body_type))
         if not body:
             raise RuntimeError('Invalid body, please set --body-text or --body-file')
-        msg_body.attach(MIMEText(body, body_type))
         msg.attach(msg_body)
         # receiver = self.to + self.cc + self.bcc
         receiver = self.to
