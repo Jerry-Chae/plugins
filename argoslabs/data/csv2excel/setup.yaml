@@ -24,4 +24,4 @@ setup:
     argoslabs.data.csv2excel: ['icon.*']
   url: https://www.argos-labs.com
 #  version: 3.223.842
-  version: 3.223.3300
+  version: 3.1007.1136

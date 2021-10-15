@@ -18,6 +18,8 @@ ARGOS LABS plugin module for converting csv to xlsx
 # Change Log
 # --------
 #
+#  * [2021/03/27] Kyobong An
+#     - outfile path를 return 하도록 추가
 #  * [2021/03/27] Jerry Chae
 #     - 그룹에 "6-Files and Folders" 넣음
 #  * [2021/02/23] Jerry Chae
@@ -275,6 +277,7 @@ def do_excelcopy(mcxt, argspec):
             for i, j in zip(argspec.range, argspec.format):
                 exl.csv2excel(i, j)
             print(exl.close(), end='')
+        print(os.path.abspath(exl.outputfile), end='')
         return 0
     except Exception as err:
         msg = str(err)
