@@ -24,4 +24,4 @@ setup:
     #argoslabs.office.emailread: ['icon.*', 'tests/*.*']
   url: https://www.argos-labs.com
 #  version: 2.823.2142
-  version: 2.823.3300
+  version: 3.1021.1100

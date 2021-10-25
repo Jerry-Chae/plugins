@@ -17,6 +17,8 @@ ARGOS LABS plugin module sample
 # Change Log
 # --------
 #
+#  * [2021/04/09] Kyobong An
+#     - 가져올 메일이 없을때 1을 리턴하던것을 0으로 변경, 나머지에러는 리턴 99. decode의 에러에 대해서도(errors ='ignore')
 #  * [2021/04/09]
 #     - 그룹에 "5-Email/Messenger" 넣음
 #  * [2020/08/23]
@@ -175,7 +177,7 @@ class ImapMailClient(object):
             raise RuntimeError('Invalid result of decode_header: %s' % dh)
         if not dh[0][1]:
             return dh[0][0]
-        r = dh[0][0].decode(dh[0][1])
+        r = dh[0][0].decode(dh[0][1], errors='ignore')
         return r
 
     # ==========================================================================
@@ -321,7 +323,7 @@ class ImapMailClient(object):
                         payload_str = str.encode(payload, 'utf-8')
                         res['payload'] = payload_str
                     elif isinstance(payload, bytes):
-                        res['payload'] = payload.decode('utf-8')
+                        res['payload'] = payload.decode('utf-8', errors='ignore')
                     else:
                         raise RuntimeError(
                             'Invalid body type nore (str or bytes) but "%s"' % str(
@@ -447,12 +449,12 @@ def email_job(mcxt, args):
         elif args.operation == 'monitor':
             cnt = monitor_email(mcxt, args)
         mcxt.logger.info('>>>end...')
-        return 0 if cnt > 0 else 1
+        return 0
     except Exception as e:
         msg = 'Error: %s' % str(e)
         mcxt.logger.error(msg)
         sys.stderr.write('%s%s' % (msg, os.linesep))
-        raise
+        return 99
 
 
 ################################################################################
