@@ -17,6 +17,8 @@ ARGOS LABS plugin module for operations of filesystem
 # Change Log
 # --------
 #
+#  * [2021/10/27] Kyobong An
+#     - fnmatch() 함수에 기존 fullpath로 입력 -> filename만 입력되도록 변경
 #  * [2021/04/08]
 #     - 그룹에 "6-Files and Folders" 넣음
 #  * [2021/02/17]
@@ -108,7 +110,8 @@ def copy_file(s, t,
         raise RuntimeError('Cannot get file for source "%s" file' % s)
     if s == t:
         raise RuntimeError('Cannot copy same source or target file "%s"' % s)
-    if not fnmatch(s, wildcard):
+    # if not fnmatch(s, wildcard): # fullpath로 적용됨
+    if not fnmatch(os.path.basename(s), wildcard):
         return 0
     tdir = os.path.dirname(t)
     if not os.path.exists(tdir):
@@ -306,7 +309,7 @@ def _main(*args):
         mcxt.add_argument('--wildcard',
                           display_name='Src file wildcard', show_default=True,
                           default='*',
-                          help='In folder opeartion use matching whidcard, default is [[*]]')
+                          help='In folder opeartion use matching wildcard, default is [[*]]')
         mcxt.add_argument('--preserve', '-p', action='store_true',
                           display_name='Preserve time,mode',
                           help='If this flag is set preserve meta information of filesystem. Time and mode are preserved.')

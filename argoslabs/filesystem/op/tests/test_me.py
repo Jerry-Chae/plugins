@@ -545,6 +545,20 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
+    def test0500_wildcard__ASJ_556(self):
+        try:
+            invalid_dir = os.path.join(tempfile.gettempdir(), 'invalidfoldertotest')
+            r = main('copy',
+                     'C:\\Users\\argos\\Desktop\\bongsplugin\\plug-in-test\\File Folder OP\\test folder',
+                     'C:\\Users\\argos\\Desktop\\bongsplugin\\plug-in-test\\File Folder OP\\target folder',
+                     '--wildcard', 'test*')
+            self.assertTrue(r == 0)
+            self.assertTrue(not os.path.exists(invalid_dir))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test9999_quit(self):
         for f in glob.glob(os.path.join(tempfile.gettempdir(), 'op_dir_*')):
             shutil.rmtree(f)
