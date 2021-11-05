@@ -12,10 +12,9 @@ setup:
   - 'Topic :: Change :: Log :: Unittest for Mac'
   - 'Topic :: Change :: Log :: Unittest for Linux'
   - 'Topic :: Change :: Log :: Unittest for Windows'
-  description: ARGOS-LABS RPA plugin for getting data of outlook
+  description: ARGOS-LABS RPA plugin for getting data of sharepoint
   keywords:
-    - mails
-    - outlook
+    - sharepoint
     - microsoft
   license: ARGOS-LABS Proprietary License
   platforms:
@@ -23,9 +22,9 @@ setup:
   - Windows
   - Linux
   package_data:
-    argoslabs.microsoft.outlookemail: ['icon.*']
+    argoslabs.microsoft.sharepoint: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.915.1130
+  version: 3.1105.1425
 
 
 

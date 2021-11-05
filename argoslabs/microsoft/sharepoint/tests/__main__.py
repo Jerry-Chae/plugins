@@ -1,6 +1,6 @@
 
 import sys
-from argoslabs.microsoft.outlookemail.tests.test_me import TU
+from argoslabs.microsoft.sharepoint.tests.test_me import TU
 from unittest import TestLoader, TextTestRunner
 
 

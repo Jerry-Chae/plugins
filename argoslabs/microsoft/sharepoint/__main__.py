@@ -1,19 +1,19 @@
 """
 ====================================
- :mod:`argoslabs.microsoft.outlookemail`
+ :mod:`argoslabs.microsoft.sharepoint`
 ====================================
 .. moduleauthor:: Kyobong An <akb0930@argos-labs.com>
 .. note:: ARGOS-LABS License
 
 Description
 ===========
-ARGOS LABS plugin module for Outlook
+ARGOS LABS plugin module for SharePoint
 """
 
 ################################################################################
 import sys
 from alabs.common.util.vvargs import ArgsError, ArgsExit
-from argoslabs.microsoft.outlookemail import main
+from argoslabs.microsoft.sharepoint import main
 
 
 ################################################################################
