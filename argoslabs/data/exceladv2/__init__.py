@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel Advance II
 # Change Log
 # --------
 #
+#  * [2021/11/10] Kyobong An
+#     - Sheet Copy 할때 기존시트가 같이 생성되고 data_only까지 사용할때 기존파일이 여러개생기는 오류수정.
 #  * [2021/03/29]
 #     - 그룹에 "2-Business Apps" 넣음
 #  * [2020/07/27]
@@ -153,7 +155,7 @@ class Excel2API(object):
 
     # ==========================================================================
     def open(self, read_only=False, data_only=False, keep_vba=False):
-        if self.argspec.data_only:
+        if self.argspec.data_only and self.argspec.op != 'Copy Sheet':
             t = self._get_safe_next_filename(self.filename)
             shutil.copy(self.filename, t)
             self.filename = t
@@ -179,6 +181,7 @@ class Excel2API(object):
                 if self.argspec.sheetname not in self.wb.sheetnames:
                     return 1
                 self.ws = self.wb[self.argspec.sheetname]
+
         return 0
 
     # ==========================================================================
@@ -209,7 +212,7 @@ class Excel2API(object):
             print(os.path.abspath(self.filename), end='')
             # return os.path.abspath(self.filename)
         else:
-            if self.argspec.data_only:
+            if self.argspec.data_only and self.argspec.op != 'Copy Sheet':
                 if not os.path.exists(self.newfilename):
                     os.remove(self.filename)
                 else:
@@ -322,11 +325,23 @@ class Excel2API(object):
 
     # ==========================================================================
     def copy_sheet(self):
-        target = self.wb[self.argspec.sheetname]
-        self.ws = self.wb.copy_worksheet(target)
+        if self.argspec.data_only:
+            self.wb = openpyxl.load_workbook(self.filename,
+                                             data_only=True)
+
+        self.ws = self.wb[self.argspec.sheetname]
         if self.argspec.newsheet:
             self.ws.title = self.argspec.newsheet
-        self.save()
+        # del self.wb[self.argspec.sheetname]
+        if self.newfilename:
+            for sheet in self.wb.sheetnames:
+                if sheet == self.argspec.newsheet:
+                    pass
+                else:
+                    del self.wb[sheet]
+            self.wb.save(self.newfilename)
+        else:
+            self.save()
         #self.wb.save('sample0.xlsx')
 
     # ==========================================================================
@@ -423,7 +438,7 @@ def _main(*args):
                           display_name='Encoding',
                           help='Encoding for CSV file, default is [[utf-8]]')
         # ----------------------------------------------------------------------
-        mcxt.add_argument('--data_only', display_name='Data Only',
+        mcxt.add_argument('--data-only', display_name='Data Only',
                           action='store_true', help='data_only')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--nonecsvrv', display_name='None CSV RV',
