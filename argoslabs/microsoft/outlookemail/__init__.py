@@ -18,6 +18,8 @@ ARGOS LABS plugin module for Outlook
 # Change Log
 # --------
 #
+#  * [2021/11/17]
+#     - 메일을 저장할때 초까지 같은 경우가 발생해서 완전 같은 경우 filename뒤에 (1)을 추가
 #  * [2021/09/10]
 #     - Mark as Read를 읽지않은 메일만 가져올때와 동시에 사용할때 오류가 생김 메일을 가져온뒤에 Mark as Read를 사용하도록 변경
 #  * [2021/09/07]
@@ -38,6 +40,7 @@ from alabs.common.util.vvargs import func_log, get_icon_path, ModuleContext, \
 def _get_safe_filename(fn):
     return "".join([c for c in fn if c.isalpha() or c.isdigit() or
                     c in (' ', '.', '-', '@')]).rstrip()
+
 
 def _get_safe_next_filename(fn):
     fn, ext = os.path.splitext(fn)
@@ -162,6 +165,8 @@ class OutLook(object):
                     else:
                         out = date + '-' + fsubject + '.txt'
                     out = os.path.join(self.argspec.output, _get_safe_filename(out))
+                    if os.path.exists(out):
+                        out = _get_safe_next_filename(out)
                     with open(out, 'w', encoding='utf-8') as f:
                         f.write(fn.body)
                     f.close()

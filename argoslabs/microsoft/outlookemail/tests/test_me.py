@@ -79,7 +79,8 @@ class TU(TestCase):
     #                  # '--subfolder', 'test',
     #                  '--search-body', '안녕하세요',
     #                  # '--mailsubject', '9월 6일 RPA Sprint 회의 내용',
-    #                  '--received', ">= '09/03/2021 15:00'",
+    #                  # '--received', ">= '09/03/2021 15:00'",
+    #                  '--mails-number', '3',
     #                  '--output', 'output',
     #                  )
     #         self.assertTrue(r == 0)

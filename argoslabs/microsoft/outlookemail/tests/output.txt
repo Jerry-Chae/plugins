@@ -37,3 +37,169 @@ time,from,subject
 09-14-2021 09:39:26,kimusinee@yes24.com,[요청] YES24필터링 요청
 09-14-2021 11:45:55,black@vivans.net,[9/14] RPA Conference Call - Ideas for 3 new operations
 09-14-2021 11:08:01,stereoheart@vivans.net,RE: [요청] YES24필터링 요청
+09-15-2021 11:36:03,black@vivans.net,[참고] 남동발전 이미지 업로드 관련 논의 내용 정리
+09-16-2021 17:22:55,shoo1208@ncsoft.com,Re: ncsoft RPA 서비스 보안 점검 일정 공유
+09-16-2021 18:19:31,fedora@vivans.net,RE: ncsoft RPA 서비스 보안 점검 일정 공유
+09-17-2021 11:14:21,fedora@vivans.net,RE: [스킨알엑스] 사용자 삭제 요청
+09-17-2021 11:09:30,rxdev@skinrx.co.kr,[스킨알엑스] 사용자 삭제 요청
+09-23-2021 09:19:28,black@vivans.net,FW: (resend) check points of VE Bot
+09-23-2021 09:19:28,black@vivans.net,FW: (resend) check points of VE Bot
+09-23-2021 10:44:13,dukim@hanatour.com,Re: 항공 예약 시나리오 관련
+09-23-2021 11:29:06,shc@vivans.net,RE: [재검토 요청]Re: [비바엔에스 회신] [검토요청]아르고스 브라우저 호환성 검토 요청(IE->Edge)
+09-23-2021 14:12:12,sw.kim@isecommerce.co.kr,
+09-23-2021 17:02:49,stereoheart@vivans.net,RE: 
+09-23-2021 17:48:37,black@vivans.net,서비스 도메인 SSL 사용 여부 및 업데이트 상태 점검
+09-24-2021 16:00:03,black@vivans.net,RE: (resend) check points of VE Bot
+09-28-2021 11:26:14,fedora@vivans.net,RE: argos 데이터 수집 오류 문의
+09-28-2021 13:15:38,pbreaker@golfzon.com,[업무협조] 국내 GDR APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+09-28-2021 13:41:14,fedora@vivans.net,RE: [업무협조] 국내 GDR APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+09-30-2021 09:48:35,shkwon03@hyundaiezwel.com,[현대이지웰] wow PC 시나리오 변경 요청의 件
+09-30-2021 11:05:08,minakoro@vivans.net,"안녕하세요, 구남희 퇴직 인사드립니다."
+09-30-2021 17:01:26,stereoheart@vivans.net,RE: [현대이지웰] wow PC 시나리오 변경 요청의 件
+09-30-2021 22:21:27,hnkim@hanatour.com,Re: 항공 예약 시나리오 관련
+10-01-2021 13:11:54,dukim@hanatour.com,Re: 항공 예약 시나리오 관련
+10-01-2021 14:39:41,bono@hyundaiezwel.com,[현대이지웰] e쿠폰 시나리오 상품 변경 요청
+10-01-2021 15:31:47,stereoheart@vivans.net,RE: 항공 예약 시나리오 관련
+10-01-2021 18:02:29,stereoheart@vivans.net,RE: FW:[현대이지웰] e쿠폰 시나리오 상품 변경 요청
+10-05-2021 14:58:00,black@vivans.net,[FYI] 10월 5일 RPA Sprint 회의 내용
+10-05-2021 16:34:37,shc@vivans.net,2021년 임직원 연차 유급휴가 소진 요청
+10-06-2021 17:42:26,hairu10@ncsoft.com,[엔씨소프트] 9월응답시간 리포트 확인불가건
+10-06-2021 18:38:08,fedora@vivans.net,RE: [엔씨소프트] 9월응답시간 리포트 확인불가건
+10-07-2021 10:50:51,pbreaker@golfzon.com,[업무협조] 국내 GDR APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+10-07-2021 14:44:15,akb0930@naver.com,no password
+10-07-2021 14:40:10,tsoaaa@vivans.net,no password
+10-07-2021 14:36:56,tsoaaa@vivans.net,no password
+10-07-2021 14:36:18,tsoaaa@vivans.net,no password
+10-07-2021 17:27:12,black@vivans.net,[RPA] Plugin 결과값 처리 개선 논의 제안
+10-07-2021 18:19:13,stereoheart@vivans.net,RE: [업무협조] 국내 GDR APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+10-07-2021 23:16:10,hnkim@hanatour.com,Re: 항공 예약 시나리오 관련
+10-08-2021 15:40:57,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+10-13-2021 09:17:17,pbreaker@golfzon.com,[업무협조] 글로벌세일즈 사이트 URL 변경에 따른 ARGOS 시나리오 수정 요청 件
+10-13-2021 10:46:50,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+10-13-2021 13:20:05,stereoheart@vivans.net,RE: [하나투어] 아르고스 SMS 알람 수신 관련 문의 드립니다.
+10-13-2021 14:28:02,stereoheart@vivans.net,RE: [업무협조] 글로벌세일즈 사이트 URL 변경에 따른 ARGOS 시나리오 수정 요청 件
+10-13-2021 15:18:28,seungryong@hanatour.com,RE: [하나투어] 아르고스 SMS 알람 수신 관련 문의 드립니다.
+10-13-2021 15:54:35,fedora@vivans.net,RE: [하나투어] 아르고스 SMS 알람 수신 관련 문의 드립니다.
+10-13-2021 15:40:14,seungryong@hanatour.com,RE: [하나투어] 아르고스 SMS 알람 수신 관련 문의 드립니다.
+10-13-2021 17:52:45,stereoheart@vivans.net,RE: 웹 응답속도 측정 브라우저 관련 문의
+10-14-2021 10:41:34,wldnjs0327@golfzon.com,RE: [업무협조] 글로벌세일즈 사이트 URL 변경에 따른 ARGOS 시나리오 수정 요청 件
+10-14-2021 13:33:31,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+10-14-2021 15:42:30,black@vivans.net,FW: [NOTICE] RPA PAM R21.0916.40 (1st Patch) released 
+10-14-2021 16:34:42,kingnik@vivans.net,RE: [NOTICE] RPA PAM R21.0916.40 (1st Patch) released 
+10-14-2021 18:39:55,stereoheart@vivans.net,RE: [업무협조] 글로벌세일즈 사이트 URL 변경에 따른 ARGOS 시나리오 수정 요청 件
+10-15-2021 00:28:58,no-reply@kakaocorp.com,[카카오비즈니스] 카카오광고 서비스 운영정책 변경 고지
+10-15-2021 11:30:34,fedora@vivans.net,FW: ARGOS 시나리오 작성 이슈 공유
+10-15-2021 11:21:34,fedora@vivans.net,Argos 설치 파일 전달
+10-18-2021 14:21:57,black@vivans.net,[FYI] 10월 18일 RPA Sprint 회의 내용
+10-19-2021 10:12:40,shoo1208@ncsoft.com,Fw: [요청] SaaS용 Argos RPA+의 최신 메뉴얼 요청
+10-19-2021 11:08:23,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+10-19-2021 17:48:13,fedora@vivans.net,RE: [요청] SaaS용 Argos RPA+의 최신 메뉴얼 요청
+10-19-2021 18:31:46,fedora@vivans.net,RE: [요청] SaaS용 Argos RPA+의 최신 메뉴얼 요청
+10-21-2021 10:53:36,seungryong@hanatour.com,[하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-21-2021 11:28:01,seungryong@hanatour.com,RE: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-21-2021 11:22:11,fedora@vivans.net,RE: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-21-2021 11:35:53,fedora@vivans.net,ARGOS PC 시나리오 등록 관련 작업 요청
+10-21-2021 19:25:31,hhlee@poscoict.com,[적용가능일정문의]Re: RE: [재검토 요청]Re: [비바엔에스 회신] [검토요청]아르고스 브라우저 호환성 검토 요청(IE->Edge)
+10-25-2021 13:05:59,shoo1208@ncsoft.com,[문의] 불필요한 사용자 삭제 관련 외
+10-25-2021 14:57:23,black@vivans.net,[RPA기획안] Most recent TOP 3 와 STU의 Group 기능
+10-26-2021 08:33:50,black@vivans.net,RE: [Planning] Most Recent Top 3 of SV On-demand
+10-26-2021 11:17:11,black@vivans.net,RE: [Planning] Most Recent Top 3 of SV On-demand
+10-26-2021 11:02:19,seonme@vivans.net,RE: [Planning] Most Recent Top 3 of SV On-demand
+10-26-2021 11:47:08,fedora@vivans.net,RE: [문의] 불필요한 사용자 삭제 관련 외
+10-26-2021 18:47:09,dustjs159@vivans.net,FW: 10월 검수확인서 보내드립니다.(비바엔에스 윤연선)
+10-27-2021 17:57:13,kingnik@vivans.net,RE: [외부메일]ARGOS 배포 후 문의 내용 회신 드립니다.
+10-27-2021 17:54:41,pbreaker@golfzon.com,RE: [외부메일]ARGOS 배포 후 문의 내용 회신 드립니다.
+10-27-2021 17:52:02,kingnik@vivans.net,ARGOS 배포 후 문의 내용 회신 드립니다.
+10-27-2021 19:02:26,kohyunae@yes24.com,RE: IP차단 해제 부탁드립니다.
+10-27-2021 18:59:03,kingnik@vivans.net,IP차단 해제 부탁드립니다.
+10-27-2021 22:57:49,hnkim@hanatour.com,Re: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-28-2021 08:11:47,black@vivans.net,[안내] ABBYY 신규 Data Extraction Solution 시연 일정
+10-28-2021 10:44:13,pbreaker@golfzon.com,RE: [외부메일]RE: [외부메일]ARGOS 배포 후 문의 내용 회신 드립니다.
+10-28-2021 10:35:20,kingnik@vivans.net,RE: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-28-2021 11:07:42,kingnik@vivans.net,RE: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+10-28-2021 11:02:19,seungryong@hanatour.com,RE: [하나투어] 아르고스 수집 실패(해외호텔) 알람 확인 요청
+11-01-2021 10:37:56,fedora@vivans.net,RE: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-01-2021 10:16:57,shoo1208@ncsoft.com,[문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-01-2021 11:05:10,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-01-2021 14:26:06,black@vivans.net,11월 1일 RPA Sprint 회의 요약
+11-01-2021 14:54:09,shoo1208@ncsoft.com,[문의] 해외 접속 모니터링 관련 문의
+11-01-2021 16:15:13,fedora@vivans.net,FW: [이니텍] 아르고스 시나리오 작업 및 교육 요청
+11-01-2021 18:24:41,fedora@vivans.net,RE: [적용가능일정문의]Re: RE: [재검토 요청]Re: [비바엔에스 회신] [검토요청]아르고스 브라우저 호환성 검토 요청(IE->Edge)
+11-01-2021 18:18:26,fedora@vivans.net,RE: [외부메일]RE: [외부메일]ARGOS 배포 후 문의 내용 회신 드립니다.
+11-02-2021 09:24:57,shc@vivans.net,FW: [신한라이프생명] 모바일 솔루션 제품 지원 범위 조사
+11-02-2021 11:25:55,black@vivans.net,[참고] RPA 개발 To do 추가 항목
+11-03-2021 09:11:11,seungryong@hanatour.com,[하나투어] 아르고스 측정실패( M)하나투어_NEW ) /수집실패( 하나투어 ) 알람 확인 요청
+11-03-2021 09:51:49,kingnik@vivans.net,RE: [하나투어] 아르고스 측정실패( M)하나투어_NEW ) /수집실패( 하나투어 ) 알람 확인 요청
+11-03-2021 10:50:17,fedora@vivans.net,RE: [업무협조] 골프존 웹 모니터링 프로브 IP 주소 확인 건
+11-03-2021 11:32:14,nojong@vivans.net,Re: FW: [신한라이프생명] 모바일 솔루션 제품 지원 범위 조사
+11-03-2021 13:14:07,shc@vivans.net,RE: [신한라이프생명] 모바일 솔루션 제품 지원 범위 조사_비바엔에스
+11-03-2021 16:54:03,kingnik@vivans.net,RE: [문의] 해외 접속 모니터링 관련 문의
+11-03-2021 17:24:22,youngkim@vivans.net,RE: [문의] 해외 접속 모니터링 관련 문의
+11-03-2021 23:00:18,jongha.lee@initech.com,[이니텍] 아르고스 웹페이지 접근 관련 문의와 사용자 계정 추가 요청
+11-04-2021 10:04:28,replyto@email.microsoft.com,[무료 웨비나] 하이브리드 워크 환경 적응 팁!
+11-04-2021 18:00:25,fedora@vivans.net,RE: [이니텍] 아르고스 웹페이지 접근 관련 문의와 사용자 계정 추가 요청
+11-05-2021 10:10:49,kingnik@vivans.net,RE: 9월 결과물 관련 문의사항
+11-05-2021 17:52:13,kingnik@vivans.net,대구바이오헬스융합센터 RPA 설치건
+11-05-2021 18:45:30,black@vivans.net,[공유] RPA 용 reverse proxy 구축 시험 결과
+11-06-2021 04:39:21,maccount@microsoft.com,마이크로소프트 정보 수신 처리 안내
+11-06-2021 16:43:18,noreply@kakaocorp.com,[Kakao] 카카오계정 및 서비스 약관 변경 안내
+11-08-2021 11:06:11,black@vivans.net,[Remind] RPA 용 reverse proxy 구축 시험 결과  설명회
+11-08-2021 15:17:44,black@vivans.net,(설명회 영상) RPA 용 reverse proxy 구축 시험 결과 설명회
+11-08-2021 16:13:49,shc@vivans.net,FW: [비바엔에스] AGROS APM_와이더플래닛_테스트 측정 요청
+11-08-2021 17:25:16,black@vivans.net,11월 8일 RPA Sprint 회의 내용 요약
+11-09-2021 09:23:43,seungryong@hanatour.com,RE: [하나투어] AGROS 측정 실패 문의 건 
+11-09-2021 10:50:32,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-09-2021 10:39:41,dustjs159@vivans.net,RE: [YES24] 특정 사이트 비활성화 요청
+11-09-2021 10:34:40,wldnjs0327@golfzon.com,[업무협조] 국내 골프존 APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+11-09-2021 10:29:52,dietgogo@yes24.com,[YES24] 특정 사이트 비활성화 요청
+11-09-2021 11:14:50,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-09-2021 10:58:23,fedora@vivans.net,RE: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-09-2021 11:44:18,fedora@vivans.net,FW: ARGOS 설치 완료 내용공유
+11-09-2021 11:43:40,fedora@vivans.net,ARGOS 설치 완료 내용공유
+11-09-2021 11:42:11,black@vivans.net,Wiki 서비스 이전 작업 요청(건)
+11-09-2021 13:16:50,black@vivans.net,[참고] 11월 9일 Conference Call 회의 요약
+11-09-2021 13:08:05,fedora@vivans.net,RE: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-09-2021 13:22:33,fedora@vivans.net,RE: [하나투어] AGROS 측정 실패 문의 건 
+11-09-2021 14:43:49,fedora@vivans.net,RE: [업무협조] 국내 골프존 APP 업데이트에 따른 ARGOS 시나리오 수정 요청 件
+11-09-2021 21:44:50,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-10-2021 14:07:18,fedora@vivans.net,RE: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-10-2021 14:43:13,dustjs159@vivans.net,RE: [비바엔에스] AGROS APM_와이더플래닛_테스트 측정 요청
+11-10-2021 14:40:45,dustjs159@vivans.net,RE: [비바엔에스] AGROS APM_와이더플래닛_테스트 측정 요청
+11-11-2021 14:46:39,kingnik@vivans.net,대구 학술정보원 ARGOS 배포 파일
+11-11-2021 15:46:16,dietgogo@yes24.com,RE: [YES24] 특정 사이트 비활성화 요청
+11-11-2021 15:40:38,dustjs159@vivans.net,RE: [요청] YES24필터링 요청
+11-11-2021 15:28:07,kimusinee@yes24.com,[요청] YES24필터링 요청
+11-11-2021 16:14:03,log53@yes24.com,RE: [YES24] 특정 사이트 비활성화 요청
+11-11-2021 16:08:31,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-11-2021 15:59:54,dustjs159@vivans.net,RE: [YES24] 특정 사이트 비활성화 요청
+11-11-2021 16:36:17,dustjs159@vivans.net,RE: [YES24] 특정 사이트 비활성화 요청
+11-11-2021 18:27:12,fedora@vivans.net,FW: [문의] 대시보드 개선 요청 - 요구사항 첨부
+11-12-2021 11:01:11,pbreaker@golfzon.com,[업무협조] 골프존앱 신규 컨텐츠 ARGOS 측정 유효성 확인
+11-12-2021 11:55:33,v-jisu@microsoft.com,Microsoft 365 Free Trial 팔로우업 - vivans
+11-12-2021 13:42:02,fedora@vivans.net,RE: [업무협조] 골프존앱 신규 컨텐츠 ARGOS 측정 유효성 확인
+11-12-2021 13:40:37,fedora@vivans.net,RE: 웹 응답속도 측정 브라우저 관련 문의
+11-12-2021 15:29:28,dustjs159@vivans.net,11월 골프존 수행보고서
+11-12-2021 19:54:06,jongha.lee@initech.com,[이니텍] 아르고스 로그 수집 실패 관련 문의
+11-15-2021 09:05:35,black@vivans.net,[공유] Concept fo RPA Visual workflow 
+11-15-2021 09:53:51,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+11-15-2021 09:30:38,black@vivans.net,[비바엔에스] 외부 VOC 수집 회의 안내 (재전송)
+11-15-2021 09:27:48,black@vivans.net,[비바엔에스] 외부 VOC 수집 회의 안내
+11-15-2021 10:05:19,email@microsoft.com,[오늘 등록 마감!] 보안은 필수입니다!
+11-15-2021 10:41:46,hairu10@ncsoft.com,[엔씨소프트]  응답시간 리포트 확인 불가건 
+11-15-2021 11:35:24,youngkim@vivans.net,RE: [엔씨소프트]  응답시간 리포트 확인 불가건 
+11-15-2021 14:36:09,black@vivans.net,[비바엔에스] 착수보고 자료와 Slack 초대용 계정입니다.
+11-15-2021 15:54:03,fedora@vivans.net,RE: 웹 응답속도 측정 브라우저 관련 문의
+11-15-2021 15:44:03,fedora@vivans.net,RE: [엔씨소프트]  응답시간 리포트 확인 불가건 
+11-15-2021 16:16:40,yodw123@ncsoft.com,RE: 웹 응답속도 측정 브라우저 관련 문의
+11-15-2021 16:37:50,fedora@vivans.net,RE: 웹 응답속도 측정 브라우저 관련 문의
+11-15-2021 17:54:47,fedora@vivans.net,RE: [요청] YES24필터링 요청
+11-15-2021 17:33:40,log53@yes24.com,RE: [요청] YES24필터링 요청
+11-15-2021 17:32:05,log53@yes24.com,[요청] YES24필터링 요청
+11-15-2021 18:00:44,black@vivans.net,[비바엔에스] 외부 VOC 수집 사업 회의 요약본 (11/15)
+11-15-2021 18:47:06,shoo1208@ncsoft.com,Re: [문의] 특정 PAM 수행이력이 슈퍼바이저에 미노출되는 현상
+11-16-2021 08:27:24,black@vivans.net,[참고] Web 사이트 관리자 로그인 인증 실패시 차단 기간 변경
+11-16-2021 16:23:03,dustjs159@vivans.net,RE: [업무협조] 골프존앱 신규 컨텐츠 ARGOS 측정 유효성 확인
+11-16-2021 16:40:30,black@vivans.net,FW: 11/1 미팅 자료 공유 (외부voc수집)
+11-17-2021 10:26:25,minje@vivans.net,[입사인사] 안녕하세요 경영지원팀 신민제 입니다 
+11-17-2021 10:17:29,shc@vivans.net,[비바엔에스] 아르고스APM 제품소개서 외
+11-17-2021 10:29:14,v-jisu@microsoft.com,RE: Microsoft 365 Free Trial 팔로우업 - vivans
