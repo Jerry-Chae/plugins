@@ -50,33 +50,46 @@ class TU(TestCase):
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(True)
 
+    # # ==========================================================================
+    # def test100_samecol(self):
+    #     try:
+    #         r = main('new.xlsx', 'd1:d10', '--newfilename', 'new0.xlsx',
+    #                  '--bold', '--italic', '--sheetname', 'Sheet1')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
+    # def test150_diffcol(self):
+    #     try:
+    #         r = main('new.xlsx', 'a1:b10', '--newfilename', 'new0.xlsx',
+    #                  '--bold', '--italic', '--underline', 'single',
+    #                  '--sheetname', 'Sheet1')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
+    # # ==========================================================================
+    # def test200_cell(self):
+    #     try:
+    #         r = main('new.xlsx', 'a1:h30', '--newfilename', 'new0.xlsx',
+    #                  '--bold', '--italic', '--underline', 'double','--sheetname', 'Sheet1',
+    #                  '--fillcolor','EE1111', '--operator', "!=",'--value','5')
+    #         self.assertTrue(r == 0)
+    #     except ArgsError as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+    #
     # ==========================================================================
-    def test100_samecol(self):
+    def test200_functions(self):
         try:
-            r = main('new.xlsx', 'd1:d10', '--newfilename', 'new0.xlsx',
-                     '--bold', '--italic', '--sheetname', 'Sheet1')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
-    def test150_diffcol(self):
-        try:
-            r = main('new.xlsx', 'a1:b10', '--newfilename', 'new0.xlsx',
-                     '--bold', '--italic', '--underline', 'single',
-                     '--sheetname', 'Sheet1')
-            self.assertTrue(r == 0)
-        except ArgsError as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
-
-    # ==========================================================================
-    def test200_cell(self):
-        try:
-            r = main('new.xlsx', 'a1:h30', '--newfilename', 'new0.xlsx',
-                     '--bold', '--italic', '--underline', 'double','--sheetname', 'Sheet1',
-                     '--fillcolor','EE1111', '--operator', "!=",'--value','5')
+            r = main('10k names.xlsx', 'A1:T100',
+                     '--fillcolor', '4169E1',
+                     '--operator', '=',
+                     '--value', 'COUNTIF($D2,"*Mr*")',
+                     '--functions')
             self.assertTrue(r == 0)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))

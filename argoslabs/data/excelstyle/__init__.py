@@ -18,6 +18,8 @@ ARGOS LABS plugin module for Excel Style
 # Change Log
 # --------
 #
+#  * [2021/11/18] TAIKI.S
+#     - "Use functions" 기능 추가. "Compare Values"에 함수 추가 할 수 있도록 해주는 기능.
 #  * [2021/07/13]
 #     - build a plugin
 #  * [2021/07/13]
@@ -31,7 +33,8 @@ import csv
 import sys
 import openpyxl
 from openpyxl.styles import Font, Color, PatternFill, Border
-from openpyxl.formatting.rule import FormulaRule, CellIsRule
+from openpyxl.styles.differential import DifferentialStyle
+from openpyxl.formatting.rule import FormulaRule, CellIsRule, Rule
 from alabs.common.util.vvargs import func_log, get_icon_path, ModuleContext, \
     ArgsError, ArgsExit
 
@@ -88,9 +91,15 @@ class Excelformula(object):
         for ent in self.argspec.range:
             if self.argspec.operator:
                 color = PatternFill(bgColor=self.argspec.fillcolor)
-                self.ws.conditional_formatting.add(
-                    ent, CellIsRule(operator=self.argspec.operator, formula=[self.argspec.value],
-                                     fill=color))
+                if self.argspec.functions:
+                    self.ws.conditional_formatting.add(
+                        ent, Rule(type="expression", formula=[self.argspec.value],
+                                  dxf=DifferentialStyle(fill=color))
+                    )
+                else:
+                    self.ws.conditional_formatting.add(
+                        ent, CellIsRule(operator=self.argspec.operator, formula=[self.argspec.value],
+                                         fill=color))
             # print(ent)
             rng_type = self.calc_range(ent)
             t = self.ws[ent]
@@ -184,6 +193,12 @@ def _main(*args):
         mcxt.add_argument('--value', display_name='Compare Values',
                           input_group='Fill Color Conditions',
                           help='Compare values')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--functions', display_name='Use functions',
+                          input_group='Fill Color Conditions',
+                          action='store_true',
+                          default=False,
+                          help='Using function in conditional formatting rule')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--newfilename', display_name='Save As',
                           help='New filename', input_method='filewrite')
