@@ -17,6 +17,8 @@ ARGOS LABS plugin module data csv2tsv
 # Change Log
 # --------
 #
+#  * [2021/11/23] Kyobong
+#     - conditional formatting 기능추가 xlsx2xls을 사용할때 조건부 서식을 유지하기위함.
 #  * [2021/04/01]
 #     - 그룹에 "6-Files and Folders" 넣음
 #  * [2021/01/20]
@@ -51,6 +53,7 @@ import xlrd
 import pyexcel
 # noinspection PyPackageRequirements
 import xmltodict
+import xlwings
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
 from alabs.common.util.vvencoding import get_file_encoding
@@ -79,6 +82,7 @@ def table_convert(mcxt, argspec):
     :return: True
     """
     mcxt.logger.info('>>>starting...')
+    pass_error = False    # xlsx에서 xls로 변환시 에러를 넘기기윈한 변수
     try:
         if not (argspec.src and os.path.exists(argspec.src)):
             raise RuntimeError('Cannot read src "%s"' % argspec.src)
@@ -87,12 +91,21 @@ def table_convert(mcxt, argspec):
         if argspec.src == argspec.target:
             raise RuntimeError('Cannot same source or target "%s"' % argspec.src)
 
-        if argspec.operation in ('xls2xlsx', 'xlsx2xls', 'xlsx2csv'):
+        if argspec.operation == 'xlsx2xls' and argspec.conditional_formatting:
+            app = xlwings.App(visible=False)
+            wb = xlwings.Book(argspec.src)
+            wb.save(argspec.target)
+            app.quit()
+            pass_error = True
+            wb.close()
+
+        elif argspec.operation in ('xls2xlsx', 'xlsx2csv', 'xlsx2xls'):
             warnings.simplefilter("ignore", category=PendingDeprecationWarning)
             pyexcel.save_book_as(file_name=argspec.src,
                                  dest_file_name=argspec.target)
             print(argspec.target, end='')
             return 0
+
         elif argspec.operation == 'xls2csv':
             xls2csv(argspec.src, argspec.target)
             print(argspec.target, end='')
@@ -128,10 +141,13 @@ def table_convert(mcxt, argspec):
         print(argspec.target, end='')
         return 0
     except Exception as e:
-        msg = 'argoslabs.data.csv2tsv Error: %s' % str(e)
-        mcxt.logger.error(msg)
-        sys.stderr.write('%s%s' % (msg, os.linesep))
-        return 1
+        if pass_error:
+            return 0
+        else:
+            msg = 'argoslabs.data.csv2tsv Error: %s' % str(e)
+            mcxt.logger.error(msg)
+            sys.stderr.write('%s%s' % (msg, os.linesep))
+            return 1
     finally:
         sys.stdout.flush()
         mcxt.logger.info('>>>end...')
@@ -157,8 +173,12 @@ def _main(*args):
         mcxt.add_argument('--encoding',
                           display_name='File Encoding',
                           default='utf8',
-                          help='File encoding for source or target file, default is [[utf8]]. If not valid encoding try to detect.')
-
+                          help='File encoding for source or target file,'
+                               ' default is [[utf8]]. If not valid encoding try to detect.')
+        mcxt.add_argument('--conditional-formatting',
+                          display_name='conditional formatting',
+                          action='store_true',
+                          help='Option to keep conditional formatting in "xlsx 2 xls"')
         # ##################################### for app dependent parameters
         mcxt.add_argument('operation',
                           display_name='Operation',

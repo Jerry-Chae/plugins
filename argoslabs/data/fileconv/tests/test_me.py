@@ -325,6 +325,23 @@ class TU(TestCase):
             ...
 
     # ==========================================================================
+    def test0290_xlsx_xls_conditional_formatting(self):
+        tdir = os.path.dirname(__file__)
+        src = os.path.join(tdir, 'excel Simple write test.xlsx')
+        target = os.path.join(tdir, 'excel Simple write test.xls')
+        try:
+            r = main('xlsx2xls', src, target,
+                     '--conditional-formatting')
+            self.assertTrue(r == 0)
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+        finally:
+            # if os.path.exists(target):
+            #     os.remove(target)
+            ...
+
+    # ==========================================================================
     def test0290_xlsx_csv(self):
         tdir = os.path.dirname(__file__)
         src = os.path.join(tdir, 'Commercial_Invoice_List.xlsx')
