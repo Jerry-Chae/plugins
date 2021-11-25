@@ -24,7 +24,7 @@ setup:
   package_data:
     argoslabs.microsoft.sharepoint: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.1105.1425
+  version: 3.1123.1105
 
 
 

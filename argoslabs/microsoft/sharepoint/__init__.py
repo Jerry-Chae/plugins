@@ -100,7 +100,6 @@ class SharePoint(object):
             else:
                 self.file_delete(get_filelist(self.folder, self.wildcard))
 
-
     def access_sharepoint(self):    # sharepoint 사이트에 접근하는 곳
         authcookie = Office365(self.argspec.url,
                                username=self.argspec.id,
@@ -193,7 +192,7 @@ def _main(*args):
         mcxt.add_argument('--file-op', show_default=True,
                           input_group='radio=operation',
                           choices=['Copy File', 'Upload File', 'Download File'],
-                          display_name='Folder op',
+                          display_name='File op',
                           help='Choose which features to use')
         # ----------------------------------------------------------------------
         mcxt.add_argument('--delete-op', show_default=True,
@@ -269,4 +268,3 @@ def main(*args):
         sys.stderr.write('Error: %s\nPlease -h to print help\n' % str(err))
     except ArgsExit as _:
         pass
-

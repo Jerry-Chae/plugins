@@ -4,4 +4,4 @@
 alabs.common
 
 # for share point
-shareplum
+SharePlum
