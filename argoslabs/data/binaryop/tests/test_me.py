@@ -19,6 +19,10 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/11/06]
+#     - output 포맷에 영국식 DDMMYYYY 추가
+#     - --input-dt-format 추가
+#     - today, now 추가
 #  * [2021/03/27]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2021/03/27]
@@ -37,6 +41,7 @@ ARGOS LABS plugin module : unittest
 ################################################################################
 import sys
 import calendar
+import datetime
 from unittest import TestCase
 # noinspection PyProtectedMember
 from argoslabs.data.binaryop import _main as main
@@ -1094,6 +1099,186 @@ class TU(TestCase):
             stdout = out.getvalue().strip()
             print(stdout)
             self.assertTrue(stdout == '-11')
+
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0470_datetime_calc_success_with_uk_format(self):
+        try:
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621-123456', '+', '2day',
+                         '--datetime-format', 'DDMMYYYY-HHMMSS')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23062019-123456')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621-123456', '+', '2day',
+                         '--datetime-format', 'DD-MM-YYYY HH:MM:SS')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23-06-2019 12:34:56')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621-123456.234567', '+', '2day',
+                         '--datetime-format', 'DD/MM/YYYY HH:MM:SS.mmm')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23/06/2019 12:34:56.234567')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621-123456.234567', '+', '111msec',
+                         '--datetime-format', 'DD/MM/YYYY HH:MM:SS.mmm')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '21/06/2019 12:34:56.345567')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621-123456.234567', '+', '111usec',
+                         '--datetime-format', 'DD/MM/YYYY HH:MM:SS.mmm')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '21/06/2019 12:34:56.234678')
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0480_date_calc_success_uk_format(self):
+        try:
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621', '+', '2day', '--date-format', 'DDMMYYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23062019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621', '+', '2day', '--date-format', 'DD-MM-YYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23-06-2019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621', '+', '2day', '--date-format', 'DD/MM/YYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23/06/2019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621', '-', '20day', '--date-format', 'D/M/YYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '1/6/2019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('2019.06.21', '-', '20day', '--date-format', 'D/M/YYYY',
+                         '--datetime-separator', '.')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '1/6/2019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('2019.6.1', '+', '20day', '--date-format', 'D/M/YYYY',
+                         '--datetime-separator', '.')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '21/6/2019')
+
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0490_date_input_format(self):
+        try:
+            # Add
+            with captured_output() as (out, err):
+                r = main('20190621', '+', '2day',
+                         '--input-dt-format', 'YYYYMMDD',
+                         '--date-format', 'DDMMYYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23062019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('21/06/2019', '+', '2day',
+                         '--input-dt-format', 'DD/MM/YYYY',
+                         '--date-format', 'DD/MM/YYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23/06/2019')
+            # Add
+            with captured_output() as (out, err):
+                r = main('21/06/2019', '+', '2day',
+                         '--input-dt-format', 'DD/MM/YYYY HH:MM:SS',
+                         '--date-format', 'DD/MM/YYYY')
+            self.assertTrue(r == 99)
+            stderr = err.getvalue().strip()
+            print(stderr)
+            self.assertTrue(stderr ==
+                            'argoslabs.filesystem.op Error: time data \'21/06/2019\' does not match format \'%d/%m/%Y %H:%M:%S\'')
+
+            # Add
+            with captured_output() as (out, err):
+                r = main('21/06/2019 12:34:56', '+', '2day',
+                         '--input-dt-format', 'DD/MM/YYYY HH:MM:SS',
+                         '--datetime-format', 'DD/MM/YYYY HH:MM:SS')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '23/06/2019 12:34:56')
+
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0500_today_now(self):
+        try:
+            # Today
+            with captured_output() as (out, err):
+                r = main('today', '+', '0day',
+                         '--date-format', 'DDMMYYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == datetime.datetime.now().strftime("%d%m%Y"))
+
+            # Now
+            with captured_output() as (out, err):
+                r = main('now', '+', '0hour',
+                         '--datetime-format', 'DDMMYYYY-HHMMSS')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout.startswith(datetime.datetime.now().strftime("%d%m%Y")))
+
+            # Today error
+            with captured_output() as (out, err):
+                r = main('today', '+', '',
+                         '--date-format', 'DDMMYYYY')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == datetime.datetime.now().strftime("%d%m%Y"))
+
 
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))

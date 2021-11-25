@@ -22,7 +22,7 @@ class TU(TestCase):
     # ==========================================================================
     def test0100_success(self):
         try:
-            _ = main('y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo')
+            _ = main('4000', 'y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo')
             self.assertTrue(True)
         except ArgsError as e:
             # For Argument "ipaddr", "re_match" validatation error: user input
@@ -33,7 +33,7 @@ class TU(TestCase):
     # ==========================================================================
     def test0100_failure(self):
         try:
-            _ = main('y', '50', '0.5', '1.2.3.d', 'tom', 'jerry', 'foo', 'foo')
+            _ = main('4000', 'y', '50', '0.5', '1.2.3.d', 'tom', 'jerry', 'foo', 'foo')
             self.assertTrue(False)
         except ArgsError as e:
             # For Argument "ipaddr", "re_match" validatation error: user input

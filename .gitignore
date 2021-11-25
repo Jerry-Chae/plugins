@@ -50,5 +50,6 @@ setup.py
 __pycache__
 *.key
 *.pfx
-_trial_marker
-_trial_temp
+_trial_*
+_trial_*.*
+._.DS**

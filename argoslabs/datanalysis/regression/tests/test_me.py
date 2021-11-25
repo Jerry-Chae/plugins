@@ -24,12 +24,15 @@ from alabs.common.util.vvargs import ArgsError
 class TU(TestCase):
 
     # ==========================================================================
-    @classmethod
-    def setUpClass(cls) -> None:
+    def setUp(self) -> None:
         os.chdir(os.path.dirname(__file__))
 
-        # ==========================================================================
+    # @classmethod
+    # def setUpClass(cls) -> None:
+    #     #os.chdir(os.path.dirname(__file__))
+    #     os.chdir(r'W:\ARGOS-LABS\src\plugins\argoslabs\datanalysis\regression\tests')
 
+    # ==========================================================================
     def tearDown(self) -> None:
         ...
 

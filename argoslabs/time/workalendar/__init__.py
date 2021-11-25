@@ -17,6 +17,8 @@ ARGOS LABS plugin module sample
 # Change Log
 # --------
 #
+#  * [2021/11/01]
+#     - days may 0 for operation 0,1
 #  * [2021/04/13]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/03/16]
@@ -131,8 +133,9 @@ class WorkCal(object):
         self.workcal = cal_class()
         self.date = self._get_date_format(args.date)
         self.op_index = self._get_op_index(args.op)
-        if self.op_index in (1, 2) and not args.days:
-            raise RuntimeError('Operation "%s" takes days parameter' % args.op)
+        # sometimes args.days may 0
+        # if self.op_index in (1, 2) and not args.days:
+        #     raise RuntimeError('Operation "%s" takes days parameter' % args.op)
         self.days = 0
         if args.days:
             self.days = int(args.days)

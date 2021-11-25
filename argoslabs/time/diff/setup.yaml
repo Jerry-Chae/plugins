@@ -25,4 +25,5 @@ setup:
   package_data:
     argoslabs.time.diff: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.429.853
+#  version: 3.1112.1103
+  version: 3.1112.9988

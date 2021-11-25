@@ -159,6 +159,25 @@ class TU(TestCase):
                 os.remove(outfile)
 
     # ==========================================================================
+    def test0117_add_working_day_today(self):
+        outfile = 'stdout.txt'
+        try:
+            r = main('USA-California', 'today', 'Add working days', '0',
+                     '--outfile', outfile)
+            self.assertTrue(r == 0)
+            with open(outfile) as ifp:
+                r = ifp.read()
+            dt = datetime.date.today()
+            dt += datetime.timedelta(days=0)
+            self.assertTrue(r >= dt.strftime('"%Y%m%d'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+        finally:
+            if os.path.exists(outfile):
+                os.remove(outfile)
+
+    # ==========================================================================
     def test0120_sub_working_day(self):
         outfile = 'stdout.txt'
         try:

@@ -353,73 +353,77 @@ def do_job(mcxt, argspec):
 
 ################################################################################
 def _main(*args):
-    with ModuleContext(
-        owner='ARGOS-LABS',
-        group='8',  # Storage Solutions
-        version='1.0',
-        platform=['windows', 'darwin', 'linux'],
-        output_type='text',
-        display_name='SQL',
-        icon_path=get_icon_path(__file__),
-        description='''SQL operation for RDB''',
-        formatter_class=argparse.RawTextHelpFormatter
-    ) as mcxt:
-        # ######################################## for app dependent options
-        # TODO: 현재 add_mutually_exclusive_group은 display_name 을 지원하지 않음
-        # ag = mcxt.add_mutually_exclusive_group(required=True)
-        mcxt.add_argument('--execute', '-e',
-                          display_name='SQL string', show_default=True,
-                          input_group='radio=SQL;default',
-                          help='sql string to execute')
-        mcxt.add_argument('--file', '-f',
-                          display_name='SQL file', show_default=True,
-                          input_method='fileread',
-                          input_group='radio=SQL',
-                          help='sql file to execute')
-        mcxt.add_argument('--csv-file', '-c',
-                          display_name='CSV bulk input',
-                          input_method='fileread',
-                          help='''input csv file if needed for sql insert
-in case insert use the column like these:
-  insert into table (col1, col2, col3) values ('{{0}}',{{3}},'{{2}}')
-    {{0}} - first csv column reference in --execute or --file''')
-        mcxt.add_argument('--header-lines', nargs='?', type=int,
-                          display_name='Exc # headers',
-                          default=0, const=0,
-                          help='''exclude header lines for input csv file
-  (defaut is 0 no header, and 1 means one header line to exclude)''')
-        mcxt.add_argument('--charset',
-                          display_name='Character set',
-                          help='Set Character set for DB Connection. If not set "utf8mb4" for MySQL and [[utf8]] for MSSQL. Oracle does not take charset.')
-        mcxt.add_argument('--encoding',
-                          default='utf8',
-                          display_name='Encoding for CSV-file or SQL file',
-                          help='Set encoding for CSV file for bulk inserting. Default is [[utf8]].')
-        mcxt.add_argument('--suppress-warning', action='store_true',
-                          display_name='Suppress Warning',
-                          help='Suppress warnings for example data truncated for column.')
-        # ##################################### for app dependent parameters
-        # mcxt.add_argument('dbtype', choices=['mysql', 'mssql', 'oracle'],
-        #                   display_name='RDB type',
-        #                   help='database type. One of {"mysql", "mssql", "oracle"}')
-        mcxt.add_argument('dbtype', choices=['mysql', 'mssql'],
-                          display_name='RDB type',
-                          help='database type. One of {"mysql", "mssql"}')
-        mcxt.add_argument('dbhost',
-                          display_name='DB Host',
-                          help='DB host name or address')
-        mcxt.add_argument('dbport', type=int,
-                          display_name='DB Port',
-                          help='DB host port')
-        mcxt.add_argument('dbuser',
-                          display_name='DB User',
-                          help='DB user id')
-        mcxt.add_argument('dbpass', input_method='password',
-                          display_name='DB Password',
-                          help='DB user password')
-        mcxt.add_argument('dbname', help='DB name to use')
-        argspec = mcxt.parse_args(args)
-        return do_job(mcxt, argspec)
+    try:
+        with ModuleContext(
+            owner='ARGOS-LABS',
+            group='8',  # Storage Solutions
+            version='1.0',
+            platform=['windows', 'darwin', 'linux'],
+            output_type='text',
+            display_name='SQL',
+            icon_path=get_icon_path(__file__),
+            description='''SQL operation for RDB''',
+            formatter_class=argparse.RawTextHelpFormatter
+        ) as mcxt:
+            # ######################################## for app dependent options
+            # TODO: 현재 add_mutually_exclusive_group은 display_name 을 지원하지 않음
+            # ag = mcxt.add_mutually_exclusive_group(required=True)
+            mcxt.add_argument('--execute', '-e',
+                              display_name='SQL string', show_default=True,
+                              input_group='radio=SQL;default',
+                              help='sql string to execute')
+            mcxt.add_argument('--file', '-f',
+                              display_name='SQL file', show_default=True,
+                              input_method='fileread',
+                              input_group='radio=SQL',
+                              help='sql file to execute')
+            mcxt.add_argument('--csv-file', '-c',
+                              display_name='CSV bulk input',
+                              input_method='fileread',
+                              help='''input csv file if needed for sql insert
+    in case insert use the column like these:
+      insert into table (col1, col2, col3) values ('{{0}}',{{3}},'{{2}}')
+        {{0}} - first csv column reference in --execute or --file''')
+            mcxt.add_argument('--header-lines', nargs='?', type=int,
+                              display_name='Exc # headers',
+                              default=0, const=0,
+                              help='''exclude header lines for input csv file
+      (defaut is 0 no header, and 1 means one header line to exclude)''')
+            mcxt.add_argument('--charset',
+                              display_name='Character set',
+                              help='Set Character set for DB Connection. If not set "utf8mb4" for MySQL and [[utf8]] for MSSQL. Oracle does not take charset.')
+            mcxt.add_argument('--encoding',
+                              default='utf8',
+                              display_name='Encoding for CSV-file or SQL file',
+                              help='Set encoding for CSV file for bulk inserting. Default is [[utf8]].')
+            mcxt.add_argument('--suppress-warning', action='store_true',
+                              display_name='Suppress Warning',
+                              help='Suppress warnings for example data truncated for column.')
+            # ##################################### for app dependent parameters
+            # mcxt.add_argument('dbtype', choices=['mysql', 'mssql', 'oracle'],
+            #                   display_name='RDB type',
+            #                   help='database type. One of {"mysql", "mssql", "oracle"}')
+            mcxt.add_argument('dbtype', choices=['mysql', 'mssql'],
+                              display_name='RDB type',
+                              help='database type. One of {"mysql", "mssql"}')
+            mcxt.add_argument('dbhost',
+                              display_name='DB Host',
+                              help='DB host name or address')
+            mcxt.add_argument('dbport', type=int,
+                              display_name='DB Port',
+                              help='DB host port')
+            mcxt.add_argument('dbuser',
+                              display_name='DB User',
+                              help='DB user id')
+            mcxt.add_argument('dbpass', input_method='password',
+                              display_name='DB Password',
+                              help='DB user password')
+            mcxt.add_argument('dbname', help='DB name to use')
+            argspec = mcxt.parse_args(args)
+            return do_job(mcxt, argspec)
+    except Exception as e:
+        sys.stderr.write('[%s] Error: %s' % (argspec.dbtype, str(e)))
+        return 98
 
 
 ################################################################################

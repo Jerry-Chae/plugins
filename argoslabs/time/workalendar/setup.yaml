@@ -26,4 +26,4 @@ setup:
   url: https://www.argos-labs.com
   # do not start '0'
 #  version: 2.316.1013
-  version: 2.316.3300
+  version: 3.1101.1340

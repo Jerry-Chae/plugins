@@ -19,6 +19,8 @@ ARGOS LABS plugin module for string regular-expression operation
 # Change Log
 # --------
 #
+#  * [2021/11/22]
+#     - --replace 문자열도 base64 인코딩 하도록 함, '-'로 시작하는 경우 패러미터 파싱오류 발생
 #  * [2021/08/04]
 #     - tolower, toupper from file
 #  * [2021/07/05]
@@ -113,7 +115,7 @@ def do_re(mcxt, argspec):
             else:
                 r_list = re_compile.split(re_str)
         elif argspec.operation == 'replace':
-            re_replace = argspec.replace
+            re_replace = vv_base64_decode(argspec.replace)
             if not re_replace:
                 re_replace = ''
             if limit > 0:
@@ -168,6 +170,7 @@ def _main(*args):
                           help='File encoding default is [[utf-8]]')
         mcxt.add_argument('--replace',
                           display_name='String to replace',
+                          input_method='base64',
                           help='Replaced string for replace operation')
         mcxt.add_argument('--ignore-case', action='store_true',
                           display_name='Ignore Case',

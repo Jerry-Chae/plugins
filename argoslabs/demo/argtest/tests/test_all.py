@@ -14,7 +14,7 @@ from argoslabs.demo.argtest import _main as main
 
 
 ################################################################################
-G_PARAMS = ['y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo']
+G_PARAMS = ['4000', 'y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo']
 
 
 ################################################################################
@@ -89,27 +89,27 @@ class TU(TestCase):
         except ArgsExit as _:
             self.assertTrue(True)
 
-    # ==========================================================================
-    def test0020_yaml_dump_with_output_file(self):
-        try:
-            # JSON dump
-            sys.stdout.write('\n%s\n' % ('*'*80))
-            _ = main('--dumpspec', 'yaml', '--outfile', 'helloworld.yaml')
-            self.assertTrue(False)
-        except ArgsExit as e:
-            sys.stdout.write('\n%s\n' % str(e))
-            # add for checking input_group, input_method
-            with open('helloworld.yaml') as ifp:
-                yd = yaml.load(ifp)
-                self.assertTrue(yd['display_name'] == 'My Arg Test')
-                last_opt = yd['options'][-1]
-                self.assertTrue(last_opt['name'] == 'radio5'
-                                and last_opt['input_group'] == 'radio=Your Group;default')
-                param = yd['parameters'][1]
-                self.assertTrue(param['name'] == 'intparam'
-                                and param['input_group'] == 'My Group'
-                                and param['input_method'] == 'my_int')
-            self.assertTrue(True)
+    # # ==========================================================================
+    # def test0020_yaml_dump_with_output_file(self):
+    #     try:
+    #         # JSON dump
+    #         sys.stdout.write('\n%s\n' % ('*'*80))
+    #         _ = main('--dumpspec', 'yaml', '--outfile', 'helloworld.yaml')
+    #         self.assertTrue(False)
+    #     except ArgsExit as e:
+    #         sys.stdout.write('\n%s\n' % str(e))
+    #         # add for checking input_group, input_method
+    #         with open('helloworld.yaml') as ifp:
+    #             yd = yaml.load(ifp)
+    #             self.assertTrue(yd['display_name'] == 'My Arg Test')
+    #             last_opt = yd['options'][-1]
+    #             self.assertTrue(last_opt['name'] == 'radio5'
+    #                             and last_opt['input_group'] == 'radio=Your Group;default')
+    #             param = yd['parameters'][1]
+    #             self.assertTrue(param['name'] == 'intparam'
+    #                             and param['input_group'] == 'My Group'
+    #                             and param['input_method'] == 'my_int')
+    #         self.assertTrue(True)
 
     # ==========================================================================
     def test0030_dump_error(self):
@@ -127,22 +127,22 @@ class TU(TestCase):
         r = main(*G_PARAMS)
         self.assertTrue(r)
 
-    # ==========================================================================
-    def test0050_normal_call_with_input_file(self):
-        r = main(*G_PARAMS, '--infile', 'helloworld.yaml')
-        self.assertTrue(r)
-
-    # ==========================================================================
-    def test0060_normal_call_with_input_output_file(self):
-        r = main(*G_PARAMS,
-                 '--infile', 'helloworld.yaml',
-                 '--outfile', 'helloworld.yaml2')
-        self.assertTrue(r)
-        with open('helloworld.yaml') as ifp:
-            h1 = ifp.read()
-        with open('helloworld.yaml2') as ifp:
-            h2 = ifp.read()
-        self.assertTrue(h1, h2)
+    # # ==========================================================================
+    # def test0050_normal_call_with_input_file(self):
+    #     r = main(*G_PARAMS, '--infile', 'helloworld.yaml')
+    #     self.assertTrue(r)
+    #
+    # # ==========================================================================
+    # def test0060_normal_call_with_input_output_file(self):
+    #     r = main(*G_PARAMS,
+    #              '--infile', 'helloworld.yaml',
+    #              '--outfile', 'helloworld.yaml2')
+    #     self.assertTrue(r)
+    #     with open('helloworld.yaml') as ifp:
+    #         h1 = ifp.read()
+    #     with open('helloworld.yaml2') as ifp:
+    #         h2 = ifp.read()
+    #     self.assertTrue(h1, h2)
 
     # ==========================================================================
     def test0070_error(self):

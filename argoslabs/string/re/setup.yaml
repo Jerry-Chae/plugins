@@ -25,4 +25,4 @@ setup:
     argoslabs.string.re: ['icon.*', 'tests/*.txt']
   url: https://www.argos-labs.com
 #  version: 2.1104.1120
-  version: 3.804.1326
+  version: 3.1122.1253

@@ -19,6 +19,10 @@ ARGOS LABS plugin module for binary op
 # Change Log
 # --------
 #
+#  * [2021/11/06]
+#     - output 포맷에 영국식 DDMMYYYY 추가
+#     - --input-dt-format 추가
+#     - today, now 추가
 #  * [2021/03/27]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2021/01/14]
@@ -118,6 +122,10 @@ class BinOp(object):
         'MM-DD-YYYY HH:MM:SS': "%m-%d-%Y %H:%M:%S",
         'MM/DD/YYYY HH:MM:SS': "%m/%d/%Y %H:%M:%S",
         'M/D/YYYY HH:MM:SS': "%-m/%-d/%Y %H:%M:%S" if sys.platform != 'win32' else "%#m/%#d/%Y %H:%M:%S",
+        'DDMMYYYY-HHMMSS': "%d%m%Y-%H%M%S",
+        'DD-MM-YYYY HH:MM:SS': "%d-%m-%Y %H:%M:%S",
+        'DD/MM/YYYY HH:MM:SS': "%d/%m/%Y %H:%M:%S",
+        'D/M/YYYY HH:MM:SS': "%-d/%-m/%Y %H:%M:%S" if sys.platform != 'win32' else "%#d/%#m/%Y %H:%M:%S",
         'YYYYMMDD-HHMMSS.mmm': "%Y%m%d-%H%M%S.%f",
         'YYYY-MM-DD HH:MM:SS.mmm': "%Y-%m-%d %H:%M:%S.%f",
         'YYYY/MM/DD HH:MM:SS.mmm': "%Y/%m/%d %H:%M:%S.%f",
@@ -125,6 +133,10 @@ class BinOp(object):
         'MM-DD-YYYY HH:MM:SS.mmm': "%m-%d-%Y %H:%M:%S.%f",
         'MM/DD/YYYY HH:MM:SS.mmm': "%m/%d/%Y %H:%M:%S.%f",
         'M/D/YYYY HH:MM:SS.mmm': "%-m/%-d/%Y %H:%M:%S.%f" if sys.platform != 'win32' else "%#m/%#d/%Y %H:%M:%S.%f",
+        'DDMMYYYY-HHMMSS.mmm': "%d%m%Y-%H%M%S.%f",
+        'DD-MM-YYYY HH:MM:SS.mmm': "%d-%m-%Y %H:%M:%S.%f",
+        'DD/MM/YYYY HH:MM:SS.mmm': "%d/%m/%Y %H:%M:%S.%f",
+        'D/M/YYYY HH:MM:SS.mmm': "%-d/%-m/%Y %H:%M:%S.%f" if sys.platform != 'win32' else "%#d/%#m/%Y %H:%M:%S.%f",
     }
     DATE_FORMAT = {
         'YYYYMMDD': "%Y%m%d",
@@ -134,12 +146,45 @@ class BinOp(object):
         'MM-DD-YYYY': "%m-%d-%Y",
         'MM/DD/YYYY': "%m/%d/%Y",
         'M/D/YYYY': "%-m/%-d/%Y" if sys.platform != 'win32' else "%#m/%#d/%Y",
+        'DDMMYYYY': "%d%m%Y",
+        'DD-MM-YYYY': "%d-%m-%Y",
+        'DD/MM/YYYY': "%d/%m/%Y",
+        'D/M/YYYY': "%-d/%-m/%Y" if sys.platform != 'win32' else "%#d/%#m/%Y",
         'B D YYYY': "%b %-d %Y" if sys.platform != 'win32' else "%b %#d %Y",
         'B D, YYYY': "%b %-d, %Y" if sys.platform != 'win32' else "%b %#d, %Y",
         'D B YYYY': "%-d %b %Y" if sys.platform != 'win32' else "%#d %b %Y",
         'D B YY': "%-d %b %Y" if sys.platform != 'win32' else "%#d %b %Y",
         'DBYY': "%-d%b%Y" if sys.platform != 'win32' else "%#d%b%Y",
     }
+    INPUT_DT_FORMAT = [
+        'Auto',
+        'YYYYMMDD-HHMMSS.mmm',
+        'YYYY-MM-DD HH:MM:SS.mmm',
+        'YYYY/MM/DD HH:MM:SS.mmm',
+        'MMDDYYYY-HHMMSS.mmm',
+        'MM-DD-YYYY HH:MM:SS.mmm',
+        'MM/DD/YYYY HH:MM:SS.mmm',
+        'DDMMYYYY-HHMMSS.mmm',
+        'DD-MM-YYYY HH:MM:SS.mmm',
+        'DD/MM/YYYY HH:MM:SS.mmm',
+        'YYYYMMDD-HHMMSS',
+        'YYYY-MM-DD HH:MM:SS',
+        'YYYY/MM/DD HH:MM:SS',
+        'MMDDYYYY-HHMMSS',
+        'MM-DD-YYYY HH:MM:SS',
+        'MM/DD/YYYY HH:MM:SS',
+        'DDMMYYYY-HHMMSS',
+        'DD-MM-YYYY HH:MM:SS',
+        'DD/MM/YYYY HH:MM:SS',
+        'YYYYMMDD',
+        'YYYY/MM/DD',
+        'MMDDYYYY',
+        'MM-DD-YYYY',
+        'MM/DD/YYYY',
+        'DDMMYYYY',
+        'DD-MM-YYYY',
+        'DD/MM/YYYY',
+    ]
 
     # ==========================================================================
     def __init__(self, argspec, logger=None):
@@ -153,12 +198,121 @@ class BinOp(object):
         if vtype not in ("auto", "string", "int", "float", "date", "datetime"):
             raise RuntimeError('Invalid value type "%s"' % vtype)
         self.vtype = vtype
+        self.input_dt_format = argspec.input_dt_format
+        if self.input_dt_format not in self.INPUT_DT_FORMAT:
+            raise ReferenceError(f'Invalid Input Date/Time format')
+        if self.input_dt_format != self.INPUT_DT_FORMAT[0]:  # Not Auto
+            if self.input_dt_format in (
+                    'YYYYMMDD',
+                    'YYYY/MM/DD',
+                    'MMDDYYYY',
+                    'MM-DD-YYYY',
+                    'MM/DD/YYYY',
+                    'DDMMYYYY',
+                    'DD-MM-YYYY',
+                    'DD/MM/YYYY',):
+                self.vtype = 'date'
+            else:
+                self.vtype = 'datetime'
         if logger is None:
             raise RuntimeError('logger must not None!')
         self.date_format = argspec.date_format
         self.datetime_format = argspec.datetime_format
         self.output_int_func = argspec.output_int_func
         self.logger = logger
+
+    # ==========================================================================
+    def get_dt_from_format(self, vs, rectype, m=None):
+        if rectype == 'YYYYMMDD-HHMMSS.mmm':
+            vs = datetime.datetime.strptime(vs, "%Y%m%d-%H%M%S.%f")
+        elif rectype == 'YYYY-MM-DD HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S.%f")
+        elif rectype == 'YYYY/MM/DD HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S.%f")
+        elif rectype == 'MMDDYYYY-HHMMSS.mmm':
+            vs = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S.%f")
+        elif rectype == 'MM-DD-YYYY HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S.%f")
+        elif rectype == 'MM/DD/YYYY HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S.%f")
+
+        elif rectype == 'DDMMYYYY-HHMMSS.mmm':
+            vs = datetime.datetime.strptime(vs, "%d%m%Y-%H%M%S.%f")
+        elif rectype == 'DD-MM-YYYY HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%d-%m-%Y %H:%M:%S.%f")
+        elif rectype == 'DD/MM/YYYY HH:MM:SS.mmm':
+            vs = datetime.datetime.strptime(vs, "%d/%m/%Y %H:%M:%S.%f")
+
+        elif rectype == 'YYYYMMDD-HHMMSS':
+            vs = datetime.datetime.strptime(vs, "%Y%m%d-%H%M%S")
+        elif rectype == 'YYYY-MM-DD HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S")
+        elif rectype == 'YYYY/MM/DD HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S")
+        elif rectype == 'MMDDYYYY-HHMMSS':
+            vs = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S")
+        elif rectype == 'MM-DD-YYYY HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S")
+        elif rectype == 'MM/DD/YYYY HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S")
+
+        elif rectype == 'DDMMYYYY-HHMMSS':
+            vs = datetime.datetime.strptime(vs, "%d%m%Y-%H%M%S")
+        elif rectype == 'DD-MM-YYYY HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%d-%m-%Y %H:%M:%S")
+        elif rectype == 'DD/MM/YYYY HH:MM:SS':
+            vs = datetime.datetime.strptime(vs, "%d/%m/%Y %H:%M:%S")
+
+        elif rectype == 'YYYYMMDD':
+            vs = datetime.datetime.strptime(vs, "%Y%m%d").date()
+        elif rectype == 'YYYY-MM-DD':
+            vs = datetime.datetime.strptime(vs, "%Y-%m-%d").date()
+        elif rectype == 'YYYY/MM/DD':
+            vs = datetime.datetime.strptime(vs, "%Y/%m/%d").date()
+        elif rectype == 'MMDDYYYY':
+            vs = datetime.datetime.strptime(vs, "%m%d%Y").date()
+        elif rectype == 'MM-DD-YYYY':
+            vs = datetime.datetime.strptime(vs, "%m-%d-%Y").date()
+        elif rectype == 'MM/DD/YYYY':
+            vs = datetime.datetime.strptime(vs, "%m/%d/%Y").date()
+
+        elif rectype == 'DDMMYYYY':
+            vs = datetime.datetime.strptime(vs, "%d%m%Y").date()
+        elif rectype == 'DD-MM-YYYY':
+            vs = datetime.datetime.strptime(vs, "%d-%m-%Y").date()
+        elif rectype == 'DD/MM/YYYY':
+            vs = datetime.datetime.strptime(vs, "%d/%m/%Y").date()
+
+        elif rectype == 'B D YYYY':
+            eles = vs.split()
+            if len(eles[0]) > 3:
+                eles[0] = eles[0][:3]
+            vs = datetime.datetime.strptime(' '.join(eles), "%b %d %Y").date()
+        elif rectype == 'B D, YYYY':
+            eles = vs.split()
+            if len(eles[0]) > 3:
+                eles[0] = eles[0][:3]
+            vs = datetime.datetime.strptime(' '.join(eles), "%b %d, %Y").date()
+        elif rectype == 'D B YYYY':
+            eles = vs.split()
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            vs = datetime.datetime.strptime(' '.join(eles), "%d %b %Y").date()
+        elif rectype == 'D B YY':
+            eles = vs.split()
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            eles[2] = '20' + eles[2]
+            vs = datetime.datetime.strptime(' '.join(eles),
+                                            "%d %b %Y").date()
+        elif rectype == 'DBYY':
+            eles = list(m.groups(1))
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            eles[2] = '20' + eles[2]
+            vs = datetime.datetime.strptime(' '.join(eles),
+                                            "%d %b %Y").date()
+        return vs
 
     # ==========================================================================
     def resolve_val_type(self, vs, vt, filter_=None):
@@ -180,74 +334,10 @@ class BinOp(object):
                         m = rec.match(vs)
                         if m is None:
                             continue
-                        g = m.group()
+                        # g = m.group()
                         vt = vtype
                         if vtype.startswith('date'):
-                            if rectype == 'YYYYMMDD-HHMMSS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%Y%m%d-%H%M%S.%f")
-                            elif rectype == 'YYYY-MM-DD HH:MM:SS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S.%f")
-                            elif rectype == 'YYYY/MM/DD HH:MM:SS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S.%f")
-                            elif rectype == 'MMDDYYYY-HHMMSS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S.%f")
-                            elif rectype == 'MM-DD-YYYY HH:MM:SS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S.%f")
-                            elif rectype == 'MM/DD/YYYY HH:MM:SS.mmm':
-                                vs = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S.%f")
-                            elif rectype == 'YYYYMMDD-HHMMSS':
-                                vs = datetime.datetime.strptime(vs, "%Y%m%d-%H%M%S")
-                            elif rectype == 'YYYY-MM-DD HH:MM:SS':
-                                vs = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S")
-                            elif rectype == 'YYYY/MM/DD HH:MM:SS':
-                                vs = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S")
-                            elif rectype == 'MMDDYYYY-HHMMSS':
-                                vs = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S")
-                            elif rectype == 'MM-DD-YYYY HH:MM:SS':
-                                vs = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S")
-                            elif rectype == 'MM/DD/YYYY HH:MM:SS':
-                                vs = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S")
-                            elif rectype == 'YYYYMMDD':
-                                vs = datetime.datetime.strptime(vs, "%Y%m%d").date()
-                            elif rectype == 'YYYY-MM-DD':
-                                vs = datetime.datetime.strptime(vs, "%Y-%m-%d").date()
-                            elif rectype == 'YYYY/MM/DD':
-                                vs = datetime.datetime.strptime(vs, "%Y/%m/%d").date()
-                            elif rectype == 'MMDDYYYY':
-                                vs = datetime.datetime.strptime(vs, "%m%d%Y").date()
-                            elif rectype == 'MM-DD-YYYY':
-                                vs = datetime.datetime.strptime(vs, "%m-%d-%Y").date()
-                            elif rectype == 'MM/DD/YYYY':
-                                vs = datetime.datetime.strptime(vs, "%m/%d/%Y").date()
-                            elif rectype == 'B D YYYY':
-                                eles = vs.split()
-                                if len(eles[0]) > 3:
-                                    eles[0] = eles[0][:3]
-                                vs = datetime.datetime.strptime(' '.join(eles), "%b %d %Y").date()
-                            elif rectype == 'B D, YYYY':
-                                eles = vs.split()
-                                if len(eles[0]) > 3:
-                                    eles[0] = eles[0][:3]
-                                vs = datetime.datetime.strptime(' '.join(eles), "%b %d, %Y").date()
-                            elif rectype == 'D B YYYY':
-                                eles = vs.split()
-                                if len(eles[1]) > 3:
-                                    eles[1] = eles[1][:3]
-                                vs = datetime.datetime.strptime(' '.join(eles), "%d %b %Y").date()
-                            elif rectype == 'D B YY':
-                                eles = vs.split()
-                                if len(eles[1]) > 3:
-                                    eles[1] = eles[1][:3]
-                                eles[2] = '20' + eles[2]
-                                vs = datetime.datetime.strptime(' '.join(eles),
-                                                                "%d %b %Y").date()
-                            elif rectype == 'DBYY':
-                                eles = list(m.groups(1))
-                                if len(eles[1]) > 3:
-                                    eles[1] = eles[1][:3]
-                                eles[2] = '20' + eles[2]
-                                vs = datetime.datetime.strptime(' '.join(eles),
-                                                                "%d %b %Y").date()
+                            vs = self.get_dt_from_format(vs, rectype, m)
                         elif vtype == 'timedelta':
                             if vs.endswith('day'):
                                 vs = datetime.timedelta(days=int(vs[:-3]))
@@ -278,6 +368,10 @@ class BinOp(object):
 
     # ==========================================================================
     def get_val_type(self, vs, vt):
+        if vs.lower() == 'today':
+            return datetime.date.today(), 'date'
+        elif vs.lower() == 'now':
+            return datetime.datetime.now(), 'datetime'
         if vt == 'auto':
             return self.resolve_val_type(vs, vt)
         else:
@@ -296,6 +390,11 @@ class BinOp(object):
             raise RuntimeError('Cannot guess type for the value "%s"' % vs)
         if vt == 'datetime':
             pass
+
+    # ==========================================================================
+    def get_dt_val_type(self, vs, vt):
+        vs = self.get_dt_from_format(vs, self.input_dt_format)
+        return vs, vt
 
     # ==========================================================================
     # noinspection PyMethodMayBeStatic
@@ -335,8 +434,10 @@ class BinOp(object):
         #     left, l_vtype = self.get_custom_date_type(self.left, self.vtype)
         # else:
         #     left, l_vtype = self.get_val_type(self.left, self.vtype)
-
-        left, l_vtype = self.get_val_type(self.left, self.vtype)
+        if self.input_dt_format != self.INPUT_DT_FORMAT[0]:  # Not Auto
+            left, l_vtype = self.get_dt_val_type(self.left, self.vtype)
+        else:
+            left, l_vtype = self.get_val_type(self.left, self.vtype)
         right, r_vtype = self.get_val_type(self.right, self.vtype)
         if l_vtype != r_vtype:
             nok = True
@@ -401,7 +502,7 @@ def do_binop(mcxt, argspec):
         msg = 'argoslabs.filesystem.op Error: %s' % str(e)
         mcxt.logger.error(msg)
         sys.stderr.write('%s%s' % (msg, os.linesep))
-        raise
+        return 99
     finally:
         mcxt.logger.info('>>>end...')
 
@@ -425,6 +526,11 @@ def _main(*args):
                           default='auto',
                           help='Set Value type, one of {"auto", "int", "float", "date", "datetime"}.'
                                ' Default is auto which means try to guess the best type of value')
+        mcxt.add_argument('--input-dt-format',
+                          display_name='Input Date/Time',
+                          choices=BinOp.INPUT_DT_FORMAT,
+                          default=BinOp.INPUT_DT_FORMAT[0],
+                          help='Input Date/DateTime format')
         mcxt.add_argument('--date-format',
                           display_name='Out Date Format',
                           choices=list(BinOp.DATE_FORMAT.keys()),

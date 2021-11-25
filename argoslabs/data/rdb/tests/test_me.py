@@ -166,10 +166,22 @@ class TU(TestCase):
         self.assertTrue(True)
 
     # ==========================================================================
+    def test0090_invalid_sql(self):
+        dbms = 'mysql'
+        try:
+            args = [dbms, '', '', '', '', '']
+            _ = main(*args)
+            self.assertTrue(False)
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(True)
+
+    # ==========================================================================
     def test0100_invalid_sql(self):
         dbms = 'mysql'
         try:
-            _ = main(*self._rp(dbms))
+            args = self._rp(dbms)
+            _ = main(*args)
             self.assertTrue(False)
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))

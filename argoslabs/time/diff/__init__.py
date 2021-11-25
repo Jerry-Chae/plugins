@@ -17,6 +17,8 @@ ARGOS LABS plugin module for time diff
 # Change Log
 # --------
 #
+#  * [2021/11/12]
+#     - add --input-dt-format
 #  * [2021/04/28]
 #     - lable change
 #     - output format
@@ -38,6 +40,35 @@ OUTPUT_FORMATS = [
     'In seconds',
     'Timedelta string',
     'Values 1, 0, or -1'
+]
+INPUT_DT_FORMAT = [
+    'Auto',
+    'YYYYMMDD-HHMMSS.mmm',
+    'YYYY-MM-DD HH:MM:SS.mmm',
+    'YYYY/MM/DD HH:MM:SS.mmm',
+    'MMDDYYYY-HHMMSS.mmm',
+    'MM-DD-YYYY HH:MM:SS.mmm',
+    'MM/DD/YYYY HH:MM:SS.mmm',
+    'DDMMYYYY-HHMMSS.mmm',
+    'DD-MM-YYYY HH:MM:SS.mmm',
+    'DD/MM/YYYY HH:MM:SS.mmm',
+    'YYYYMMDD-HHMMSS',
+    'YYYY-MM-DD HH:MM:SS',
+    'YYYY/MM/DD HH:MM:SS',
+    'MMDDYYYY-HHMMSS',
+    'MM-DD-YYYY HH:MM:SS',
+    'MM/DD/YYYY HH:MM:SS',
+    'DDMMYYYY-HHMMSS',
+    'DD-MM-YYYY HH:MM:SS',
+    'DD/MM/YYYY HH:MM:SS',
+    'YYYYMMDD',
+    'YYYY/MM/DD',
+    'MMDDYYYY',
+    'MM-DD-YYYY',
+    'MM/DD/YYYY',
+    'DDMMYYYY',
+    'DD-MM-YYYY',
+    'DD/MM/YYYY',
 ]
 
 GUESS_REC = [
@@ -97,7 +128,105 @@ GUESS_REC = [
 
 
 ################################################################################
-def get_dt_format(vs):
+def get_dt_from_format(vs, rectype, m=None):
+    try:
+        vt = None
+        if rectype == 'YYYYMMDD-HHMMSS.mmm':
+            vt = datetime.datetime.strptime(vs, "%Y%m%d-%H%M%S.%f")
+        elif rectype == 'YYYY-MM-DD HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S.%f")
+        elif rectype == 'YYYY/MM/DD HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S.%f")
+        elif rectype == 'MMDDYYYY-HHMMSS.mmm':
+            vt = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S.%f")
+        elif rectype == 'MM-DD-YYYY HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S.%f")
+        elif rectype == 'MM/DD/YYYY HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S.%f")
+
+        elif rectype == 'DDMMYYYY-HHMMSS.mmm':
+            vt = datetime.datetime.strptime(vs, "%d%m%Y-%H%M%S.%f")
+        elif rectype == 'DD-MM-YYYY HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%d-%m-%Y %H:%M:%S.%f")
+        elif rectype == 'DD/MM/YYYY HH:MM:SS.mmm':
+            vt = datetime.datetime.strptime(vs, "%d/%m/%Y %H:%M:%S.%f")
+
+        elif rectype == 'YYYYMMDD-HHMMSS':
+            vt = datetime.datetime.strptime(vs, f"%Y%m%d{vs[8]}%H%M%S")
+        elif rectype == 'YYYY-MM-DD HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%Y-%m-%d %H:%M:%S")
+        elif rectype == 'YYYY/MM/DD HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%Y/%m/%d %H:%M:%S")
+        elif rectype == 'MMDDYYYY-HHMMSS':
+            vt = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S")
+        elif rectype == 'MM-DD-YYYY HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%m-%d-%Y %H:%M:%S")
+        elif rectype == 'MM/DD/YYYY HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%m/%d/%Y %H:%M:%S")
+
+        elif rectype == 'DDMMYYYY-HHMMSS':
+            vt = datetime.datetime.strptime(vs, "%d%m%Y-%H%M%S")
+        elif rectype == 'DD-MM-YYYY HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%d-%m-%Y %H:%M:%S")
+        elif rectype == 'DD/MM/YYYY HH:MM:SS':
+            vt = datetime.datetime.strptime(vs, "%d/%m/%Y %H:%M:%S")
+
+        elif rectype == 'YYYYMMDD':
+            vt = datetime.datetime.strptime(vs, "%Y%m%d").date()
+        elif rectype == 'YYYY-MM-DD':
+            vt = datetime.datetime.strptime(vs, "%Y-%m-%d").date()
+        elif rectype == 'YYYY/MM/DD':
+            vt = datetime.datetime.strptime(vs, "%Y/%m/%d").date()
+        elif rectype == 'MMDDYYYY':
+            vt = datetime.datetime.strptime(vs, "%m%d%Y").date()
+        elif rectype == 'MM-DD-YYYY':
+            vt = datetime.datetime.strptime(vs, "%m-%d-%Y").date()
+        elif rectype == 'MM/DD/YYYY':
+            vt = datetime.datetime.strptime(vs, "%m/%d/%Y").date()
+
+        elif rectype == 'DDMMYYYY':
+            vt = datetime.datetime.strptime(vs, "%d%m%Y").date()
+        elif rectype == 'DD-MM-YYYY':
+            vt = datetime.datetime.strptime(vs, "%d-%m-%Y").date()
+        elif rectype == 'DD/MM/YYYY':
+            vt = datetime.datetime.strptime(vs, "%d/%m/%Y").date()
+
+        elif rectype == 'B D YYYY':
+            eles = vs.split()
+            if len(eles[0]) > 3:
+                eles[0] = eles[0][:3]
+            vt = datetime.datetime.strptime(' '.join(eles), "%b %d %Y").date()
+        elif rectype == 'B D, YYYY':
+            eles = vs.split()
+            if len(eles[0]) > 3:
+                eles[0] = eles[0][:3]
+            vt = datetime.datetime.strptime(' '.join(eles), "%b %d, %Y").date()
+        elif rectype == 'D B YYYY':
+            eles = vs.split()
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            vt = datetime.datetime.strptime(' '.join(eles), "%d %b %Y").date()
+        elif rectype == 'D B YY':
+            eles = vs.split()
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            eles[2] = '20' + eles[2]
+            vt = datetime.datetime.strptime(' '.join(eles), "%d %b %Y").date()
+        elif rectype == 'DBYY':
+            eles = list(m.groups(1))
+            if len(eles[1]) > 3:
+                eles[1] = eles[1][:3]
+            eles[2] = '20' + eles[2]
+            vt = datetime.datetime.strptime(' '.join(eles), "%d %b %Y").date()
+        return vt
+    except Exception:
+        raise ValueError(f'Failure to get proper Date/Time "{vs}" from format "{rectype}"')
+
+
+################################################################################
+def get_dt_format(vs, input_dt_format='Auto'):
+    if input_dt_format != 'Auto':
+        return get_dt_from_format(vs, input_dt_format)
     b_resolve = False
     for vt_recl in GUESS_REC:
         for vtype, reclist in vt_recl.items():
@@ -111,89 +240,7 @@ def get_dt_format(vs):
                     if m is None:
                         continue
                     # if vtype.startswith('date'):
-                    vt = None
-                    if rectype == 'YYYYMMDD-HHMMSS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y%m%d-%H%M%S.%f")
-                    elif rectype == 'YYYY-MM-DD HH:MM:SS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y-%m-%d %H:%M:%S.%f")
-                    elif rectype == 'YYYY/MM/DD HH:MM:SS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y/%m/%d %H:%M:%S.%f")
-                    elif rectype == 'MMDDYYYY-HHMMSS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m%d%Y-%H%M%S.%f")
-                    elif rectype == 'MM-DD-YYYY HH:MM:SS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m-%d-%Y %H:%M:%S.%f")
-                    elif rectype == 'MM/DD/YYYY HH:MM:SS.mmm':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m/%d/%Y %H:%M:%S.%f")
-                    elif rectype == 'YYYYMMDD-HHMMSS':
-                        vt = datetime.datetime.strptime(vs, f"%Y%m%d{vs[8]}%H%M%S")
-                    elif rectype == 'YYYY-MM-DD HH:MM:SS':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y-%m-%d %H:%M:%S")
-                    elif rectype == 'YYYY/MM/DD HH:MM:SS':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y/%m/%d %H:%M:%S")
-                    elif rectype == 'MMDDYYYY-HHMMSS':
-                        vt = datetime.datetime.strptime(vs, "%m%d%Y-%H%M%S")
-                    elif rectype == 'MM-DD-YYYY HH:MM:SS':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m-%d-%Y %H:%M:%S")
-                    elif rectype == 'MM/DD/YYYY HH:MM:SS':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m/%d/%Y %H:%M:%S")
-                    elif rectype == 'YYYYMMDD':
-                        vt = datetime.datetime.strptime(vs, "%Y%m%d").date()
-                    elif rectype == 'YYYY-MM-DD':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y-%m-%d").date()
-                    elif rectype == 'YYYY/MM/DD':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%Y/%m/%d").date()
-                    elif rectype == 'MMDDYYYY':
-                        vt = datetime.datetime.strptime(vs, "%m%d%Y").date()
-                    elif rectype == 'MM-DD-YYYY':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m-%d-%Y").date()
-                    elif rectype == 'MM/DD/YYYY':
-                        vt = datetime.datetime.strptime(vs,
-                                                        "%m/%d/%Y").date()
-                    elif rectype == 'B D YYYY':
-                        eles = vs.split()
-                        if len(eles[0]) > 3:
-                            eles[0] = eles[0][:3]
-                        vt = datetime.datetime.strptime(' '.join(eles),
-                                                        "%b %d %Y").date()
-                    elif rectype == 'B D, YYYY':
-                        eles = vs.split()
-                        if len(eles[0]) > 3:
-                            eles[0] = eles[0][:3]
-                        vt = datetime.datetime.strptime(' '.join(eles),
-                                                        "%b %d, %Y").date()
-                    elif rectype == 'D B YYYY':
-                        eles = vs.split()
-                        if len(eles[1]) > 3:
-                            eles[1] = eles[1][:3]
-                        vt = datetime.datetime.strptime(' '.join(eles),
-                                                        "%d %b %Y").date()
-                    elif rectype == 'D B YY':
-                        eles = vs.split()
-                        if len(eles[1]) > 3:
-                            eles[1] = eles[1][:3]
-                        eles[2] = '20' + eles[2]
-                        vt = datetime.datetime.strptime(' '.join(eles),
-                                                        "%d %b %Y").date()
-                    elif rectype == 'DBYY':
-                        eles = list(m.groups(1))
-                        if len(eles[1]) > 3:
-                            eles[1] = eles[1][:3]
-                        eles[2] = '20' + eles[2]
-                        vt = datetime.datetime.strptime(' '.join(eles),
-                                                        "%d %b %Y").date()
+                    vt = get_dt_from_format(vs, rectype, m)
                     if vt is not None:
                         return vt
     return None
@@ -208,10 +255,10 @@ def do_diff(mcxt, argspec):
             raise RuntimeError('Invalid "Left Date/Time"')
         if not argspec.dt2:
             raise RuntimeError('Invalid "Right Date/Time"')
-        dt1 = get_dt_format(argspec.dt1)
+        dt1 = get_dt_format(argspec.dt1, argspec.input_dt_format)
         if not dt1:
             raise RuntimeError(f'Invalid "Left Date/Time" format: {argspec.dt1}')
-        dt2 = get_dt_format(argspec.dt2)
+        dt2 = get_dt_format(argspec.dt2, argspec.input_dt_format)
         if not dt2:
             raise RuntimeError(f'Invalid "Left Date/Time" format: {argspec.dt2}')
         t_diff = dt1 - dt2
@@ -228,7 +275,7 @@ def do_diff(mcxt, argspec):
         print(td, end='')
         return 0
     except Exception as e:
-        msg = 'argoslabs.filesystem.op Error: %s' % str(e)
+        msg = 'argoslabs.time.diff Error: %s' % str(e)
         mcxt.logger.error(msg)
         sys.stderr.write('%s%s' % (msg, os.linesep))
         return 9
@@ -267,8 +314,13 @@ def _main(*args):
                           choices=OUTPUT_FORMATS,
                           default=OUTPUT_FORMATS[0],
                           help='Set the format of TimeStamp')
+        # ##################################### for app dependent options
+        mcxt.add_argument('--input-dt-format',
+                          display_name='Input Date/Time',
+                          choices=INPUT_DT_FORMAT,
+                          default=INPUT_DT_FORMAT[0],
+                          help='Input Date/DateTime format')
 
-        # ##################################### for app dependent parameters
         argspec = mcxt.parse_args(args)
         return do_diff(mcxt, argspec)
 

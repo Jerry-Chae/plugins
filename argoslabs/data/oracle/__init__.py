@@ -102,7 +102,7 @@ class Oracle(object):
                 password=self.passwd,
                 port=int(self.port),
                 database=self.db,
-            ), mode=cx_Oracle.SYSDBA)
+            ) )  # , mode=cx_Oracle.SYSDBA)
         # TODO : how to set charset in Oracle
         self.is_opened = True
         self.logger.debug('Oracle.open: opened!')

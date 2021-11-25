@@ -17,6 +17,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/11/12]
+#     - add --input-dt-format
 #  * [2021/04/26]
 #     - starting
 
@@ -182,6 +184,59 @@ class TU(TestCase):
             out = out.getvalue().strip()
             print(out)
             self.assertTrue(out == '0')
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0170_uk_datetime(self):
+        try:
+            dt1 = datetime.datetime(2021, 12, 11, 1, 2, 3)
+            dt2 = dt1 + datetime.timedelta(seconds=-123)
+
+            with captured_output() as (out, err):
+                r = main(
+                    dt1.strftime('%d%m%Y %H%M%S'),
+                    dt2.strftime('%d%m%Y %H%M%S'),
+                    'In seconds',
+                    '--input-dt-format', 'YYYY/MM/DD HH:MM:SS.mmm',
+                )
+            self.assertTrue(r == 9)
+
+            with captured_output() as (out, err):
+                r = main(
+                    dt1.strftime('%d%m%Y-%H%M%S'),
+                    dt2.strftime('%d%m%Y-%H%M%S'),
+                    'In seconds',
+                    '--input-dt-format', 'DDMMYYYY-HHMMSS',
+                )
+            self.assertTrue(r == 0)
+            out = out.getvalue().strip()
+            print(out)
+            self.assertTrue(out == '123')
+
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0180_uk_date(self):
+        try:
+            dt1 = datetime.datetime(2021, 12, 11, 0, 0, 0)
+            dt2 = dt1 + datetime.timedelta(days=-12)
+
+            with captured_output() as (out, err):
+                r = main(
+                    dt1.strftime('%d/%m/%Y'),
+                    dt2.strftime('%d/%m/%Y'),
+                    'Timedelta string',
+                    '--input-dt-format', 'DD/MM/YYYY',
+                )
+            self.assertTrue(r == 0)
+            out = out.getvalue().strip()
+            print(out)
+            self.assertTrue(out == '12 days, 0:00:00')
+
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)

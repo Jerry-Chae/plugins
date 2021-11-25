@@ -19,6 +19,10 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2021/11/22]
+#     - --replace 문자열도 base64 인코딩 하도록 함, '-'로 시작하는 경우 패러미터 파싱오류 발생
+#  * [2021/08/04]
+#     - tolower, toupper from file
 #  * [2021/07/05]
 #     - "String to handle" 패러미터에 input_method='base64' 지정 및 디코딩
 #  * [2021/06/15]
@@ -46,15 +50,16 @@ ARGOS LABS plugin module : unittest
 ################################################################################
 import os
 import sys
-import base64
+# import base64
 # from alabs.common.util.vvargs import ArgsError
+import alabs.common.util.vvargs
 from unittest import TestCase
 # noinspection PyProtectedMember
 from argoslabs.string.re import _main as main
 from contextlib import contextmanager
 from io import StringIO
 from tempfile import gettempdir
-from alabs.common.util.vvargs import vv_base64_encode
+from alabs.common.util.vvargs import vv_base64_encode, G_VV_DECODE_ERROR
 
 
 ################################################################################
@@ -80,6 +85,8 @@ class TU(TestCase):
     # ==========================================================================
     def setUp(self) -> None:
         os.chdir(os.path.dirname(__file__))
+        if alabs.common.util.vvargs.G_VV_DECODE_ERROR:
+            alabs.common.util.vvargs.G_VV_DECODE_ERROR = False
 
     # ==========================================================================
     def test0000_init(self):
@@ -280,7 +287,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'[\s,|]+'),
                          vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
-                         '--replace', ',')
+                         '--replace', vv_base64_encode(','))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -303,7 +310,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'[\s,|]+'),
                          vv_base64_encode('hello,|Tom , tom|and    jerry\tJerry'),
-                         '--replace', ',', '--limit', '4')
+                         '--replace', vv_base64_encode(','), '--limit', '4')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -349,7 +356,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r','),
                          vv_base64_encode('a@b.c.d,b@c.d.e'),
-                         '--replace', ', ')
+                         '--replace', vv_base64_encode(', '))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -417,7 +424,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'tom'),
                          '--file', TU.file,
-                         '--replace', 'foo',
+                         '--replace', vv_base64_encode('foo'),
                          '--ignore-case')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -441,7 +448,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'tom'),
                          '--file', TU.file,
-                         '--replace', 'foo',
+                         '--replace', vv_base64_encode('foo'),
                          '--ignore-case', '--limit', 4)
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
@@ -673,7 +680,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'[\s]'),
                          vv_base64_encode(mbstr),
-                         '--replace', ' ')
+                         '--replace', vv_base64_encode(' '))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -687,7 +694,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'　'),
                          vv_base64_encode(mbstr),
-                         '--replace', ' ')
+                         '--replace', vv_base64_encode(' '))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -700,7 +707,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'[ ]'),
                          vv_base64_encode(sbstr),
-                         '--replace', '　')
+                         '--replace', vv_base64_encode('　'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -723,7 +730,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'。'),
                          vv_base64_encode(mbstr),
-                         '--replace', '.')
+                         '--replace', vv_base64_encode('.'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -737,7 +744,7 @@ hello,|Tom , tom|and    jerry\tJerry
                 r = main('replace',
                          vv_base64_encode(r'[.]'),
                          vv_base64_encode(sbstr),
-                         '--replace', '。')
+                         '--replace', vv_base64_encode('。'))
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             if stdout:
@@ -759,7 +766,7 @@ hello,|Tom , tom|and    jerry\tJerry
             r = main('replace',
                      vv_base64_encode(r',__LINECHANGE__,'),
                      '--file', 'name.txt',
-                     '--replace', '\n',
+                     '--replace', vv_base64_encode('\n'),
                      '--outfile', stdout)
             self.assertTrue(r == 0)
             with open('name.txt', encoding='utf-8') as ifp:
@@ -781,7 +788,7 @@ hello,|Tom , tom|and    jerry\tJerry
             r = main('replace',
                      vv_base64_encode(r'[\n\r]+'),
                      '--file', 'stringsample.txt',
-                     '--replace', ' ',
+                     '--replace', vv_base64_encode(' '),
                      '--outfile', stdout)
             self.assertTrue(r == 0)
             with open(stdout, encoding='utf-8') as ifp:
@@ -810,7 +817,7 @@ July 20, 2020''')
             r = main('replace',
                      vv_base64_encode(r'^(.*)$'),
                      '--file', ss_txt,
-                     '--replace', r'"\1"',
+                     '--replace', vv_base64_encode(r'"\1"'),
                      '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
@@ -833,7 +840,7 @@ July 20, 2020''')
             r = main('replace',
                      vv_base64_encode(r'\"?\\r\\n\s+\"?'),
                      '--file', ss_txt,
-                     '--replace', r'',
+                     '--replace', vv_base64_encode(r''),
                      '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
@@ -877,7 +884,7 @@ July 20, 2020''')
             r = main('replace',
                      vv_base64_encode('<(path)\s'),
                      '--file', ss_txt,
-                     '--replace', r'<my_\1 ',
+                     '--replace', vv_base64_encode(r'<my_\1 '),
                      '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
@@ -915,7 +922,6 @@ July 20, 2020''')
             if stderr:
                 sys.stderr.write(stderr)
             self.assertTrue(False)
-
 
     # ==========================================================================
     def test0380_debug_venkatesh(self):
@@ -1022,16 +1028,39 @@ July 20, 2020''')
             r = main('replace',
                      # vv_base64_encode(r'\n'),
                      # vv_base64_encode('\n'),
-                     r'\n',
+                     vv_base64_encode(r'\n'),
                      '--file', 'shige-test03.txt',
-                     '--replace', ' ',
+                     '--replace', vv_base64_encode(' '),
                      # '--multiline',
                      '--outfile', stdout)
             self.assertTrue(r == 0)
             with open(stdout, encoding='utf-8') as ifp:
                 out_s = ifp.read()
                 print(out_s)
-                self.assertTrue(out_s == 'Summary of Services Date Attorney Services Matter Amount 06/28/21 Andy Han Prepare claims for divisional application SEUR-00304CN $1,200')
+                self.assertTrue(out_s =='Summary of Services Date Attorney Services Matter Amount 06/28/21 Andy Han Prepare claims for divisional application SEUR-00304CN $1,200')
+# 'Summary of ServicesIA==Date Attorney Services Matter AmountIA==06/28/21 Andy Han Prepare claims for divisional application SEUR-00304CN $1,200'
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            if stderr:
+                sys.stderr.write(stderr)
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0430_debug_shige_replace_filepath(self):
+        # "replace" "XC5jc3Y=" "QzpcVXNlcnNcc2F0bzNcRGVza3RvcFxjaW5uYWJhci5jc3Y=" "--replace"  "-2.csv"
+        stderr = None
+        stdout = 'stdout.out'
+        try:
+            r = main('replace',
+                     "XC5jc3Y=",
+                     "QzpcVXNlcnNcc2F0bzNcRGVza3RvcFxjaW5uYWJhci5jc3Y=",
+                     "--replace", vv_base64_encode("-2.csv"),
+                     '--outfile', stdout)
+            self.assertTrue(r == 0)
+            with open(stdout, encoding='utf-8') as ifp:
+                out_s = ifp.read()
+                print(out_s)
+                self.assertTrue(out_s == r'C:\Users\sato3\Desktop\cinnabar-2.csv')
         except Exception as e:
             sys.stderr.write('%s\n' % str(e))
             if stderr:

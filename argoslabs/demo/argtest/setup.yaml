@@ -29,4 +29,4 @@ setup:
   package_data:
     argoslabs.demo.argtest: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.322.1414
+  version: 4.0.10

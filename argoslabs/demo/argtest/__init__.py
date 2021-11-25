@@ -184,11 +184,16 @@ def _main(*args):
         description='Argument and Marketplace test',
     ) as mcxt:
         # ##################################### for app dependent parameters
+        mcxt.add_argument('port', type=int,
+                          display_name='Port',
+                          default=3200,
+                          help='Service Port')
         mcxt.add_argument('boolparam', type=str2bool,
                           display_name='Boolean Param',
                           input_group='My Group', input_method='my_boolean',
                           help='boolean parameter')
         mcxt.add_argument('intparam', type=int,
+                          default=48,
                           greater=40, less_eq=50,
                           input_group='My Group', input_method='my_int',
                           help='integer parameter')

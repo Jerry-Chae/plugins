@@ -60,7 +60,7 @@ def run_plugin_module(statfile):
         statfile,
         '--steps', '2',
     ]
-    params = ['y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo']
+    params = ['3000', 'y', '50', '0.5', '1.2.3.4', 'tom', 'jerry', 'foo', 'foo']
     cmd += params
     po = subprocess.Popen(cmd)
     return po
