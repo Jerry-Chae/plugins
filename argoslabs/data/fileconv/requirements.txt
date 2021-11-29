@@ -16,4 +16,4 @@ pyexcel-xlsx
 xlrd==1.2.0
 
 # for xlsx => xls
-xlwings
+pywin32

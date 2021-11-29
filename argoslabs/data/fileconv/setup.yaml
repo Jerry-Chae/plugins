@@ -25,4 +25,4 @@ setup:
     argoslabs.data.fileconv: ['icon.*', 'tests/*.*', 'tests/issue/*.*']
   url: https://www.argos-labs.com
 #  version: 3.120.1126
-  version: 3.1123.1017
+  version: 3.1126.1633
