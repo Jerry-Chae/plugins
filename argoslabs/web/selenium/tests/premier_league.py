@@ -28,7 +28,7 @@ import sys
 import csv
 import traceback
 from alabs.common.util.vvlogger import get_logger
-from alabs.selenium import PySelenium
+from alabslib.selenium import PySelenium
 from tempfile import gettempdir
 
 
@@ -123,6 +123,7 @@ def do_start(**kwargs):
             height=int(kwargs.get('height', '800')),
             logger=kwargs['logger']) as ws:
         ws.start()
+        return 0
 
 
 ################################################################################

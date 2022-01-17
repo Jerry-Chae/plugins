@@ -17,6 +17,11 @@ ARGOS LABS plugin module to use Selenium
 # Change Log
 # --------
 #
+#  * [2022/01/14]
+#     - alabs.selenium 대신 alabslib.selenium으로 수정
+#       <== C# ppm 에서 alabs.* 모듈과 VENV 설치시 동일 alabs.* 가 문제가 생겼음
+#  * [2021/12/09]
+#     - do_start의 결과를 return
 #  * [2021/07/31]
 #     - Change group "9: Utility Tools" => "10: Web Scraping"
 #  * [2021/05/31]
@@ -41,11 +46,9 @@ import traceback
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
 from alabs.common.util.vvlogger import get_logger
-from alabs.selenium import PySelenium
-from alabs.common.util.vvlogger import get_logger
 from tempfile import gettempdir
 # for selenium
-from alabs.selenium import PySelenium
+from alabslib.selenium import PySelenium
 from selenium.webdriver.common.keys import Keys
 
 
@@ -75,8 +78,8 @@ def do_pyselenium(mcxt, argspec):
         exec(script, globals(), locals())
         globals().update(locals())
         # noinspection PyUnresolvedReferences
-        do_start(**params)
-        return 0
+        return do_start(**params)
+        # return 0
     except Exception as err:
         msg = str(err)
         mcxt.logger.error(msg)

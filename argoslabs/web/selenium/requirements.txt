@@ -4,4 +4,4 @@
 alabs.common
 
 # for selenium
-alabs.selenium>=3.601.900
+alabslib.selenium

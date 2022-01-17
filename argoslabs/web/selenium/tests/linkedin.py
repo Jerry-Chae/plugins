@@ -26,7 +26,7 @@
 # import csv
 # import traceback
 # from alabs.common.util.vvlogger import get_logger
-# from alabs.selenium import PySelenium
+# from alabslib.selenium import PySelenium
 # from tempfile import gettempdir
 # import time
 # from selenium.common.exceptions import TimeoutException
