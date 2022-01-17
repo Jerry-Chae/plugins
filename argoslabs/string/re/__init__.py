@@ -19,6 +19,8 @@ ARGOS LABS plugin module for string regular-expression operation
 # Change Log
 # --------
 #
+#  * [2021/11/29]
+#     - return coder
 #  * [2021/11/22]
 #     - --replace 문자열도 base64 인코딩 하도록 함, '-'로 시작하는 경우 패러미터 파싱오류 발생
 #  * [2021/08/04]
@@ -43,7 +45,7 @@ ARGOS LABS plugin module for string regular-expression operation
 #  * [2019/09/11]
 #     - one replace result padding '\n' remove
 #  * [2019/05/22]
-#     - modify display_name and help string for limit
+#     - modify display_name and help string for limitrr
 #  * [2019/05/02]
 #     - starting
 
