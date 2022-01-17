@@ -17,6 +17,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2022/01/12]
+#     - Poh의 pdfplumber 관련 오류 디버그
 #  * [2021/07/01]
 #     - ASJ의 pywinauto 모듈이 안되는 문제 때문에 exec(py_script, locals(), locals()) 로 수정
 #  * [2021/03/30]
@@ -150,7 +152,7 @@ class TU(TestCase):
                     '--reqtxt', 'req-err.txt',
                     '--params', 'wdir::=%s' % os.getcwd(),
                 )
-            self.assertTrue(r == 9)
+            self.assertTrue(r == 99)
             _err = err.getvalue()
             self.assertTrue(_err == 'Error: pip install with "req-err.txt" failure!')
         except Exception as e:
@@ -262,20 +264,40 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0180_asj_pywinauto(self):
+    # def test0180_asj_pywinauto(self):
+    #     try:
+    #         sg = sys.gettrace()  # 디버그는 괜찮지만 실제 build.bat 에서는 오류 발생 때문
+    #         if sg is None:  # Not in debug mode
+    #             print('Skip testing at test/build time')
+    #             return
+    #         pyf = 'pywinauto_test.py'
+    #         odir = os.path.join(os.path.abspath('.'), 'output')
+    #         with captured_output() as (out, err):
+    #             r = main(
+    #                 pyf,
+    #                 '--reqtxt', r'pywinauto_reqs.txt',
+    #             )
+    #         self.assertTrue(r == 0)
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
+
+    # ==========================================================================
+    def test0190_poh_pyplumber_debug(self):
         try:
             sg = sys.gettrace()  # 디버그는 괜찮지만 실제 build.bat 에서는 오류 발생 때문
             if sg is None:  # Not in debug mode
                 print('Skip testing at test/build time')
                 return
-            pyf = 'pywinauto_test.py'
-            odir = os.path.join(os.path.abspath('.'), 'output')
+            pyf = 'dp_pdfplumber.py'
             with captured_output() as (out, err):
                 r = main(
                     pyf,
-                    '--reqtxt', r'pywinauto_reqs.txt',
+                    '--reqtxt', r'dp_pdfplumber.txt',
                 )
             self.assertTrue(r == 0)
+            stdout = out.getvalue()
+            self.assertTrue(stdout=='0.6.0')
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)

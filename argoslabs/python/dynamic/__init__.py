@@ -124,7 +124,7 @@ def do_dynamic_script(mcxt, argspec):
         msg = 'Error: %s' % str(e)
         mcxt.logger.error(msg)
         sys.stderr.write(msg)
-        return 9
+        return 99
     finally:
         mcxt.logger.info('>>>end...')
 
@@ -136,35 +136,39 @@ def _main(*args):
     :param args: user arguments
     :return: return value from plugin job function
     """
-    with ModuleContext(
-        owner='ARGOS-LABS',
-        group='9',  # Utility Tools
-        version='1.0',
-        platform=['windows', 'darwin', 'linux'],
-        output_type='text',
-        display_name='Dynamic Python',
-        icon_path=get_icon_path(__file__),
-        description='Execute dynamic python script with 3-rd party modules',
-    ) as mcxt:
-        # ##################################### for app dependent parameters
-        mcxt.add_argument('script',
-                          display_name='Python Script',
-                          input_method='fileread',
-                          help='Python script to execute')
-        # ##################################### for app dependent options
-        mcxt.add_argument('--reqtxt',
-                          display_name='Req Text',
-                          input_method='fileread',
-                          help='Depenent Python module description file usually "requirements.txt"')
-        mcxt.add_argument('--params',
-                          display_name='Parameters',
-                          action='append',
-                          help='Parameters for script, key::=value format')
-        mcxt.add_argument('--encoding',
-                          display_name='Encoding', default='utf-8',
-                          help='Encoding for script and requirements file, default is [[utf-8]]')
-        argspec = mcxt.parse_args(args)
-        return do_dynamic_script(mcxt, argspec)
+    try:
+        with ModuleContext(
+            owner='ARGOS-LABS',
+            group='9',  # Utility Tools
+            version='1.0',
+            platform=['windows', 'darwin', 'linux'],
+            output_type='text',
+            display_name='Dynamic Python',
+            icon_path=get_icon_path(__file__),
+            description='Execute dynamic python script with 3-rd party modules',
+        ) as mcxt:
+            # ##################################### for app dependent parameters
+            mcxt.add_argument('script',
+                              display_name='Python Script',
+                              input_method='fileread',
+                              help='Python script to execute')
+            # ##################################### for app dependent options
+            mcxt.add_argument('--reqtxt',
+                              display_name='Req Text',
+                              input_method='fileread',
+                              help='Depenent Python module description file usually "requirements.txt"')
+            mcxt.add_argument('--params',
+                              display_name='Parameters',
+                              action='append',
+                              help='Parameters for script, key::=value format')
+            mcxt.add_argument('--encoding',
+                              display_name='Encoding', default='utf-8',
+                              help='Encoding for script and requirements file, default is [[utf-8]]')
+            argspec = mcxt.parse_args(args)
+            return do_dynamic_script(mcxt, argspec)
+    except Exception as e:
+        sys.stderr.write(f'Error: {str(e)}')
+        return 98
 
 
 ################################################################################
