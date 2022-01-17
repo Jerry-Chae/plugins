@@ -17,6 +17,8 @@
 #
 # 다음과 같은 작업 사항이 있었습니다:
 #
+#  * [2021/12/10] => need test and build
+#     - csv insert 시 예외 발생하면 return 5
 #  * [2021/07/26]
 #     - GMarket Debugging
 #     - instead find 'select' use startswith in sql to detect
@@ -173,9 +175,15 @@ class MySQL(object):
                 for i, record in enumerate(cooked):
                     if i < header_lines:
                         continue
-                    esql = sql.format(*record)
-                    cursor.execute(esql)
-                    cnt += 1
+                    try:
+                        esql = sql.format(*record)
+                        esql = esql.replace("''", "NULL")
+                        cursor.execute(esql)
+                        cnt += 1
+                    except Exception as err:
+                        msg = f'CSV[{cnt+1}] esql="{esql}"\nError={str(err)}'
+                        self.logger.error(msg)
+                        raise
                 self.conn.commit()
                 print('affected_row_count\n%s' % cnt)
                 self.logger.debug('affected_row_count=%s' % cnt)
@@ -340,8 +348,9 @@ def do_job(mcxt, argspec):
                     else:
                         db.sql_execute(sql)
             except Exception as err:
-                msg = f'[{i+1}] sql="{sql}" Error: {str(err)}\n'
+                msg = f'[{i+1}] sql="{sql}"\nError: {str(err)}\n'
                 sys.stderr.write(msg)
+                return 5
         return 0
     except Exception as e:
         sys.stderr.write('[%s] Error: %s' % (argspec.dbtype, str(e)))

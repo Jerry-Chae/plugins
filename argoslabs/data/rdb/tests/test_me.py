@@ -16,6 +16,8 @@
 #
 # 다음과 같은 작업 사항이 있었습니다:
 #
+#  * [2021/12/06]
+#     - Erase oracle testing
 #  * [2021/07/26]
 #     - GMarket Debugging
 #  * [2021/07/15]
@@ -67,10 +69,8 @@ class TU(TestCase):
     tut = None
 
     # ==========================================================================
-    # noinspection PyMethodParameters,PyMethodOverriding,PyTypeChecker
-    @classmethod
-    def setUpClass(cls):
-        cls.tut = {
+    def setUp(self) -> None:
+        self.tut = {
             'mysql': {
                 'svclist': [
                     {
@@ -116,7 +116,7 @@ class TU(TestCase):
                 'user_params': None,
             },
         }
-        for dbms, tut in cls.tut.items():
+        for dbms, tut in self.tut.items():
             has_svc = False
             for svc in tut['svclist']:
                 print('Try to connecing [%s] %s:%s'
@@ -133,10 +133,6 @@ class TU(TestCase):
                         tut['user_params'] = \
                             (dbms, svc['host'], str(svc['port']),
                              'sa', 'test-oracle123', 'tempdb')
-                    elif dbms == 'oracle':
-                        tut['user_params'] = \
-                            (dbms, svc['host'], str(svc['port']),
-                             'sys', '..', 'orcl')
                     has_svc = True
                     print('connected!')
                     break
@@ -146,14 +142,12 @@ class TU(TestCase):
             #     raise IOError('Cannot find %s Service' % dbms)
 
     # ==========================================================================
-    @classmethod
-    def _rp(cls, db):
-        return cls.tut[db]['root_params']
+    def _rp(self, db):
+        return self.tut[db]['root_params']
 
     # ==========================================================================
-    @classmethod
-    def _up(cls, db):
-        return cls.tut[db]['user_params']
+    def _up(self, db):
+        return self.tut[db]['user_params']
 
     # ==========================================================================
     @staticmethod
@@ -190,6 +184,7 @@ class TU(TestCase):
     # ==========================================================================
     def test1000_prepare(self):
         dbms = 'mysql'
+        rp = self._rp(dbms)
         self.assertTrue(self._rp(dbms))
         # noinspection PyBroadException
         try:
@@ -231,24 +226,6 @@ class TU(TestCase):
             except ArgsError as e:
                 sys.stderr.write('\n%s\n' % str(e))
                 self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            # noinspection PyBroadException
-            try:
-                _ = main(*self._up(dbms),
-                         '--file', self._gp('2050-drop-table.sql', dbms))
-            except Exception:
-                pass
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2010-create-table.sql', dbms))
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
 
     # ==========================================================================
     def test2020_static_insert(self):
@@ -266,18 +243,6 @@ class TU(TestCase):
                 self.assertTrue(False)
         # ----------------------------------------------------------------------
         dbms = 'mssql'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2020-static-insert.sql', dbms))
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
         if dbms in self.tut:
             print('%s%s' % (dbms, '*'*80))
             self.assertTrue(self._up(dbms))
@@ -307,20 +272,6 @@ class TU(TestCase):
                 self.assertTrue(False)
         # ----------------------------------------------------------------------
         dbms = 'mssql'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2030-template-insert.sql', dbms),
-                         '--csv-file', self._gp('foo.csv'),
-                         '--header-lines', '1')
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
         if dbms in self.tut:
             print('%s%s' % (dbms, '*'*80))
             self.assertTrue(self._up(dbms))
@@ -375,21 +326,6 @@ class TU(TestCase):
                 except ArgsError as e:
                     sys.stderr.write('\n%s\n' % str(e))
                     self.assertTrue(False)
-            # ----------------------------------------------------------------------
-            dbms = 'oracle'
-            if dbms in self.tut:
-                print('%s%s' % (dbms, '*'*80))
-                self.assertTrue(self._up(dbms))
-                try:
-                    r = main(*self._up(dbms),
-                             '--file', self._gp('2030-template-insert.sql', dbms),
-                             '--csv-file', self._gp('bar.csv'),
-                             '--header-lines', '1',
-                             '--encoding', encoding)
-                    self.assertTrue(r == 0)
-                except ArgsError as e:
-                    sys.stderr.write('\n%s\n' % str(e))
-                    self.assertTrue(False)
         finally:
             if bar_f and os.path.exists(bar_f):
                 os.remove(bar_f)
@@ -422,18 +358,6 @@ class TU(TestCase):
             except ArgsError as e:
                 sys.stderr.write('\n%s\n' % str(e))
                 self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2040-select.sql', dbms))
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
 
     # ==========================================================================
     def test2045_select_with_charset(self):
@@ -454,20 +378,6 @@ class TU(TestCase):
         # ----------------------------------------------------------------------
         charset = 'EUC-KR'
         dbms = 'mssql'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2040-select.sql', dbms),
-                         '--charset', charset)
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        charset = 'invalid'
-        dbms = 'oracle'
         if dbms in self.tut:
             print('%s%s' % (dbms, '*'*80))
             self.assertTrue(self._up(dbms))
@@ -517,23 +427,6 @@ class TU(TestCase):
             finally:
                 if os.path.exists(stderr_file):
                     os.remove(stderr_file)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                _ = main(*self._up(dbms),
-                         '--execute', 'select AAA',
-                         '--errfile', stderr_file)
-                self.assertTrue(False)
-            except Exception as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(os.path.exists(stderr_file) and
-                                os.path.getsize(stderr_file) > 0)
-            finally:
-                if os.path.exists(stderr_file):
-                    os.remove(stderr_file)
 
     # ==========================================================================
     def test2060_drop_table(self):
@@ -551,18 +444,6 @@ class TU(TestCase):
                 self.assertTrue(False)
         # ----------------------------------------------------------------------
         dbms = 'mssql'
-        if dbms in self.tut:
-            print('%s%s' % (dbms, '*'*80))
-            self.assertTrue(self._up(dbms))
-            try:
-                r = main(*self._up(dbms),
-                         '--file', self._gp('2050-drop-table.sql', dbms))
-                self.assertTrue(r == 0)
-            except ArgsError as e:
-                sys.stderr.write('\n%s\n' % str(e))
-                self.assertTrue(False)
-        # ----------------------------------------------------------------------
-        dbms = 'oracle'
         if dbms in self.tut:
             print('%s%s' % (dbms, '*'*80))
             self.assertTrue(self._up(dbms))
