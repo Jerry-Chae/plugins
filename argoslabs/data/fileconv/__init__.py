@@ -53,7 +53,7 @@ import xlrd
 import pyexcel
 # noinspection PyPackageRequirements
 import xmltodict
-import xlwings
+import win32com.client
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
 from alabs.common.util.vvencoding import get_file_encoding
@@ -82,7 +82,6 @@ def table_convert(mcxt, argspec):
     :return: True
     """
     mcxt.logger.info('>>>starting...')
-    pass_error = False    # xlsx에서 xls로 변환시 에러를 넘기기윈한 변수
     try:
         if not (argspec.src and os.path.exists(argspec.src)):
             raise RuntimeError('Cannot read src "%s"' % argspec.src)
@@ -92,12 +91,14 @@ def table_convert(mcxt, argspec):
             raise RuntimeError('Cannot same source or target "%s"' % argspec.src)
 
         if argspec.operation == 'xlsx2xls' and argspec.conditional_formatting:
-            app = xlwings.App(visible=False)
-            wb = xlwings.Book(argspec.src)
-            wb.save(argspec.target)
-            app.quit()
-            pass_error = True
-            wb.close()
+            excel = win32com.client.gencache.EnsureDispatch('Excel.Application')
+            excel.Visible = False
+            excel.DisplayAlerts = False
+            wb = excel.Workbooks.Open(argspec.src)
+            wb.SaveAs(argspec.target, FileFormat=56)
+            wb.Close()
+            excel.Quit()
+            return 0
 
         elif argspec.operation in ('xls2xlsx', 'xlsx2csv', 'xlsx2xls'):
             warnings.simplefilter("ignore", category=PendingDeprecationWarning)
@@ -141,13 +142,10 @@ def table_convert(mcxt, argspec):
         print(argspec.target, end='')
         return 0
     except Exception as e:
-        if pass_error:
-            return 0
-        else:
-            msg = 'argoslabs.data.csv2tsv Error: %s' % str(e)
-            mcxt.logger.error(msg)
-            sys.stderr.write('%s%s' % (msg, os.linesep))
-            return 1
+        msg = 'argoslabs.data.csv2tsv Error: %s' % str(e)
+        mcxt.logger.error(msg)
+        sys.stderr.write('%s%s' % (msg, os.linesep))
+        return 1
     finally:
         sys.stdout.flush()
         mcxt.logger.info('>>>end...')
