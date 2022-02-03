@@ -28,4 +28,4 @@ setup:
 #    argoslabs.data.excel: ['icon.*', 'tests/*.*']
     argoslabs.data.excelread: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.614.1139
+  version: 4.203.1426

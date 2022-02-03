@@ -19,6 +19,9 @@ ARGOS LABS plugin module for Excel
 #
 # Change Log
 # --------
+#  * [2022/02/03]
+#   - .xlsx과 .csv 형식의 파일만이 아닌 다른 파일들도 열수 있도록 변경.
+#   - file open 할때, read_only=True로 변경함. 일부 파일에 접근할 수 없음. ex)Slicer List
 #  * [2021/06/14]
 #   숫자에서 뒤에 .0 붙는부분 수정, range와 sheet 위치 수정
 #  * [2021/04/26]
@@ -113,7 +116,7 @@ class Excel(object):
         return True
 
     # ==========================================================================
-    def open(self, read_only=False, data_only=False, keep_vba=False):
+    def open(self, read_only=True, data_only=False, keep_vba=False):
         if self.extension == '.csv':
             self.tempfile = os.path.join(gettempdir(), '%s.xlsx'
                                          % os.path.basename(self.filename)[:-4])
@@ -317,8 +320,9 @@ def do_excel(mcxt, argspec):
         setattr(argspec, 'formula', None)
         exl = Excel(argspec)
         data_only = argspec.data_only
-        if exl.extension in ('.xlsx', '.csv'):
-            exl.open(data_only=data_only)
+        # 기존에 .xlsx 과 .csv만 열도록 했는데 다른 파일형식도 열수 있도록 변경.
+        # if exl.extension in ('.xlsx', '.csv', '.xlsm'):
+        exl.open(data_only=data_only)
 
         if argspec.range is not None:
             if '' == argspec.range:

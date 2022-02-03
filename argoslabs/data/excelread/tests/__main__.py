@@ -1,6 +1,6 @@
 
 import sys
-from argoslabs.data.excelreplace.tests.test_me import TU
+from argoslabs.data.excelread.tests.test_me import TU
 from unittest import TestLoader, TextTestRunner
 
 
