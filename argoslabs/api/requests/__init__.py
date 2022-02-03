@@ -17,6 +17,8 @@ ARGOS LABS plugin module sample
 # Change Log
 # ----------
 #
+#  * [2022/01/24] Kyobong An
+#     - encoding 추가
 #  * [2021/03/25]
 #     - 그룹에 "9-Utility Tools" 넣음
 #  * [2020/12/25]
@@ -106,6 +108,8 @@ def http_do(mcxt, argspec):
         if json_data:
             kwargs['json'] = json_data
         rp = method_f(url, **kwargs, timeout=argspec.timeout)
+        if argspec.encoding:
+            rp.encoding = argspec.encoding
         if rp.status_code // 10 != 20:
             print(conv_from_unicode(rp.text), end='')
             rp.raise_for_status()
