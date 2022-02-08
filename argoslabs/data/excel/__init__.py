@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel
 # Change Log
 # --------
 #
+#  * [2022/02/07] Kyobong
+#     - dataonly 사용할때 백그라운드에 excel이 남아있는 버그가있슴. xlwing 사용할때 app.quit()로 닫아줌
 #  * [2021/06/17]
 #     - Data-Only로 읽어오는데 문제 디버깅 [by Shige]
 #     - xlwings 로 읽도록 수정 (교봉씨 excelread 참조 및 수정)
@@ -274,6 +276,7 @@ class Excel(object):
                 ws1 = wbxl.sheets[self.argspec.sheet]
             else:
                 ws1 = wbxl.sheets[0]
+
         for r in range(self.min_row, self.max_row + 1):
             row = []
             for c in range(self.min_col, self.max_col + 1):
@@ -293,6 +296,7 @@ class Excel(object):
             yield row
         if self.argspec.data_only:
             wbxl.close()
+            app.quit()
 
     # ==========================================================================
     def _erase_trailing_empty_values(self):
