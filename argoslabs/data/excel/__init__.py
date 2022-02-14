@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel
 # Change Log
 # --------
 #
+#  * [2022/02/14] Kyobong
+#     - 원본 데이터의 date_type을 그대로 유지하도록 수정.
 #  * [2022/02/07] Kyobong
 #     - dataonly 사용할때 백그라운드에 excel이 남아있는 버그가있슴. xlwing 사용할때 app.quit()로 닫아줌
 #  * [2021/06/17]
@@ -289,7 +291,7 @@ class Excel(object):
                     else:
                         v = ws1['%s%d' % (cl, r)].value
                 else:
-                    v = self.ws['%s%d' % (cl, r)].value
+                    v = self.ws['%s%d' % (cl, r)]
                 if v is None:
                     v = ''
                 row.append(v)
@@ -429,7 +431,15 @@ class Excel(object):
         for i, row in enumerate(self.rr):
             for j, v in enumerate(row):
                 # w_ws[s_row+i][s_col+j].value = v
-                w_ws.cell(row=s_row+i, column=s_col+j, value=v)
+                try:
+                    w_ws.cell(row=s_row+i, column=s_col+j, value=v.value)
+                    w_ws[s_row+i][j].value = v.value
+                    w_ws[s_row+i][j].data_type = v.data_type
+                    w_ws[s_row+i][j].number_format = v.number_format
+                    w_ws[s_row+i][j].quotePrefix = v.quotePrefix
+                except:
+                    w_ws.cell(row=s_row + i, column=s_col + j, value=v)
+                # w_ws.cell(row=s_row+i, column=s_col+j, value=v)
         w_wb.save(argspec_write)
         print(os.path.abspath(argspec_write), end='')
         return 0
