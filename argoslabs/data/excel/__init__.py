@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel
 # Change Log
 # --------
 #
+#  * [2022/02/21] Kyobong
+#     - 읽기만 할때  datetime에서 date만 출력 되게하는 Date 기능추가
 #  * [2022/02/14] Kyobong
 #     - 원본 데이터의 date_type을 그대로 유지하도록 수정.
 #  * [2022/02/07] Kyobong
@@ -289,9 +291,17 @@ class Excel(object):
                         if v - int(v) == 0:
                             v = int(v)
                     else:
-                        v = ws1['%s%d' % (cl, r)].value
-                else:
+                        if self.argspec.date and str(type(ws1['%s%d' % (cl, r)].value)) == "<class 'datetime.datetime'>":
+                            v = ws1['B5'].value.date()
+                        else:
+                            v = ws1['%s%d' % (cl, r)].value
+                elif self.argspec.write:
                     v = self.ws['%s%d' % (cl, r)]
+                else:
+                    if self.argspec.date and self.ws['%s%d' % (cl, r)].data_type == 'd':
+                        v = self.ws['B5'].value.date()
+                    else:
+                        v = self.ws['%s%d' % (cl, r)].value
                 if v is None:
                     v = ''
                 row.append(v)
@@ -626,6 +636,10 @@ def _main(*args):
         mcxt.add_argument('--overwrite', display_name='Allow Overwrite',
                           action='store_true',
                           help='If "Data Only" and this flag is set then overwrite without formula')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--date', display_name='Date',
+                          action='store_true',
+                          help='Shows datetime type values only as date.')
         # ----------------------------------------------------------------------
         # TODO: formula를 설정하는 것을 테스트 하는데,
         #     openpyxl 을 이용하여 formula를 설정하는 것은 가능하지만
