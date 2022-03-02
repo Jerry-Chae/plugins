@@ -665,6 +665,22 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
+    def test0800_slice(self):
+        stdin = r'C:\plugins\argoslabs\string\basicstring\tests\stdin.txt'
+        stdout = 'stdout.txt'
+        try:
+            r = main('--string', vv_base64_encode('http://www.naver.com'),
+                     # '--file-path', stdin,
+                     # '--slice', '3',
+                     '--slice', '2:6',
+                     # '--outfile', stdout
+                     )
+            self.assertTrue(r == 0)
+        except Exception as e:
+            sys.stderr.write('%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test9999_quit(self):
         if os.path.exists(TU.file):
             os.remove(TU.file)

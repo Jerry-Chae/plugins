@@ -23,4 +23,4 @@ setup:
   package_data:
     argoslabs.string.basicstring: ['icon.*', 'tests/*.txt']
   url: https://www.argos-labs.com
-  version: 3.1025.1130
+  version: 4.302.1817

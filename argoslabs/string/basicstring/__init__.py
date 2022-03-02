@@ -19,6 +19,8 @@ ARGOS LABS plugin module for string regular-expression operation
 # Change Log
 # --------
 #
+#  * [2022/03/02]
+#     - Slice & Index 기능추가
 #  * [2021/10/25]
 #     - tuple 제거 list로 사용. "Boolean" display_name 변경 -> "True/False"
 #  * [2021/10/19]
@@ -184,6 +186,19 @@ class Basic_String(object):
         if self.output is False:
             raise False_Value
 
+    def slice(self):
+        if self.argspec.slice.find(':') > 0:
+            s_rage = self.argspec.slice.split(':')
+            for i, s in enumerate(s_rage):
+                if s:
+                    s_rage[i] = int(s)
+                else:
+                    s_rage[i] = None
+
+            self.output = self.string[s_rage[0]:s_rage[1]]
+        else:
+            self.output = self.string[int(self.argspec.slice)]
+
 
 @func_log
 def do_basic(mcxt, argspec):
@@ -207,6 +222,8 @@ def do_basic(mcxt, argspec):
             b_str.strip()
         elif b_str.argspec.swith:
             b_str.swith()
+        elif b_str.argspec.slice:
+            b_str.slice()
 
         if b_str.output is True:
             print('True')
@@ -329,6 +346,10 @@ def _main(*args):
                           input_group='radio=String operation type',
                           choices=['endswith', 'startswith'],
                           help='String method that tells if a particular string exists in a string.')
+        mcxt.add_argument('--slice', show_default=True,
+                          display_name='Index & Slice',
+                          input_group='radio=String operation type',
+                          help='String slicing & index. e.g. "apple"[3:5] = le')
         argspec = mcxt.parse_args(args)
         return do_basic(mcxt, argspec)
 
