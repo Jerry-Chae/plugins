@@ -672,7 +672,7 @@ class TU(TestCase):
             r = main('--string', vv_base64_encode('http://www.naver.com'),
                      # '--file-path', stdin,
                      # '--slice', '3',
-                     '--slice', '2:6',
+                     '--slice', ':6',
                      # '--outfile', stdout
                      )
             self.assertTrue(r == 0)

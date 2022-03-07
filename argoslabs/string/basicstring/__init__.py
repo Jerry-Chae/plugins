@@ -187,7 +187,7 @@ class Basic_String(object):
             raise False_Value
 
     def slice(self):
-        if self.argspec.slice.find(':') > 0:
+        if self.argspec.slice.find(':') >= 0:
             s_rage = self.argspec.slice.split(':')
             for i, s in enumerate(s_rage):
                 if s:
