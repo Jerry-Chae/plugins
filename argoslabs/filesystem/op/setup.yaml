@@ -28,4 +28,4 @@ setup:
     argoslabs.filesystem.op: ['icon.*']
   url: https://www.argos-labs.com
 #  version: 3.217.2413
-  version: 3.1027.1120
+  version: 4.308.1134

@@ -17,6 +17,8 @@ ARGOS LABS plugin module for operations of filesystem
 # Change Log
 # --------
 #
+#  * [2022/03/08] Kyobong An
+#     - 파일이동후 소스폴더에 파일이 없을 경우 삭제됨. move일 경우 회피하도록 수정
 #  * [2021/10/27] Kyobong An
 #     - fnmatch() 함수에 기존 fullpath로 입력 -> filename만 입력되도록 변경
 #  * [2021/04/08]
@@ -123,6 +125,9 @@ def copy_file(s, t,
     OUT_LINE.append(os.path.abspath(t))
     if is_delete_src:
         os.remove(s)
+        # if not os.path.isdir(os.path.dirname(s)):
+        #     os.makedirs(os.path.dirname(s))
+
     return 1
 
 
@@ -133,7 +138,8 @@ def copy_tree(s, t,
               overwrite=False,
               wildcard='*',
               is_delete_src=False,
-              recursive=False):
+              recursive=False,
+              operation=None):
     if os.path.isfile(s):
         return copy_file(s, t, preserve=preserve,
                          symlinks=symlinks, overwrite=overwrite)
@@ -161,7 +167,7 @@ def copy_tree(s, t,
         if not recursive:
             break
     if is_delete_src:
-        if is_empty(s):
+        if is_empty(s) and operation != 'move':
             shutil.rmtree(s)
     return cnt
 
@@ -262,7 +268,8 @@ def do_op(mcxt, argspec):
                           overwrite=argspec.overwrite,
                           wildcard=argspec.wildcard,
                           is_delete_src=is_delete_src,
-                          recursive=argspec.recursive)
+                          recursive=argspec.recursive,
+                          operation=argspec.operation)
             else:
                 target = argspec.target
                 if os.path.isdir(argspec.target):
