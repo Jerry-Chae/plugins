@@ -25,6 +25,6 @@ setup:
     # next requirements.txt is for pre-install for the prebuilt ethem module
     argoslabs.google.googlesheet: ['icon.*',]
   url: https://www.argos-labs.com
-  version: 2.625.3300
+  version: 4.307.1537
 
 
