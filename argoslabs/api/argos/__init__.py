@@ -18,6 +18,8 @@ ARGOS LABS OPEN API
 #
 # --------
 #
+#  * [2021/11/29]
+#     - sendOndemand에 최소 입력값을 userid,scnarioid,pamid로만 줄임. 기존에 봇파라미터값이 있어야 작동했슴.
 #  * [2021/09/02]
 #     - 출력되는 부분 수정 csv타입으로 변경
 #  * [2021/08/30]
@@ -56,6 +58,8 @@ class OpenApi(object):
             self.getbotlist()
         else:
             self.botparameters = []
+            if argspec.valuename:
+                self.get_botparameters()
             self.sendondemand()
 
     # ==========================================================================
@@ -89,7 +93,6 @@ class OpenApi(object):
     # ==========================================================================
     def sendondemand(self):
         url = "https://api-rpa.argos-labs.com///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
-        self.get_botparameters()
         xml = requests.post(url+self.apikey, json={"userId": self.argspec.userid,
                                                    "apiScenarioId": self.argspec.scenarioid,
                                                    "apiPamId": self.argspec.pamid,

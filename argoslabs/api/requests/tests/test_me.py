@@ -385,5 +385,18 @@ class TU(TestCase):
                 os.remove(of)
 
     # ==========================================================================
+    def test0400_asj572_encoding_error(self):
+        of = 'error.txt'
+        try:
+            # r = main('GET', 'https://google.com')
+            r = main('GET', 'https://www.anzen.mofa.go.jp/index.html',
+                     '--encoding', 'utf-8',
+                     '--outfile', of)  # need strip
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test9999_quit(self):
         self.assertTrue(True)

@@ -163,5 +163,18 @@ class TU(TestCase):
     #         self.assertTrue(False)
 
     # ==========================================================================
+    def test0240_sendOndemand_find_None(self):
+        try:
+            r = main('sendOndemand', '2c4e34ba47674e5fd295',
+                     '--userid', 'akb0930@vivans.net',
+                     '--scenarioid', '004987801c6a4d0c8071',
+                     '--pamid', 'c1e8a7d977f5d9ace632',
+                     )
+            self.assertTrue(r == 0)
+        except ArgsError as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test9999_quit(self):
         self.assertTrue(True)

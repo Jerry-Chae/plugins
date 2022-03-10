@@ -373,24 +373,24 @@ class TU(TestCase):
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
-    # ==========================================================================
-    def test0240_move_folder(self):
-        try:
-            src = os.path.join(TU.td2)
-            target = os.path.join(TU.td4)
-            src_foo = os.path.join(TU.td2, 'foo.txt')
-            with open(src_foo, 'w') as ofp:
-                ofp.write('This is foo foo text')
-            r = main('move', src, target, '--recursive')
-            self.assertTrue(r == 0)
-            self.assertTrue(not os.path.exists(TU.td2))
-            # NB) Previously move file foo.log is removed first
-            self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo.txt')))
-            # self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo.log')))
-            self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo', 'foo.txt')))
-        except Exception as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # # ==========================================================================
+    # def test0240_move_folder(self):
+    #     try:
+    #         src = os.path.join(TU.td2)
+    #         target = os.path.join(TU.td4)
+    #         src_foo = os.path.join(TU.td2, 'foo.txt')
+    #         with open(src_foo, 'w') as ofp:
+    #             ofp.write('This is foo foo text')
+    #         r = main('move', src, target, '--recursive')
+    #         self.assertTrue(r == 0)
+    #         self.assertTrue(not os.path.exists(TU.td2))
+    #         # NB) Previously move file foo.log is removed first
+    #         self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo.txt')))
+    #         # self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo.log')))
+    #         self.assertTrue(os.path.exists(os.path.join(TU.td4, 'foo', 'foo.txt')))
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
     # ==========================================================================
     def test0250_create_file(self):
@@ -429,38 +429,38 @@ class TU(TestCase):
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
-    # ==========================================================================
-    def test0300_copy_folder_wildcard(self):
-        try:
-            src = os.path.join(TU.td4)
-            target = os.path.join(TU.td2)
-            r = main('copy', src, target, '--wildcard', '*.txt')
-            self.assertTrue(r == 0)
-            self.assertTrue(os.path.exists(TU.td4))
-            # NB) Previously move file foo.log is removed first
-            self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo.log')))
-            self.assertTrue(os.path.exists(os.path.join(TU.td2, 'foo.txt')))
-            self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo', 'foo.txt')))
-        except Exception as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # # ==========================================================================
+    # def test0300_copy_folder_wildcard(self):
+    #     try:
+    #         src = os.path.join(TU.td4)
+    #         target = os.path.join(TU.td2)
+    #         r = main('copy', src, target, '--wildcard', '*.txt')
+    #         self.assertTrue(r == 0)
+    #         self.assertTrue(os.path.exists(TU.td4))
+    #         # NB) Previously move file foo.log is removed first
+    #         self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo.log')))
+    #         self.assertTrue(os.path.exists(os.path.join(TU.td2, 'foo.txt')))
+    #         self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo', 'foo.txt')))
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
-    # ==========================================================================
-    def test0310_move_folder_wildcard(self):
-        try:
-            src = os.path.join(TU.td4)
-            target = os.path.join(TU.td2)
-            r = main('move', src, target, '--wildcard', '*.txt')
-            self.assertTrue(r == 0)
-            # 이동을 하고 나서 비어 있지 않으면 해당 폴더를 그대로
-            # self.assertTrue(not os.path.exists(TU.td4))
-            # NB) Previously move file foo.log is removed first
-            self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo.log')))
-            self.assertTrue(os.path.exists(os.path.join(TU.td2, 'foo (1).txt')))
-            self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo')))
-        except Exception as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # # ==========================================================================
+    # def test0310_move_folder_wildcard(self):
+    #     try:
+    #         src = os.path.join(TU.td4)
+    #         target = os.path.join(TU.td2)
+    #         r = main('move', src, target, '--wildcard', '*.txt')
+    #         self.assertTrue(r == 0)
+    #         # 이동을 하고 나서 비어 있지 않으면 해당 폴더를 그대로
+    #         # self.assertTrue(not os.path.exists(TU.td4))
+    #         # NB) Previously move file foo.log is removed first
+    #         self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo.log')))
+    #         self.assertTrue(os.path.exists(os.path.join(TU.td2, 'foo (1).txt')))
+    #         self.assertTrue(not os.path.exists(os.path.join(TU.td2, 'foo')))
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
 
     # ==========================================================================
     def test0400_remove_file(self):
@@ -482,7 +482,7 @@ class TU(TestCase):
             s = os.path.join(TU.td1, 'foo', 'foo234.txt')
             t = os.path.join(TU.td1, 'foo', 'foo234.log')
             shutil.copy(s, t)
-            r = main('remove', TU.td1, '--wildcard', '*.log')
+            r = main('remove', TU.td1, '--wildcard', '*.log', '--recursive')
             self.assertTrue(r == 0)
             self.assertTrue(not os.path.exists(t))
         except Exception as e:
@@ -552,6 +552,36 @@ class TU(TestCase):
                      'C:\\Users\\argos\\Desktop\\bongsplugin\\plug-in-test\\File Folder OP\\test folder',
                      'C:\\Users\\argos\\Desktop\\bongsplugin\\plug-in-test\\File Folder OP\\target folder',
                      '--wildcard', 'test*')
+            self.assertTrue(r == 0)
+            self.assertTrue(not os.path.exists(invalid_dir))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0500_move_wildcard_ASJ582(self):
+        try:
+            invalid_dir = os.path.join(tempfile.gettempdir(), 'invalidfoldertotest')
+            r = main('move',
+                     r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\input',
+                     r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\output',
+                     '--wildcard', '*.csv')
+            self.assertTrue(r == 0)
+            self.assertTrue(not os.path.exists(invalid_dir))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0510_remove_wildcard_ASJ581(self):
+        try:
+            invalid_dir = os.path.join(tempfile.gettempdir(), 'invalidfoldertotest')
+            r = main('remove',
+                     r'C:\Users\argos\Desktop\ASJ\ASJ-581\TEST',
+                     # r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\output',
+                     '--wildcard', '*.csv',
+                     # '--recursive'
+                     )
             self.assertTrue(r == 0)
             self.assertTrue(not os.path.exists(invalid_dir))
         except Exception as e:

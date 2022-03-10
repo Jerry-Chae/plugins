@@ -16,6 +16,8 @@ Manage Google Sheets
 #
 # Change Log
 # --------
+#  * [2022/03/07] Kyobong An
+#     - 뒤쪽 열에 값이 없을 경우 none으로 인식이 안됨 첫번째 행의 길이를 아래 행에도 첫번째행의 길이만큼 ''를 삽입하도록함.
 #  * [2020/06/19]
 #     - Chnage output format
 #
@@ -71,13 +73,12 @@ class Googlesheet(object):
         result = sheet.values().get(spreadsheetId=self.spreadsheet_id,
                                     range=self.range).execute()
         values = result.get('values', [])
-        with StringIO() as outst:
-            for i in values:
-                for j in i:
-                    outst.write(j)
-                    outst.write(',')
-                outst.write('\n')
-            print(outst.getvalue(), end='')
+        s = csv.writer(sys.stdout, lineterminator='\n')
+        for i in values:
+            if len(values[0]) != len(i):
+                for _ in range(len(values[0]) - len(i)):
+                    i.append('')
+            s.writerow(i)
 
     # ==========================================================================
     def create_sheet(self):
@@ -90,15 +91,15 @@ class Googlesheet(object):
         spreadsheet = self.service.spreadsheets().create(body=spreadsheet,
                                                          fields='spreadsheetId').execute()
         self.result = {}
-        print(spreadsheet.get('spreadsheetId'),end="")
+        print(spreadsheet.get('spreadsheetId'), end="")
 
     # ==========================================================================
     def opencsv(self):
         if not os.path.exists(self.csvfile):
             raise IOError('Cannot read csv file "%s"' % self.csvfile)
         else:
-            k= os.path.splitext(self.csvfile.lower())[-1]
-            if k=='.csv':
+            k = os.path.splitext(self.csvfile.lower())[-1]
+            if k == '.csv':
                 with open(self.csvfile, encoding='utf-8') as f:
                     reader = csv.reader(f)
                     data = list(reader)
@@ -146,7 +147,7 @@ class Googlesheet(object):
         self.result = self.service.spreadsheets().batchUpdate(
             spreadsheetId=self.spreadsheet_id,
             body={'requests': self.requests}).execute()
-        print(self.spreadsheet_id,end='')
+        print(self.spreadsheet_id, end='')
 
     # ==========================================================================
     def duplicate_sheet(self):
