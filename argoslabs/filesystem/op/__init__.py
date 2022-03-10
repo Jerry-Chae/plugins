@@ -17,6 +17,8 @@ ARGOS LABS plugin module for operations of filesystem
 # Change Log
 # --------
 #
+#  * [2022/03/10] Kyobong An
+#     - remove에 recursive 기능 추가
 #  * [2022/03/08] Kyobong An
 #     - 파일이동후 소스폴더에 파일이 없을 경우 삭제됨. move일 경우 회피하도록 수정
 #  * [2021/10/27] Kyobong An
@@ -186,7 +188,7 @@ def remove_file(t, wildcard='*'):
 
 
 ################################################################################
-def remove_tree(t, wildcard='*'):
+def remove_tree(t, wildcard='*', recursive=False):
     if os.path.isfile(t):
         return remove_file(t, wildcard=wildcard)
     cnt = 0
@@ -195,6 +197,10 @@ def remove_tree(t, wildcard='*'):
             ft = os.path.join(root, file_)
             r = remove_file(ft, wildcard=wildcard)
             cnt += r
+            if not recursive:
+                break
+        if not recursive:
+            break
     if wildcard == '*' or is_empty(t):
         shutil.rmtree(t)
     return cnt
@@ -284,7 +290,7 @@ def do_op(mcxt, argspec):
             if not src_is_dir:
                 remove_file(argspec.src, wildcard=argspec.wildcard)
             else:
-                remove_tree(argspec.src, wildcard=argspec.wildcard)
+                remove_tree(argspec.src, wildcard=argspec.wildcard, recursive=argspec.recursive,)
         print('\n'.join(OUT_LINE), end='')
         mcxt.logger.info('>>>end...')
         return 0

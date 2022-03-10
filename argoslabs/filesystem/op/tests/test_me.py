@@ -482,7 +482,7 @@ class TU(TestCase):
             s = os.path.join(TU.td1, 'foo', 'foo234.txt')
             t = os.path.join(TU.td1, 'foo', 'foo234.log')
             shutil.copy(s, t)
-            r = main('remove', TU.td1, '--wildcard', '*.log')
+            r = main('remove', TU.td1, '--wildcard', '*.log', '--recursive')
             self.assertTrue(r == 0)
             self.assertTrue(not os.path.exists(t))
         except Exception as e:
@@ -566,6 +566,22 @@ class TU(TestCase):
                      r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\input',
                      r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\output',
                      '--wildcard', '*.csv')
+            self.assertTrue(r == 0)
+            self.assertTrue(not os.path.exists(invalid_dir))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0510_remove_wildcard_ASJ581(self):
+        try:
+            invalid_dir = os.path.join(tempfile.gettempdir(), 'invalidfoldertotest')
+            r = main('remove',
+                     r'C:\Users\argos\Desktop\ASJ\ASJ-581\TEST',
+                     # r'C:\Users\argos\Desktop\ASJ\ASJ-dsa\output',
+                     '--wildcard', '*.csv',
+                     # '--recursive'
+                     )
             self.assertTrue(r == 0)
             self.assertTrue(not os.path.exists(invalid_dir))
         except Exception as e:
