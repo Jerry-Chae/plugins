@@ -15,11 +15,14 @@ ARGOS LABS plugin module for Excel
 # Authors
 # ===========
 #
-# * Jerry Chae
+# * Jerry Chae, Kyobong Ahn
 #
 # Change Log
 # --------
 #
+#  * [2022/03/23] Jerry
+#     - 암호로 보호된 엑셀 파일인 경우 내부적으로 암호없는 것으로 저장 후 읽기, 임시파일은 삭제
+#     - pywin32를 이용하므로 이 기능은 윈도우에서만 가능
 #  * [2022/02/21] Kyobong
 #     - 읽기만 할때  datetime에서 date만 출력 되게하는 Date 기능추가
 #  * [2022/02/14] Kyobong
@@ -495,13 +498,41 @@ class Excel(object):
 
 
 ################################################################################
+def save_as_excel(argspec):
+    if not os.path.exists(argspec.filename):
+        raise IOError(f'Cannot read file "{argspec.filename}"')
+    bn = os.path.basename(argspec.filename)
+    fn, ext = os.path.splitext(bn)
+    if not ext.lower().startswith('.xls'):
+        raise RuntimeError(f'Password option is applied only for Excel file')
+    if sys.platform != 'win32':
+        raise RuntimeError(f'Password protected Excel file is only working on Windows OS')
+    import win32com.client
+    xl_file = os.path.abspath(argspec.filename)
+    sa_file = os.path.join(gettempdir(), bn)
+    if os.path.exists(sa_file):
+        os.remove(sa_file)
+    try:
+        excel = win32com.client.Dispatch('Excel.Application')
+        book = excel.Workbooks.Open(xl_file, None, True, None, argspec.password)
+        book.SaveAs(sa_file, None, '')
+        book.Close()
+        return sa_file
+    except Exception as err:
+        raise err
+
+
+################################################################################
 @func_log
 def do_excel(mcxt, argspec):
     mcxt.logger.info('>>>starting...')
+    pass_sa_file = None
     exl = None
     try:
         if argspec.reverse and argspec.big:
             raise RuntimeError('Cannot set Pivot and Big-Data Option cannot set together.')
+        if argspec.password:
+            argspec.filename = pass_sa_file = save_as_excel(argspec)
         setattr(argspec, 'formula', None)
         exl = Excel(argspec)
         data_only = argspec.data_only
@@ -540,6 +571,8 @@ def do_excel(mcxt, argspec):
     finally:
         if exl is not None:
             exl.close()
+        if pass_sa_file:
+            os.remove(pass_sa_file)
         mcxt.logger.info('>>>end...')
 
 
@@ -640,6 +673,10 @@ def _main(*args):
         mcxt.add_argument('--date', display_name='Date',
                           action='store_true',
                           help='Shows datetime type values only as date.')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--password', display_name='Password',
+                          input_method='password',
+                          help='If Excel is protected by password then use this. This is only works on Excel installed Windows')
         # ----------------------------------------------------------------------
         # TODO: formula를 설정하는 것을 테스트 하는데,
         #     openpyxl 을 이용하여 formula를 설정하는 것은 가능하지만

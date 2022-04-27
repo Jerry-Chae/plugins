@@ -8,3 +8,6 @@ openpyxl==3.0.7
 
 # for csv
 xlwings==0.23.0
+
+# for password option : Windows ONLY!!!
+pywin32; sys_platform == 'win32'
