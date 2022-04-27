@@ -18,6 +18,8 @@ ARGOS LABS OPEN API
 #
 # --------
 #
+#  * [2022/04/07]
+#     - apiurl 기능추가.
 #  * [2021/11/29]
 #     - sendOndemand에 최소 입력값을 userid,scnarioid,pamid로만 줄임. 기존에 봇파라미터값이 있어야 작동했슴.
 #  * [2021/09/02]
@@ -50,6 +52,7 @@ class OpenApi(object):
     def __init__(self, argspec):
         self.argspec = argspec
         self.api = argspec.api
+        self.api_url = argspec.apiurl
         self.apikey = argspec.apikey
         # self.output = []
         if self.api == "getPamList":
@@ -64,8 +67,11 @@ class OpenApi(object):
 
     # ==========================================================================
     def getpamList(self):
-        url = "https://api-rpa.argos-labs.com///openapi/v1/pam/list?apiKey="
-        xml = requests.get(url+self.apikey)
+        if not self.api_url:
+            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/pam/list?apiKey="
+        else:
+            self.api_url = self.api_url + "///openapi/v1/pam/list?apiKey="
+        xml = requests.get(self.api_url+self.apikey)
         if xml.json()['status']//10 == 20:  # 정상일경우는 20x 기때문에 나머지는 에러처리.
             for i in xml.json()['data']:
                 for k, v in i.items():
@@ -79,8 +85,11 @@ class OpenApi(object):
 
     # ==========================================================================
     def getbotlist(self):
-        url = "https://api-rpa.argos-labs.com///openapi/v1/scenario/list?apiKey="
-        xml = requests.get(url+self.apikey)
+        if not self.api_url:
+            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/scenario/list?apiKey="
+        else:
+            self.api_url = self.api_url + "///openapi/v1/scenario/list?apiKey="
+        xml = requests.get(self.api_url+self.apikey)
         if xml.json()['status']//10 == 20:  # 정상일경우는 20x 기때문에 나머지는 에러처리.
             for i in xml.json()['data']:
                 for k, v in i.items():
@@ -92,13 +101,16 @@ class OpenApi(object):
 
     # ==========================================================================
     def sendondemand(self):
-        url = "https://api-rpa.argos-labs.com///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
-        xml = requests.post(url+self.apikey, json={"userId": self.argspec.userid,
-                                                   "apiScenarioId": self.argspec.scenarioid,
-                                                   "apiPamId": self.argspec.pamid,
-                                                   "endPoint": self.argspec.endpoint,
-                                                   "workId": self.argspec.workid,
-                                                   "botParameters": self.botparameters})
+        if not self.api_url:
+            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
+        else:
+            self.api_url = self.api_url + "///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
+        xml = requests.post(self.api_url+self.apikey, json={"userId": self.argspec.userid,
+                                                            "apiScenarioId": self.argspec.scenarioid,
+                                                            "apiPamId": self.argspec.pamid,
+                                                            "endPoint": self.argspec.endpoint,
+                                                            "workId": self.argspec.workid,
+                                                            "botParameters": self.botparameters})
         if xml.json()['status']//10 == 20:  # 정상일경우는 20x 기때문에 나머지는 에러처리.
             for i in xml.json()['data']:
                 for k, v in i.items():
@@ -141,10 +153,10 @@ def _main(*args):
     with ModuleContext(
             owner='ARGOS-LABS',
             group='9',
-            version='1.0',
+            version='1.1.1',
             platform=['windows', 'darwin', 'linux'],
             output_type='csv',
-            display_name='ARGOS API',
+            display_name='ARGOS API1',
             icon_path=get_icon_path(__file__),
             description='ARGOS OPEN API',
     ) as mcxt:
@@ -184,6 +196,9 @@ def _main(*args):
         mcxt.add_argument('--value', display_name='Value', action='append',
                           input_group='sendOndemand',
                           help='The parameter value to use for the pam operation.')
+        # ----------------------------------------------------------------------
+        mcxt.add_argument('--apiurl', display_name='API URL',
+                          help='Enter thr API URL')
 
         argspec = mcxt.parse_args(args)
         return func(mcxt, argspec)

@@ -27,4 +27,4 @@ setup:
   package_data:
     argoslabs.api.argos: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.1129.1343
+  version: 4.407.1831

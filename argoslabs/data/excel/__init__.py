@@ -20,6 +20,8 @@ ARGOS LABS plugin module for Excel
 # Change Log
 # --------
 #
+#  * [2022/04/26] Kyobong
+#     - write_cell에 오류가 있었음. 해당 문제 해결.
 #  * [2022/03/23] Jerry
 #     - 암호로 보호된 엑셀 파일인 경우 내부적으로 암호없는 것으로 저장 후 읽기, 임시파일은 삭제
 #     - pywin32를 이용하므로 이 기능은 윈도우에서만 가능
@@ -446,10 +448,10 @@ class Excel(object):
                 # w_ws[s_row+i][s_col+j].value = v
                 try:
                     w_ws.cell(row=s_row+i, column=s_col+j, value=v.value)
-                    w_ws[s_row+i][j].value = v.value
-                    w_ws[s_row+i][j].data_type = v.data_type
-                    w_ws[s_row+i][j].number_format = v.number_format
-                    w_ws[s_row+i][j].quotePrefix = v.quotePrefix
+                    w_ws[s_row+i][s_col+j-1].value = v.value
+                    w_ws[s_row+i][s_col+j-1].data_type = v.data_type
+                    w_ws[s_row+i][s_col+j-1].number_format = v.number_format
+                    w_ws[s_row+i][s_col+j-1].quotePrefix = v.quotePrefix
                 except:
                     w_ws.cell(row=s_row + i, column=s_col + j, value=v)
                 # w_ws.cell(row=s_row+i, column=s_col+j, value=v)
