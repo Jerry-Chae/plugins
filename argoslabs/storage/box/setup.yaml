@@ -15,6 +15,7 @@ setup:
   description: Managing BOX
   keywords:
   - box
+  - api
   license: ARGOS-LABS Proprietary License
   platforms:
   - Mac
@@ -23,4 +24,4 @@ setup:
   package_data:
     argoslabs.storage.box: ['icon.*']
   url: https://www.argos-labs.com
-  version: 3.616.1400
+  version: 4.330.1430

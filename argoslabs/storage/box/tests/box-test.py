@@ -1,39 +1,33 @@
-"""
-====================================
- :mod:`argoslabs.storage.box`
-====================================
-.. moduleauthor:: Irene Cho <irene@argos-labs.com>
-.. note:: ARGOS-LABS License
-
-Description
-===========
-ARGOS LABS BOX SDK
-"""
-# Authors
-# ===========
-#
-# * Irene Cho, Jerry Chae
-#
-# --------
-#
-#  * [2022/03/30]
-#     - alabs.selenium => alabslib.selenium
-#  * [2021/06/15]
-#     - Add Selenium Option
-#  * [2021/06/09]
-#     - starting
-
-################################################################################
 import os
 import sys
+import logging
 from io import StringIO
+from alabslib.selenium import PySelenium
 from tempfile import gettempdir
 from boxsdk import OAuth2, Client
-from alabslib.selenium import PySelenium
-from alabs.common.util.vvlogger import get_logger
-from alabs.common.util.vvargs import ModuleContext, func_log, \
-    ArgsError, ArgsExit, get_icon_path
+# from collections import namedtuple
+from dataclasses import dataclass
+from typing import Any
 
+
+################################################################################
+@dataclass
+class ModuleContext:
+    logger: Any = None
+
+@dataclass
+class ArgsSpec:
+    op: Any = None
+    csecret: Any = None
+    cid: Any = None
+    token: Any = None
+    redirect_uri: Any = None
+    user_id: Any = None
+    pwd: Any = None
+    files: Any = None
+    folderid: Any = None
+    fileid: Any = None
+    output: Any = None
 
 
 ################################################################################
@@ -62,14 +56,11 @@ class sel(PySelenium):
         self.safe_click(e)
         self.implicitly_wait()
         cur = self.driver.current_url
-        if cur.find('code=') < 0:
-            raise ReferenceError(f'Cannot find "Access Token" from redirect URI')
         code = cur.split('code=')[1]
         return code
 
 
 ################################################################################
-@func_log
 def tab(mcxt, argspec):
     mcxt.logger.info('>>>starting...')
     try:
@@ -97,8 +88,9 @@ def tab(mcxt, argspec):
                         logger=kwargs['logger']) as ws:
                     return ws.start()
 
-            log_f = os.path.join(gettempdir(), "a.log")
-            logger = get_logger(log_f, logsize=1024 * 1024 * 10)
+            # log_f = os.path.join(gettempdir(), "a.log")
+            # logger = get_logger(log_f, logsize=1024 * 1024 * 10)
+            logger = logging.getLogger('argoslabs.storage.box')
             _kwargs = {
                 'browser': 'Edge',
                 'url': auth_url,
@@ -165,63 +157,35 @@ def tab(mcxt, argspec):
 
 
 ################################################################################
-def _main(*args):
-    with ModuleContext(
-            owner='ARGOS-LABS',
-            group='8',
-            version='1.0',
-            platform=['windows', 'darwin', 'linux'],
-            output_type='csv',
-            display_name='BOX',
-            icon_path=get_icon_path(__file__),
-            description='Managing BOX',
-    ) as mcxt:
-        # ##################################### for app dependent parameters
-        mcxt.add_argument('op', display_name='OP Type', help='operation types',
-                          choices=['Get Access Token', 'File/Folder Lists',
-                                   'Upload Files',
-                                   'Download Files/Folder'])
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('csecret', display_name='Client Secret',
-                          help='Client Secret',
-                          input_method='password')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('cid', display_name='Client ID', help='Client ID')
-        # ##################################### for app optional parameters
-        mcxt.add_argument('--token', display_name='Token', help='Token',
-                          input_method='password')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--redirect_uri', display_name='Redirect URI',
-                          help='Redirect URI')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--user_id', display_name='User ID',
-                          help='user id')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--pwd', display_name='Password',
-                          help='Password', input_method='password')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--files', display_name='Files to Upload',
-                          input_method='fileread', action='append',
-                          help='Files to upload to BOX')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--folderid', display_name='Folder ID',
-                          help='Folder ID from BOX')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--fileid', display_name='File ID', action='append',
-                          help='File ID from BOX')
-        # ----------------------------------------------------------------------
-        mcxt.add_argument('--output', display_name='Output Path',
-                          input_method='folderwrite',
-                          help='An absolute filepath to save a file')
-        argspec = mcxt.parse_args(args)
-        return tab(mcxt, argspec)
+def test_me():
+    # BOX
+    # ID:asjteamdemo@gmail.com
+    # Pwd:4herQrcu8vfEEmQ
+    #
+    # Dev-Token
+    # Bls53st2LvYR16NiSZqUzc6VDnKorZBp
+    #
+    # OAuth 2.0 Credencial
+    # ClientID
+    # 429aua5efp92kg1wqm1buiy0mn6eloqr
+    # Client secret
+    # l0LcKWOi1etiWYzlmtjdHmsZ9ymVbryQ
+
+    mcxt = ModuleContext()
+    mcxt.logger = logging.getLogger('argoslabs.storage.box')
+    argspec = ArgsSpec()
+    argspec.op = 'Get Access Token'
+    argspec.csecret = 'l0LcKWOi1etiWYzlmtjdHmsZ9ymVbryQ'
+    argspec.cid = '429aua5efp92kg1wqm1buiy0mn6eloqr'
+    # argspec.redirect_uri = 'https://app.box.com'
+    argspec.redirect_uri = 'https://app.mybox.com'
+    # argspec.redirect_uri = 'https://www.example.com/oauth2callback'
+    argspec.user_id = 'asjteamdemo@gmail.com'
+    argspec.pwd = '4herQrcu8vfEEmQ'
+
+    tab(mcxt, argspec)
 
 
 ################################################################################
-def main(*args):
-    try:
-        return _main(*args)
-    except ArgsError as err:
-        sys.stderr.write('Error: %s\nPlease -h to print help\n' % str(err))
-    except ArgsExit as _:
-        pass
+if __name__ == '__main__':
+    test_me()

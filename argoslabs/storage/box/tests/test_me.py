@@ -106,12 +106,12 @@ class TU(TestCase):
     #         self.assertTrue(False)
     #
     # # ==========================================================================
-    def test0160_get_token(self):
-        try:
-            r = main('Get Access Token',  self.csecret, self.cid, '--redirect_uri',
-                     'https://google.com', '--user_id', '',
-                     '--pwd', '')
-            self.assertTrue(r == 0)
-        except Exception as e:
-            sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+    # def test0160_get_token(self):
+    #     try:
+    #         r = main('Get Access Token',  self.csecret, self.cid, '--redirect_uri',
+    #                  'https://google.com', '--user_id', '',
+    #                  '--pwd', '')
+    #         self.assertTrue(r == 0)
+    #     except Exception as e:
+    #         sys.stderr.write('\n%s\n' % str(e))
+    #         self.assertTrue(False)
