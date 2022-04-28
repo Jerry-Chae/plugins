@@ -158,30 +158,18 @@ def tab(mcxt, argspec):
 
 ################################################################################
 def test_me():
-    # BOX
-    # ID:asjteamdemo@gmail.com
-    # Pwd:4herQrcu8vfEEmQ
-    #
-    # Dev-Token
-    # Bls53st2LvYR16NiSZqUzc6VDnKorZBp
-    #
-    # OAuth 2.0 Credencial
-    # ClientID
-    # 429aua5efp92kg1wqm1buiy0mn6eloqr
-    # Client secret
-    # l0LcKWOi1etiWYzlmtjdHmsZ9ymVbryQ
 
     mcxt = ModuleContext()
     mcxt.logger = logging.getLogger('argoslabs.storage.box')
     argspec = ArgsSpec()
     argspec.op = 'Get Access Token'
-    argspec.csecret = 'l0LcKWOi1etiWYzlmtjdHmsZ9ymVbryQ'
-    argspec.cid = '429aua5efp92kg1wqm1buiy0mn6eloqr'
+    argspec.csecret = '___'
+    argspec.cid = '___'
     # argspec.redirect_uri = 'https://app.box.com'
     argspec.redirect_uri = 'https://app.mybox.com'
     # argspec.redirect_uri = 'https://www.example.com/oauth2callback'
-    argspec.user_id = 'asjteamdemo@gmail.com'
-    argspec.pwd = '4herQrcu8vfEEmQ'
+    argspec.user_id = '___'
+    argspec.pwd = '___'
 
     tab(mcxt, argspec)
 
