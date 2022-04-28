@@ -1,6 +1,6 @@
 --- insert static records
 
-INSERT INTO foo (name, age)
+INSERT INTO bar (name, age)
 values
 ('nobody me', 100),
 ('홍길동', 200)

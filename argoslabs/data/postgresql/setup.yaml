@@ -29,4 +29,4 @@ setup:
 #    argoslabs.data.rdb: ['icon.*', '*.dll', '*.whl']
     argoslabs.data.postgresql: ['icon.*',]
   url: https://www.argos-labs.com
-  version: 3.1205.2220
+  version: 4.211.902

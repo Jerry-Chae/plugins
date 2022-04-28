@@ -1,3 +1,3 @@
 --- select foo
 
-SELECT * FROM foo
+SELECT * FROM bar

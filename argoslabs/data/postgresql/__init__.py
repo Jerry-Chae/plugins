@@ -17,6 +17,8 @@
 #
 # 다음과 같은 작업 사항이 있었습니다:
 #
+#  * [2022/02/11]
+#     - CSV Insert 에 ' 가 들어 있는 경우 처리
 #  * [2021/11/29]
 #     - 본 모듈 작업 시작
 ################################################################################
@@ -104,7 +106,10 @@ class PGSQL(object):
                 for i, record in enumerate(cooked):
                     if i < header_lines:
                         continue
-                    esql = sql.format(*record)
+                    rec = list()
+                    for col in record:
+                        rec.append(col.replace("'","''"))
+                    esql = sql.format(*rec)
                     cursor.execute(esql)
                     cnt += 1
                 self.conn.commit()
