@@ -57,30 +57,30 @@ def captured_output():
 # noinspection PyUnresolvedReferences
 class TU(TestCase):
     # ==========================================================================
-    isFirst = True
-    ARGS = {
-        'gmail': [
-            'imap.gmail.com',
-            'mcchae@gmail.com',
-            '..',     # 2-pass password
-        ],
-        'vivans': [
-            'mail2.vivans.net',
-            'mcchae@vivans.net',
-            '..',
-        ],
-        'plugin': [
-            'imap.gmail.com',
-            'plugin@argos-labs.com',
-            # 'argos0520',
-            '..',     # 2-pass password
-        ],
-        'office365': [
-            'smtp.office365.com',
-            'a7733@myoffice.site',
-            '..',
-        ],
-    }
+    def setUp(self) -> None:
+        TU.ARGS = {
+            'gmail': [
+                'imap.gmail.com',
+                'mcchae@gmail.com',
+                '..',     # 2-pass password
+            ],
+            'vivans': [
+                'mail2.vivans.net',
+                'mcchae@vivans.net',
+                'ghkd67VV!@',
+            ],
+            'plugin': [
+                'imap.gmail.com',
+                'plugin@argos-labs.com',
+                # 'argos0520',
+                '..',     # 2-pass password
+            ],
+            'office365': [
+                'smtp.office365.com',
+                'a7733@myoffice.site',
+                'ghkd67OF!@@*',
+            ],
+        }
 
     # ==========================================================================
     def test0000_init(self):
