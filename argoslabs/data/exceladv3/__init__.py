@@ -2,7 +2,7 @@
 # coding=utf8
 """
 ====================================
- :mod:`argoslabs.data.json.10'
+ :mod:`argoslabs.data.exceladv3'
 ====================================
 .. moduleauthor:: Irene Cho <irene@argos-labs.com>
 .. note:: ARGOS-LABS License
