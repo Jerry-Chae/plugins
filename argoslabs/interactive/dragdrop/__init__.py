@@ -17,6 +17,8 @@ ARGOS LABS plugin module for google vision API
 # Change Log
 # --------
 #
+#  * [2022/02/18]
+#     - Image Drop Only => Online Image Drop
 #  * [2021/04/09]
 #     - 그룹에 "7-Interactive" 넣음
 #  * [2020/03/17]
@@ -133,7 +135,7 @@ def _main(*args):
                           display_name='File Drop Only', action='store_true',
                           help='If this flag is set, only file drop allowed')
         mcxt.add_argument('--image-only',
-                          display_name='Image Drop Only', action='store_true',
+                          display_name='Online Image Drop', action='store_true',
                           help='If this flag is set, only image data drop allowed')
         # ##################################### for app dependent parameters
         argspec = mcxt.parse_args(args)
