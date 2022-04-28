@@ -17,6 +17,8 @@ ARGOS LABS plugin module ai translate
 # Change Log
 # --------
 #
+#  * [2022/03/05]
+#     - Youtube => YouTube
 #  * [2022/03/03]
 #     - TODO: --caption-srt not working currently XML save only
 #  * [2022/02/28]
@@ -246,7 +248,7 @@ def _main(*args):
             version='1.0',
             platform=['windows', 'darwin', 'linux'],
             output_type='text',
-            display_name='Youtube Operation',
+            display_name='YouTube Operation',
             icon_path=get_icon_path(__file__),
             description='Youtube Video Operation',
         ) as mcxt:
