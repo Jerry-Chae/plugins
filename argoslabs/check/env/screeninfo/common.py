@@ -1,6 +1,6 @@
 import enum
 import typing as T
-from dataclasses import dataclass
+from prowtech.api.dataclasses import dataclass
 
 
 @dataclass
