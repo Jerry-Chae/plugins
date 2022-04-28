@@ -303,5 +303,50 @@ class TU(TestCase):
             self.assertTrue(False)
 
     # ==========================================================================
+    def test0200_python24_test01_error(self):
+        try:
+            sg = sys.gettrace()  # 디버그는 괜찮지만 실제 build.bat 에서는 오류 발생 때문
+            if sg is None:  # Not in debug mode
+                print('Skip testing at test/build time')
+                return
+            pyf = 'dp_pdfplumber.py'
+            with captured_output() as (out, err):
+                r = main(
+                    pyf,
+                    '--reqtxt', r'dp_pdfplumber.txt',
+                    '--python-exe', r'C:\Python24\python.exe',
+                )
+            self.assertTrue(r == 99)
+            stderr = err.getvalue()
+            self.assertTrue(stderr.startswith('Error: Cannot install'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0210_python24_test01(self):
+        try:
+            # sg = sys.gettrace()  # 디버그는 괜찮지만 실제 build.bat 에서는 오류 발생 때문
+            # if sg is None:  # Not in debug mode
+            #     print('Skip testing at test/build time')
+            #     return
+            pyf = 'hello-24.py'
+            with captured_output() as (out, err):
+                r = main(
+                    pyf,
+                    '--params', r'name::=Jerry',
+                    '--python-exe', r'C:\Python24\python.exe',
+                )
+            self.assertTrue(r == 0)
+            stdout = out.getvalue()
+            stderr = err.getvalue()
+            print(f'stdout="{stdout}"')
+            print(f'stderr="{stderr}"')
+            self.assertTrue(stdout.find('Jerry') > 0)
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
     def test9999_quit(self):
         self.assertTrue(True)

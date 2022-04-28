@@ -17,6 +17,8 @@ ARGOS LABS plugin module for running python script with requirements.txt
 # Change Log
 # --------
 #
+#  * [2022/02/05]
+#     - add --python-exe
 #  * [2021/07/01]
 #     - ASJ의 pywinauto 모듈이 안되는 문제 때문에 exec(py_script, locals(), locals()) 로 수정
 #  * [2021/03/30]
@@ -54,11 +56,11 @@ def _pip_install(pip_cmd, stdout):
 
 
 ################################################################################
-def pip_install(reqtxt):
+def pip_install(reqtxt, encoding='utf-8'):
     org_stdout = sys.stdout
     try:
         stdout_f = os.path.join(gettempdir(), 'requirements.out')
-        with open(stdout_f, 'w', encoding='utf-8') as stdout:
+        with open(stdout_f, 'w', encoding=encoding) as stdout:
             sys.stdout = stdout
             cmd = ['install', '-r', reqtxt]
             # r = pip.main(cmd)
@@ -71,14 +73,14 @@ def pip_install(reqtxt):
 
 
 ################################################################################
-def exec_script(pys):
+def exec_script(pys, py_exe=sys.executable, encoding='utf-8'):
     pyf = os.path.join(tempfile._get_default_tempdir(),
                        next(tempfile._get_candidate_names()) + '.py')
     try:
-        with open(pyf, 'w', encoding='utf-8') as ofp:
+        with open(pyf, 'w', encoding=encoding) as ofp:
             ofp.write(pys)
         cmd = [
-            sys.executable,
+            py_exe,
             pyf
         ]
         po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -97,8 +99,11 @@ def do_dynamic_script(mcxt, argspec):
     try:
         if not (argspec.script and os.path.exists(argspec.script)):
             raise IOError(f'Cannot read python script file "{argspec.script}"')
+        if argspec.reqtxt and argspec.python_exe:
+            raise IOError(f'Cannot install "{argspec.reqtxt}" because specific '
+                          f'"{argspec.python_exe}" need to install for that environment')
         if argspec.reqtxt and os.path.exists(argspec.reqtxt):
-            pip_install(argspec.reqtxt)
+            pip_install(argspec.reqtxt, encoding=argspec.encoding)
         with open(argspec.script, encoding=argspec.encoding) as ifp:
             py_script = ifp.read()
         params = {}
@@ -108,12 +113,16 @@ def do_dynamic_script(mcxt, argspec):
                 params[k] = v
         if params:
             py_script = py_script.format(**params)
+        if argspec.python_exe:
+            if not os.path.exists(argspec.python_exe):
+                raise IOError(f'Cannot find Python exe from "{argspec.python_exe}"')
+            return exec_script(py_script, py_exe=argspec.python_exe, encoding=argspec.encoding)
         try:
             # exec(py_script, globals(), locals())
             exec(py_script, locals(), locals())
             globals().update(locals())
         except NameError:
-            return exec_script(py_script)
+            return exec_script(py_script, encoding=argspec.encoding)
         return 0
     except Exception as e:
         _exc_info = sys.exc_info()
@@ -164,6 +173,10 @@ def _main(*args):
             mcxt.add_argument('--encoding',
                               display_name='Encoding', default='utf-8',
                               help='Encoding for script and requirements file, default is [[utf-8]]')
+            mcxt.add_argument('--python-exe',
+                              display_name='Python Exe',
+                              input_method='fileread',
+                              help='Specify Python executable.')
             argspec = mcxt.parse_args(args)
             return do_dynamic_script(mcxt, argspec)
     except Exception as e:
