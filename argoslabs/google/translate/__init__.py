@@ -150,7 +150,7 @@ def do_translate(mcxt, argspec):
             r_tr = tr.translate(argspec.msg,
                                 dest=dest, src=src)
             print(r_tr.text, end='', flush=True)
-        return 0
+        return 05
     except Exception as e:
         msg = 'Translation error: %s' % str(e)
         sys.stderr.write('%s%s' % (msg, os.linesep))
