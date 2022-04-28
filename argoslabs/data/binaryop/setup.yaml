@@ -26,4 +26,4 @@ setup:
     argoslabs.data.binaryop: ['icon.*']
   url: https://www.argos-labs.com
 #  version: 3.114.918
-  version: 3.1107.1940
+  version: 4.202.925

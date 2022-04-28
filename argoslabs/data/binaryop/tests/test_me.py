@@ -19,6 +19,8 @@ ARGOS LABS plugin module : unittest
 # Change Log
 # --------
 #
+#  * [2022/02/02]
+#     - -0.11 * 100 Error
 #  * [2021/11/06]
 #     - output 포맷에 영국식 DDMMYYYY 추가
 #     - --input-dt-format 추가
@@ -1272,13 +1274,28 @@ class TU(TestCase):
 
             # Today error
             with captured_output() as (out, err):
-                r = main('today', '+', '',
+                r = main('today', '+', '0day',
                          '--date-format', 'DDMMYYYY')
             self.assertTrue(r == 0)
             stdout = out.getvalue().strip()
             print(stdout)
             self.assertTrue(stdout == datetime.datetime.now().strftime("%d%m%Y"))
 
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0510_debug_shige(self):
+        try:
+            # Today
+            with captured_output() as (out, err):
+                r = main('-0.11', '*', '100',
+                         '--output-int-func', 'round')
+            self.assertTrue(r == 0)
+            stdout = out.getvalue().strip()
+            print(stdout)
+            self.assertTrue(stdout == '-11')
 
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))

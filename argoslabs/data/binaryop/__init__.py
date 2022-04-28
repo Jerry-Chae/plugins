@@ -19,6 +19,8 @@ ARGOS LABS plugin module for binary op
 # Change Log
 # --------
 #
+#  * [2022/02/02]
+#     - -0.11 * 100 Error
 #  * [2021/11/06]
 #     - output 포맷에 영국식 DDMMYYYY 추가
 #     - --input-dt-format 추가
@@ -103,9 +105,9 @@ class BinOp(object):
         },
         {
             'float': [
-                {'n.n': re.compile(r'\d+\.\d+')},
-                {'.n': re.compile(r'\.\d+')},
-                {'n.': re.compile(r'\d+\.')},
+                {'n.n': re.compile(r'-?\d+\.\d+')},
+                {'.n': re.compile(r'-?\.\d+')},
+                {'n.': re.compile(r'-?\d+\.')},
             ],
         },
         {
