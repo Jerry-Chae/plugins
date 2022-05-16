@@ -34,6 +34,7 @@ ARGOS LABS plugin module : unittest
 ################################################################################
 import os
 import sys
+import yaml
 from unittest import TestCase
 # noinspection PyProtectedMember
 from argoslabs.office.emailsend import _main as main
@@ -58,29 +59,10 @@ def captured_output():
 class TU(TestCase):
     # ==========================================================================
     def setUp(self) -> None:
-        TU.ARGS = {
-            'gmail': [
-                'imap.gmail.com',
-                'mcchae@gmail.com',
-                '..',     # 2-pass password
-            ],
-            'vivans': [
-                'mail2.vivans.net',
-                'mcchae@vivans.net',
-                'ghkd67VV!@',
-            ],
-            'plugin': [
-                'imap.gmail.com',
-                'plugin@argos-labs.com',
-                # 'argos0520',
-                '..',     # 2-pass password
-            ],
-            'office365': [
-                'smtp.office365.com',
-                'a7733@myoffice.site',
-                'ghkd67OF!@@*',
-            ],
-        }
+        yaml_f = os.path.join('..', '..', '..', '..', '..', 'argoslabs.office.emailsend.yaml')
+        with open(yaml_f, encoding='utf-8') as ifp:
+            yaml_d = yaml.load(ifp, yaml.SafeLoader)
+        TU.ARGS = yaml_d
 
     # ==========================================================================
     def test0000_init(self):
