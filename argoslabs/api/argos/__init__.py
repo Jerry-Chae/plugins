@@ -29,6 +29,7 @@ ARGOS LABS OPEN API
 
 ################################################################################
 import os
+import yaml
 import sys
 import requests
 from alabs.common.util.vvargs import ModuleContext, func_log, \
@@ -51,10 +52,20 @@ def safe_eval(value, default=None):
 class OpenApi(object):
     def __init__(self, argspec):
         self.argspec = argspec
+        # %homepath%에 .argos-rpa-config.yaml 파일이 있어도 내용이 다를 수 있음.
+        rpa_config_f = os.path.expanduser(os.path.join('~', '.argos-rpa-config.yaml'))
+        try:
+            with open(rpa_config_f) as ifp:
+                argos_config = yaml.load(ifp, yaml.SafeLoader)
+                self.api_url = argos_config[-1]['ApiHost']
+        except Exception as e:
+            self.api_url = 'https://api2-rpa.argos-labs.com'
+        if self.argspec.apiurl:
+            self.api_url = argspec.apiurl
+
         self.api = argspec.api
-        self.api_url = argspec.apiurl
         self.apikey = argspec.apikey
-        # self.output = []
+
         if self.api == "getPamList":
             self.getpamList()
         elif self.api == "getBotList":
@@ -67,10 +78,7 @@ class OpenApi(object):
 
     # ==========================================================================
     def getpamList(self):
-        if not self.api_url:
-            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/pam/list?apiKey="
-        else:
-            self.api_url = self.api_url + "///openapi/v1/pam/list?apiKey="
+        self.api_url += "///openapi/v1/pam/list?apiKey="
         xml = requests.get(self.api_url+self.apikey)
         if xml.json()['status']//10 == 20:  # 정상일경우는 20x 기때문에 나머지는 에러처리.
             for i in xml.json()['data']:
@@ -85,10 +93,7 @@ class OpenApi(object):
 
     # ==========================================================================
     def getbotlist(self):
-        if not self.api_url:
-            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/scenario/list?apiKey="
-        else:
-            self.api_url = self.api_url + "///openapi/v1/scenario/list?apiKey="
+        self.api_url += "///openapi/v1/scenario/list?apiKey="
         xml = requests.get(self.api_url+self.apikey)
         if xml.json()['status']//10 == 20:  # 정상일경우는 20x 기때문에 나머지는 에러처리.
             for i in xml.json()['data']:
@@ -101,10 +106,7 @@ class OpenApi(object):
 
     # ==========================================================================
     def sendondemand(self):
-        if not self.api_url:
-            self.api_url = "https://api-rpa.argos-labs.com///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
-        else:
-            self.api_url = self.api_url + "///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
+        self.api_url += "///openapi/v1/uxrobot/remote_command/ondemandrun/api?apiKey="
         xml = requests.post(self.api_url+self.apikey, json={"userId": self.argspec.userid,
                                                             "apiScenarioId": self.argspec.scenarioid,
                                                             "apiPamId": self.argspec.pamid,
@@ -136,7 +138,6 @@ def func(mcxt, argspec):
     mcxt.logger.info('>>>starting...')
     try:
         OpenApi(argspec)
-
         return 0
     except Exception as err:
         msg = str(err)
@@ -156,7 +157,7 @@ def _main(*args):
             version='1.1.1',
             platform=['windows', 'darwin', 'linux'],
             output_type='csv',
-            display_name='ARGOS API1',
+            display_name='ARGOS API',
             icon_path=get_icon_path(__file__),
             description='ARGOS OPEN API',
     ) as mcxt:
