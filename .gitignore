@@ -52,4 +52,4 @@ __pycache__
 *.pfx
 _trial_*
 _trial_*.*
-._.DS**
+._*
