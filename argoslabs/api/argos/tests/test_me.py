@@ -52,7 +52,7 @@ class TU(TestCase):
     # ==========================================================================
     def test0010_getPamList_error(self):
         try:
-            r = main('getPamList', '140781f9a6e354edf86a')
+            r = main('getPamList', '2c4e34ba4767f4e5fd295')
             self.assertTrue(r == 1)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
@@ -70,7 +70,8 @@ class TU(TestCase):
     # ==========================================================================
     def test0100_getBotList_error(self):
         try:
-            r = main('getBotList', '140781f9a6e354edf86a')
+            r = main('getBotList', '2c4e34ba47674e5fd295',
+                     '--apiurl', 'fasf')
             self.assertTrue(r == 1)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
@@ -91,6 +92,7 @@ class TU(TestCase):
     #                  '--value', 'hello, world',
     #                  '--value', 'hello, world2',
     #                  '--value', '["1", "2", "3", "A", "B", "C"]',
+    #                  '--apiurl', 'https://api-kem-rpa.argos-labs.com:59901'
     #                  )
     #         self.assertTrue(r == 0)
     #     except ArgsError as e:

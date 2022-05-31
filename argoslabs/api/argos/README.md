@@ -1,130 +1,71 @@
-# Google Translate
+# ARGOS API
 
-***It translates text into another language using Google Translate technology.***
+***This allows the ARGOS API to be used in scenarios.***
 
 > This function is one of Plugins Operation.You can find the movie in [ARGOS RPA+ video tutorial](https://www.argos-labs.com/video-tutorial/).
 
 ## Name of the plugin
 Item | Value
 ---|:---:
-Icon | ![Google Translate](icon.png) 
-Display Name | **Google Translate**
+Icon | ![ARGOS API](icon.png) 
+Display Name | **ARGOS API**
 
 ## Name of the author (Contact info of the author)
 
-Jerry Chae
-* [email](mailto:mcchae@argos-labs.com)
-* [github](https://github.com/Jerry-Chae)
+Kyobong An
+* [email](mailto:akb0930@argos-labs.com)
+
+[comment]: <> (* [github]&#40;https://github.com/Jerry-Chae&#41;)
 
 ## Notification
 
 ### Dependent modules
 Module | Source Page | License | Version (If specified otherwise using recent version will be used)
 ---|---|---|---
-[Googletans](https://pypi.org/project/googletrans/) | [py-googletrans](https://github.com/ssut/py-googletrans) | [MIT](https://github.com/ssut/py-googletrans/blob/master/LICENSE) | 4.0.0-rc1
-
-> * At the release date of this plugin the dependent googletrans module's version 4.0.0-rc (pre-release) must be used
-> * This module depends on google translate API
-> * If google API upgraded so changed then error can happen 
+[requests](https://pypi.org/project/requests/) | [requests](https://github.com/psf/requests) | [Apache](https://github.com/psf/requests/blob/main/LICENSE) | 2.27.1
 
 ## Warning 
-No potential damage to customer files and data (overwrite risk)
+None
 
 ## Helpful links to 3rd party contents
 None
 
 ## Version Control 
-* [3.705.2300](setup.yaml)
-* Release Date: `Jul 5, 2021`
+* [4.407.1831](setup.yaml)
+* Release Date: `Apr 7, 2022`
 
 ## Input (Required)
 Display Name | Input Method | Default Value | Description
 ---|---|---|---
-msg | | | message to translate
+API | getPamList</br>getBotList</br>sendOndemand | | getPamList : get a list of pams.</br>getBotList : get a list of scenarios</br>sendOndemand : run a pam remotely
+API Key | | | One of API Tokens from API Token List
 
 > * If message to translate is too big then use `Text file`
 
 ## Input (Optional)
 
-Display Name | Show Default | Input Method | Default Value | Description
----|---|---|---|---
-Text file | True | fileread | | Text file to read message
-File Encoding | False | | utf8 | File encoding for text file
-Target lang | True | choices | English | Destination language to use
-Source lang | False | choices | auto | Destination language to use, if auto is set then try to detect source language automatically
-Detect lang | False | Flag | Not selected | f set this flag just guessing the language of message and confidence. The result looks like `ko, 0.778`
+Display Name |Group| Show Default | Input Method | Default Value | Description
+---|---|---|---|---|---
+User ID  | sendOndemand | False| | | User ID
+Scenario ID | sendOndemand | False | | | One of Scenario ids from a scenario list
+Pam ID | sendOndemand | False | | | One of pam ids from a pam list</br>**Pam cannot be duplicated. Currently, Pam ID on PC cannot be used.**
+End Point | sendOndemand | False | | | API User’s Webhook URL Value
+Variable_Text | sendOndemand | False | | | Parameter name to use for pam oprations
+Value | sendOndemand | False | | | Parameter value to use for pam oprations
+Value |  | False | | | Parameter value to use for pam oprations
+API URL |  | False | | | API URL according to environment
 
 > * If Show Default is True then this item is showed at the Properties otherwise hided at Advanced group
-> * File Encoding for [Python Unicode HOWTO](https://docs.python.org/3.7/howto/unicode.html#encodings)
-> * Candidates list for Target and Source language are: 
->   * Afrikaans
->   * Esperanto
->   * Italian
->   * Nepali
->   * Sundanese
->   * Arabic
->   * Spanish
->   * Japanese
->   * Dutch
->   * Swedish
->   * Bengali
->   * Estonian
->   * Javanese
->   * Norwegian
->   * Swahili
->   * Bosnian
->   * Finnish
->   * Khmer
->   * Polish
->   * Tamil
->   * Catalan
->   * French
->   * Korean
->   * Portuguese
->   * Telugu
->   * Czech
->   * Hindi
->   * Latin
->   * Romanian
->   * Thai
->   * Welsh
->   * Croatian
->   * Latvian
->   * Russian
->   * Filipino
->   * Danish
->   * Hungarian
->   * Macedonian
->   * Sinhala
->   * Turkish
->   * German
->   * Armenian
->   * Malayalam
->   * Slovak
->   * Ukrainian
->   * Greek
->   * Indonesian
->   * Marathi
->   * Albanian
->   * Vietnamese
->   * English
->   * Icelandic
->   * Myanmar(Burmese)
->   * Serbian
->   * Chinese(Mandarin/China)
->   * Chinese(Mandarin/Taiwan)
+
+
 
 ## Return Value
 
 ### Normal Case
-Tranlated message
+* getPamList : List of pams.
+* getBotList : List of scenarios
+* sendOndemand : Request status
 
-### When set `Detect lang` advanced property
-[language 2-character code](https://www.loc.gov/standards/iso639-2/php/code_list.php), confidence (0 ~ 1)
-Example result is 
-```sh
-ja,0.873
-```
 
 ## Return Code
 Code | Meaning
@@ -132,5 +73,7 @@ Code | Meaning
 0 | Success
 1 | Exceptional case
 
-## Parameter setting examples (diagrams)
-![Parameter setting examples - 1](README-image2021-12-13_10-1-9.png)
+## Parameter setting examples
+![Parameter setting examples - getPamList](README-image2022-04-28_1.png)
+![Parameter setting examples - getBotList](README-image2022-04-28_2.png)
+![Parameter setting examples - sendOndemand](README-image2022-04-28_3.png)
