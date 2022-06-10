@@ -12,9 +12,9 @@ Display Name | **OCR PreProcess**
 
 ## Name of the author (Contact info of the author)
 
-Jerry Chae
-* [email](mailto:mcchae@argos-labs.com)
-* [github](https://github.com/Jerry-Chae)
+Jerry Chae, K Pavan
+* [email-Jerry](mailto:mcchae@argos-labs.com), [email-Pavan](mailto:pvnpavank@argos-labs.com)
+* [github-Jerry](https://github.com/Jerry-Chae)
 
 ## Notification
 
@@ -41,7 +41,7 @@ None
 Display Name | Input Method | Default Value | Description
 ---|---|---|---
 Operation | choice | `Extract Largest Rect` | Operations of Process, one of {`Extract Largest Rect`, `Auto Rotate`}
-Image | fileread | | Image file to process
+Image | fileread | | Image file to process. Normal image extensions are allowed, (png, jpg, jpeg, tiff, and so on). Image format is taken by [cv2.imread()](https://docs.opencv.org/3.4/d4/da8/group__imgcodecs.html#ga288b8b3da0892bd651fce07b3bbd3a56).
 
 > * If message to translate is too big then use `Text file`
 
