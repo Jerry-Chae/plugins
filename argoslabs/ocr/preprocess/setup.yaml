@@ -22,4 +22,4 @@ setup:
     # next requirements.txt is for pre-install for the prebuilt ethem module
     argoslabs.ocr.preprocess: ['icon.*', 'README*.*']
   url: https://www.argos-labs.com
-  version: 4.531.1100
+  version: 4.610.925

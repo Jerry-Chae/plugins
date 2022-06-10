@@ -24,6 +24,7 @@ Module | Source Page | License | Version (If specified otherwise using recent ve
 [numpy](https://pypi.org/project/numpy/) | [numpy/numpy](https://github.com/numpy/numpy) | [BSD 3-Clause "New" or "Revised" License](https://github.com/numpy/numpy/blob/main/LICENSE.txt) | 1.21.1
 [opencv-python](https://pypi.org/project/opencv-python/) | [opencv/opencv-python](https://github.com/opencv/opencv-python) | [MIT License](https://github.com/opencv/opencv-python/blob/master/LICENSE.txt) | 4.5.3.56
 [scikit-image](https://pypi.org/project/scikit-image/) | [scikit-image/scikit-image](https://github.com/scikit-image/scikit-image) | [Own License](https://github.com/scikit-image/scikit-image/blob/main/LICENSE.txt) | 0.19.2
+[deskew](https://pypi.org/project/deskew/) | [sbrunner/deskew](https://github.com/sbrunner/deskew) | [MIT License](https://github.com/sbrunner/deskew/blob/master/LICENSE.md) | 1.0.19
 
 
 ## Warning 
@@ -39,6 +40,7 @@ None
 ## Input (Required)
 Display Name | Input Method | Default Value | Description
 ---|---|---|---
+Operation | choice | `Extract Largest Rect` | Operations of Process, one of {`Extract Largest Rect`, `Auto Rotate`}
 Image | fileread | | Image file to process
 
 > * If message to translate is too big then use `Text file`
@@ -48,7 +50,13 @@ Image | fileread | | Image file to process
 Display Name | Show Default | Input Method | Default Value | Description
 ---|---|---|---|---
 Save Temp Images | False | | False | If this flag is set then next 7 temporary image files are created for debugging purpose: *.01-gray.* *02-blurred.* *03-white.* *04-edged.* *05-contours.* *06-10large-countour.* *07-receit-contour.*
-Target Image | Fase | filewrite | | If this target file is not given, default result image file must be `{finename}.result.{ext}`, for example the result for `01.jpg` is `01.result.jpg` otherwise given result image file will be used
+Target Image | Fase | filewrite | | If this target file is not given, default result image file must be `{finename}.result.{ext}`, for example the result for `01.jpg` is `01.result.jpg` otherwise given result image file will be used.
+Gray Result | False | | False | When this flag is true result image changed into gray scale.
+B/W Threshold | False | | False | When this flag is true result image changed into Black/White scale. Note that this flag is valid only `Gray Result` is set. 
+B/W Blocksize | False | int | 21 | This is the block size of black/white threshold. This value is valid only `B/W Threshold` is set.
+B/W Offset | False | int | 5 | This is the offset of black/white threshold. This value is valid only `B/W Threshold` is set.
+Rot Fill Color | False | | (255,255,255) | When image is automatically rotated by `Auto Rotate` operation filling area at the edge of image can happen and this area must be filled with specific color. Format is `(R,G,B)` each value has the value between 0 and 255. Default is white, `(255,255,255)`.
+
 > * If Show Default is True then this item is showed at the Properties otherwise hided at Advanced group
 
 ## Return Value
@@ -60,6 +68,7 @@ Code | Meaning
 ---|---
 0 | Success
 1 | Invalid image file to process
+2 | Invalid operation
 98 | Parsing error for Parameters or Options
 99 | Else exceptional case
 

@@ -7,3 +7,4 @@ alabs.common
 numpy
 opencv-python
 scikit-image
+deskew

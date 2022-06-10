@@ -1,6 +1,6 @@
 """
 ====================================
- :mod:`argoslabs.ocr.preprocess`
+:mod:`argoslabs.ocr.preprocess`
 ====================================
 .. moduleauthor:: Jerry Chae <mcchae@argos-labs.com>
 .. note:: ARGOS-LABS License
@@ -17,6 +17,8 @@ ARGOS LABS plugin module : PreProcessing for OCR
 # Change Log
 # --------
 #
+#  * [2022/06/07]
+#     - Op 추가
 #  * [2022/05/31]
 #     - starting
 
@@ -32,7 +34,19 @@ from skimage.filters import threshold_local
 from PIL import Image
 from alabs.common.util.vvargs import ModuleContext, func_log, \
     ArgsError, ArgsExit, get_icon_path
+from typing import Tuple, Union
+from deskew import determine_skew
 
+
+################################################################################
+OPS = [
+    'Extract Largest Rect',
+    'Auto Rotate',
+]
+
+# TODO: need threshold methods except 'gaussian'
+THRESHOLD_METHODS = [
+]
 
 ################################################################################
 def get_fname(s_file, suffix=None):
@@ -175,16 +189,25 @@ def wrap_perspective(img, rect):
 
 
 ################################################################################
-def bw_scanner(image):
+def bw_scanner(argspec, image):
+    if not argspec.gray_res:
+        return image
+    block_size=argspec.threshold_bs
+    offset=argspec.threshold_os
+    method='gaussian'
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    T = threshold_local(gray, 21, offset = 5, method = "gaussian")
+    if not argspec.threshold_res:
+        return gray
+    T = threshold_local(gray, block_size=block_size, offset=offset, method=method)
     return (gray > T).astype("uint8") * 255
 
 
 ################################################################################
-def do_preprocess(s_file, result_file=None, save_temp=True):
-    if not os.path.exists(s_file):
-        raise IOError(f'Cannot read image file "{s_file}"')
+def do_extrect(argspec):
+    s_file = argspec.image
+    result_file = argspec.target_image
+    save_temp = argspec.save_temp
+
     clean_img_files(s_file)
     image = cv2.imread(s_file)
     # Downscale image as finding receipt contour is more efficient on a small image
@@ -224,7 +247,6 @@ def do_preprocess(s_file, result_file=None, save_temp=True):
     if save_temp:
         cv2.imwrite(get_fname(s_file, '06-10large-countours'), image_with_largest_contours)
 
-
     # get_receipt_contour(largest_contours)
     receipt_contour = get_receipt_contour(largest_contours)
     image_with_receipt_contour = cv2.drawContours(image.copy(), [receipt_contour], -1, (0, 255, 0), 2)
@@ -235,25 +257,74 @@ def do_preprocess(s_file, result_file=None, save_temp=True):
     # plt.figure(figsize=(16,10))
     # plt.imshow(scanned)
 
-    result = bw_scanner(scanned)
+    result = bw_scanner(argspec, scanned)
     t_file = result_file if result_file else get_fname(s_file, 'result')
     cv2.imwrite(t_file, result)
     print(os.path.abspath(t_file), end='')
 
 
 ################################################################################
+def rotate(
+        image: np.ndarray, 
+        angle: float, 
+        background: Union[int, Tuple[int, int, int]]) -> np.ndarray:
+    old_width, old_height = image.shape[:2]
+    angle_radian = math.radians(angle)
+    width = abs(np.sin(angle_radian) * old_height) + abs(np.cos(angle_radian) * old_width)
+    height = abs(np.sin(angle_radian) * old_width) + abs(np.cos(angle_radian) * old_height)
+
+    image_center = tuple(np.array(image.shape[1::-1]) / 2)
+    rot_mat = cv2.getRotationMatrix2D(image_center, angle, 1.0)
+    rot_mat[1, 2] += (width - old_width) / 2
+    rot_mat[0, 2] += (height - old_height) / 2
+    return cv2.warpAffine(image, rot_mat, (int(round(height)), int(round(width))), borderValue=background)
+
+
+################################################################################
+def do_auto_rotate(argspec):
+    s_file = argspec.image
+    result_file = argspec.target_image
+    save_temp = argspec.save_temp
+
+    clean_img_files(s_file)
+    image = cv2.imread(s_file)
+    
+    grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    angle = determine_skew(grayscale)
+    rotate_fill_color = eval(argspec.rotate_fill_color)
+    rotated = rotate(image, angle, rotate_fill_color) 
+    #cv2.imwrite('test_output_image.jpg', rotated)
+
+    result = bw_scanner(argspec, rotated)
+    t_file = result_file if result_file else get_fname(s_file, 'result')
+    cv2.imwrite(t_file, result)
+    print(os.path.abspath(t_file), end='')
+    
+    
+################################################################################
 @func_log
 def do_pp(mcxt, argspec):
     mcxt.logger.info('>>>starting...')
     try:
-        do_preprocess(argspec.image,
-            result_file=argspec.target_image, save_temp=argspec.save_temp)
+        if not os.path.exists(argspec.image):
+            raise IOError(f'Cannot read image file "{argspec.image}"')
+        if argspec.op == OPS[0]:    # 'Extract Largest Rect'
+            do_extrect(argspec)
+        elif argspec.op == OPS[1]:  # 'Auto Rotate'
+            do_auto_rotate(argspec)
+        else:
+            raise ReferenceError(f'Invalid Operation "{argspec.op}"')
         return 0
     except IOError as err:
         msg = str(err)
         mcxt.logger.error(msg)
         sys.stderr.write('%s%s' % (msg, os.linesep))
         return 1
+    except ReferenceError as err:
+        msg = str(err)
+        mcxt.logger.error(msg)
+        sys.stderr.write('%s%s' % (msg, os.linesep))
+        return 2
     except Exception as err:
         msg = str(err)
         mcxt.logger.error(msg)
@@ -282,6 +353,15 @@ def _main(*args):
             icon_path=get_icon_path(__file__),
             description='OCR Pre Processor',
         ) as mcxt:
+            ##################################### for app dependent parameters
+            mcxt.add_argument('op',
+                                display_name='Operation', choices=OPS,
+                                default=OPS[0],
+                                help='PreProcessing operations')
+            mcxt.add_argument('image',
+                                display_name='Image file', 
+                                input_method='fileread',
+                                help='Image file to process')
             # ######################################## for app dependent options
             mcxt.add_argument('--save-temp',
                                 display_name='Save Temp Images',
@@ -291,15 +371,33 @@ def _main(*args):
                                 display_name='Target Image File',
                                 input_method='filewrite',
                                 help='If this flag is set then save temporary images')
-            # ##################################### for app dependent parameters
-            # mcxt.add_argument('op',
-            #                   display_name='Operation', choices=Tesseract.OP_LIST,
-            #                   default='OCR',
-            #                   help='Tesseract operations')
-            mcxt.add_argument('image',
-                                display_name='Image file', 
-                                input_method='fileread',
-                                help='Image file to process')
+            mcxt.add_argument('--gray-res',
+                                input_group='Result Process',
+                                display_name='Gray Result',
+                                action='store_true',
+                                help='If this flag is set black/white result')
+            mcxt.add_argument('--threshold-res',
+                                input_group='Result Process',
+                                display_name='B/W Threshold',
+                                action='store_true',
+                                help='If this flag is set black/white threshold')
+            mcxt.add_argument('--threshold-bs',
+                                input_group='Result Process',
+                                display_name='B/W Blocksize',
+                                type=int,
+                                default=21,
+                                help='Black/White threshold block size, default is [[21]]')
+            mcxt.add_argument('--threshold-os',
+                                input_group='Result Process',
+                                display_name='B/W Offset',
+                                type=int,
+                                default=5,
+                                help='Black/White threshold offset, default is [[5]]')
+            mcxt.add_argument('--rotate-fill-color',
+                                display_name='Rot Fill Color',
+                                default='(255,255,255)',
+                                help='When auto rotated set fill color with format "(R,G,B)",' 
+                                'default is white, "(255,255,255)"')
             argspec = mcxt.parse_args(args)
             return do_pp(mcxt, argspec)
     except Exception as err:

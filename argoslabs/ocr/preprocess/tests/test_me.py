@@ -64,7 +64,7 @@ class TU(TestCase):
     def test0010_failure(self):
         try:
             r = main('-vvv')
-            self.assertTrue(r != 0)
+            self.assertTrue(r == 98)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
@@ -72,56 +72,115 @@ class TU(TestCase):
     # ==========================================================================
     def test0020_failure(self):
         try:
-            r = main('invalid')
-            self.assertTrue(r == 1)
+            r = main('op', 'invalid')
+            self.assertTrue(r == 98)
         except ArgsError as e:
             sys.stderr.write('\n%s\n' % str(e))
             self.assertTrue(False)
 
     # ==========================================================================
-    def test0100_success_version(self):
+    def test0100_success(self):
         try:
-            if os.path.exists('02-01.result.jpg'):
-                os.remove('02-01.result.jpg')
+            if os.path.exists('02-01-result1.jpg'):
+                os.remove('02-01-result1.jpg')
             with captured_output() as (out, err):
-                r = main('02-01.jpg', '--save-temp')
+                r = main('Extract Largest Rect', '02-01.jpg', '--target-image', '02-01-result1.jpg',
+                            '--save-temp')
             self.assertTrue(r == 0)
             rs = out.getvalue()
-            self.assertTrue(rs == os.path.abspath('02-01.result.jpg'))
+            self.assertTrue(rs == os.path.abspath('02-01-result1.jpg'))
         except Exception as e:
             sys.stderr.write('\n%s\n' % str(e))
-            self.assertTrue(False)
+
+    # ==========================================================================
+    def test0110_success(self):
+        try:
+            if os.path.exists('02-01-result2.jpg'):
+                os.remove('02-01-result2.jpg')
+            with captured_output() as (out, err):
+                r = main('Extract Largest Rect', '02-01.jpg', '--target-image', '02-01-result2.jpg',
+                            '--gray-res')
+            self.assertTrue(r == 0)
+            rs = out.getvalue()
+            self.assertTrue(rs == os.path.abspath('02-01-result2.jpg'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
 
     # # ==========================================================================
-    # def test0110_success_version(self):
+    # def test0120_success(self):
     #     try:
-    #         if os.path.exists('02-02.res.jpg'):
-    #             os.remove('02-02.res.jpg')
+    #         if os.path.exists('02-01-result3.jpg'):
+    #             os.remove('02-01-result3.jpg')
     #         with captured_output() as (out, err):
-    #             r = main('02-02.jpg', '--target-image', '02-02.res.jpg')
+    #             r = main('Extract Largest Rect', '02-01.jpg', '--target-image', '02-01-result3.jpg', 
+    #                         '--gray-res', 
+    #                         '--threshold-res')
     #         self.assertTrue(r == 0)
     #         rs = out.getvalue()
-    #         self.assertTrue(rs == os.path.abspath('02-02.res.jpg'))
+    #         self.assertTrue(rs == os.path.abspath('02-01-result3.jpg'))
     #     except Exception as e:
     #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
 
     # # ==========================================================================
-    # def test0120_success_version(self):
+    # def test0130_success(self):
     #     try:
-    #         if os.path.exists('02-10.result.jpg'):
-    #             os.remove('02-10.result.jpg')
+    #         if os.path.exists('02-01-result4.jpg'):
+    #             os.remove('02-01-result4.jpg')
     #         with captured_output() as (out, err):
-    #             r = main('02-10.jpg')
+    #             r = main('Extract Largest Rect', '02-01.jpg', '--target-image', '02-01-result4.jpg', 
+    #                         '--gray-res', 
+    #                         '--threshold-res',
+    #                         '--threshold-bs', '11',
+    #                         '--threshold-os', '10')
     #         self.assertTrue(r == 0)
     #         rs = out.getvalue()
-    #         self.assertTrue(rs == os.path.abspath('02-10.result.jpg'))
+    #         self.assertTrue(rs == os.path.abspath('02-01-result4.jpg'))
     #     except Exception as e:
     #         sys.stderr.write('\n%s\n' % str(e))
-    #         self.assertTrue(False)
+
+    # ==========================================================================
+    def test0140_success(self):
+        try:
+            if os.path.exists('rotate/r01-result1.png'):
+                os.remove('rotate/r01-result1.png')
+            with captured_output() as (out, err):
+                r = main('Auto Rotate', 'rotate/r01.png', '--target-image', 'rotate/r01-result1.png',)
+            self.assertTrue(r == 0)
+            rs = out.getvalue()
+            self.assertTrue(rs == os.path.abspath('rotate/r01-result1.png'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+
+    # ==========================================================================
+    def test0150_success(self):
+        try:
+            if os.path.exists('rotate/r01-result2.png'):
+                os.remove('rotate/r01-result2.png')
+            with captured_output() as (out, err):
+                r = main('Auto Rotate', 'rotate/r01.png', '--target-image', 'rotate/r01-result2.png',
+                            '--rotate-fill-color', '(0,255.0)')
+            self.assertTrue(r == 0)
+            rs = out.getvalue()
+            self.assertTrue(rs == os.path.abspath('rotate/r01-result2.png'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
+
+    # ==========================================================================
+    def test0160_success(self):
+        try:
+            if os.path.exists('rotate/r01-result3.png'):
+                os.remove('rotate/r01-result3.png')
+            with captured_output() as (out, err):
+                r = main('Auto Rotate', 'rotate/r01.png', '--target-image', 'rotate/r01-result3.png',
+                            '--gray-res')
+            self.assertTrue(r == 0)
+            rs = out.getvalue()
+            self.assertTrue(rs == os.path.abspath('rotate/r01-result3.png'))
+        except Exception as e:
+            sys.stderr.write('\n%s\n' % str(e))
 
     # # ==========================================================================
-    # def test0200_success_version(self):
+    # def test9200_success_version(self):
     #     try:
     #         for f in glob.glob('receipts/IMG_????.jpeg'):
     #             with captured_output() as (out, err):
