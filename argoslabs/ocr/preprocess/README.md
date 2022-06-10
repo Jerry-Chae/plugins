@@ -34,8 +34,8 @@ No potential damage to customer files and data (overwrite risk)
 None
 
 ## Version Control 
-* [4.531.1100](setup.yaml)
-* Release Date: `May 31, 2022`
+* [4.610.925](setup.yaml)
+* Release Date: `Jun 10, 2022`
 
 ## Input (Required)
 Display Name | Input Method | Default Value | Description
