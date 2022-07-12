@@ -19,6 +19,9 @@ ARGOS LABS plugin module for Excel
 #
 # Change Log
 # --------
+#  * [2022/07/12]
+#   - 엑셀 읽는 방식 변경 기존에는 행과열로 이중 포문 사용 하여 제어. ->  iter_rows를 사용해 최대최소 행과열을 변수로하는 함수 사용.
+#   - 읽는 속도 개선. 하지만 위와같은 방식은 openpyxl에서만 적용 dataonly를 사용하는 xlwings에서는 사용불가.
 #  * [2022/02/03]
 #   - .xlsx과 .csv 형식의 파일만이 아닌 다른 파일들도 열수 있도록 변경.
 #   - file open 할때, read_only=True로 변경함. 일부 파일에 접근할 수 없음. ex)Slicer List
@@ -253,23 +256,31 @@ class Excel(object):
                 ws1 = wbxl.sheets[self.argspec.sheet]
             else:
                 ws1 = wbxl.sheets[0]
-        for r in range(self.min_row, self.max_row + 1):
-            row = []
-            for c in range(self.min_col, self.max_col + 1):
-                cl = get_column_letter(c)
-                if self.argspec.data_only:
+        if self.argspec.data_only:
+            for r in range(self.min_row, self.max_row + 1):
+                row = []
+                for c in range(self.min_col, self.max_col + 1):
+                    cl = get_column_letter(c)
                     if str(type(ws1['%s%d' % (cl, r)].value)) == "<class 'float'>":
                         v = ws1['%s%d' % (cl, r)].value
                         if v - int(v) == 0:
                             v = int(v)
                     else:
                         v = ws1['%s%d' % (cl, r)].value
-                else:
-                    v = self.ws['%s%d' % (cl, r)].value
-                if v is None:
-                    v = ''
-                row.append(v)
-            yield row
+
+                    if v is None:
+                        v = ''
+                    row.append(v)
+                yield row
+        else:
+            for r in self.ws.iter_rows(self.min_row, self.max_row, self.min_col, self.max_col):
+                row = []
+                for cell in r:
+                    v = cell.value
+                    if v is None:
+                        v = ''
+                    row.append(v)
+                yield row
         if self.argspec.data_only:
             wbxl.close()
 
