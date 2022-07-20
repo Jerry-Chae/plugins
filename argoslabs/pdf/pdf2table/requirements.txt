@@ -3,5 +3,5 @@
 # default for alabs
 alabs.common
 
-# ...
-pdfplumber
+# pdf module
+pdfplumber==0.5.28
