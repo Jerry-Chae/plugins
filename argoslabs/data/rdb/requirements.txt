@@ -13,8 +13,8 @@ PyMySQL==1.0.2
 # for MSSQL
 #   in case Mac : build process needed : TODO
 # Cython==0.29.5
-# pymssql==2.1.4
-pymssql==2.1.5
+pymssql==2.1.4
+# pymssql==2.1.5
 
 # for Oracle
 #  Oracle need required dlls

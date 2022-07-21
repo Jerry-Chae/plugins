@@ -31,4 +31,4 @@ setup:
 #    argoslabs.data.rdb: ['icon.*', '*.dll', '*.whl']
     argoslabs.data.rdb: ['icon.*',]
   url: https://www.argos-labs.com
-  version: 3.727.1200
+  version: 4.721.2140
